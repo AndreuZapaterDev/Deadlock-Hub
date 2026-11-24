@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/search-box";
 
 export type FilterField =
   | { name: string; label: string; type: "search"; placeholder?: string }
-  | { name: string; label: string; type: "select"; options: { value: string; label: string }[] };
+  | { name: string; label: string; type: "select"; options: { value: string; label: string }[]; allLabel?: string };
 
 /**
  * Filtros que viven en la URL (se pueden compartir). Los selects aplican al instante;
@@ -45,7 +45,7 @@ export function FilterBar({ fields }: { fields: FilterField[] }) {
           <label key={f.name} className="flex flex-col gap-1 text-xs font-semibold text-ink-muted">
             {f.label}
             <select name={f.name} value={params.get(f.name) ?? ""} onChange={(e) => apply(f.name, e.target.value)} className="rounded-sm border border-brass/50 bg-surface px-3 py-2 text-sm text-ink focus-visible:border-brass">
-              <option value="">Todos</option>
+              <option value="">{f.allLabel ?? "Todos"}</option>
               {f.options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
           </label>

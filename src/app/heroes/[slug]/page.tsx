@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { HeroPortrait, heroPastel } from "@/components/hero/hero-card";
+import { HeroMeta } from "@/components/hero/hero-meta";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
@@ -14,7 +15,7 @@ import { getHeroAbilities, getHeroBySlug, getHeroes, getHeroWeapon } from "@/lib
 import { slugify } from "@/lib/slug";
 import { stripHtml } from "@/lib/format";
 
-export const revalidate = 43200; // 12 h: los assets cambian solo con un parche
+export const revalidate = 1800; // 30 min: los assets cambian con un parche (12 h) pero la ficha incluye estadísticas de meta (30 min)
 
 export async function generateStaticParams() {
   return (await getHeroes()).map((h) => ({ slug: slugify(h.name) }));
@@ -57,6 +58,10 @@ export default async function HeroPage({ params }: { params: Promise<{ slug: str
           <Chip tone={tone}>{heroTypeLabel(hero.hero_type)}</Chip>
           <Chip>Dificultad: {difficultyLabel(hero.complexity)}</Chip>
           {hero.gun_tag && <Chip>{hero.gun_tag}</Chip>}
+        </div>
+        <div className="mt-4 flex flex-wrap justify-center gap-3">
+          <Button href={`/heroes/compare?h=${slugify(hero.name)}`} variant="secondary">Comparar con…</Button>
+          <Button href={`/counters?a=${slugify(hero.name)}`} variant="ghost"><span className="text-cream">Ver counters</span></Button>
         </div>
       </PosterHeader>
 
@@ -151,6 +156,8 @@ export default async function HeroPage({ params }: { params: Promise<{ slug: str
           })}
         </div>
       </section>
+
+      <HeroMeta hero={hero} abilities={abilities} />
 
       <nav aria-label="Otros héroes" className="flex flex-wrap items-center justify-between gap-3 border-t border-brass/30 pt-6">
         <Link href={`/heroes/${slugify(prev.name)}`} className="link-brass font-semibold">← {prev.name}</Link>

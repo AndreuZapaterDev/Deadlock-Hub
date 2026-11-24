@@ -146,3 +146,40 @@ export type MatchInfo = {
   objectives: { team: number; destroyed_time_s: number; team_objective_id: number }[];
 };
 export type Accolade = { id: number; flavor_name: string };
+
+// ---- Analytics (meta) ----
+export type HeroStatRow = {
+  hero_id: number;
+  wins: number;
+  losses: number;
+  matches: number;
+  total_kills: number;
+  total_deaths: number;
+  total_assists: number;
+  total_net_worth: number;
+};
+export type BanRow = { hero_id: number; bans: number; matches: number };
+export type ItemStatRow = {
+  item_id: number;
+  wins: number;
+  losses: number;
+  matches: number;
+  players: number;
+  avg_buy_time_s: number;
+  avg_sell_time_s: number;
+  sold: number;
+};
+export type LeaderboardEntry = { account_name: string; possible_account_ids: number[]; rank: number; top_hero_ids: number[] };
+export type AbilityOrderRow = { abilities: number[]; avg_upgrade_times_s: number[]; wins: number; losses: number; matches: number; players: number };
+export type MaxFirstRow = { ability_id: number; wins: number; losses: number; matches: number; players: number };
+export type BuildStatRow = { hero_id: number; hero_build_id: number; wins: number; losses: number; matches: number; players: number };
+export type FlowData = {
+  nodes: { column: number; item_id: number; matches: number }[];
+  edges: { from_column: number; from_item_id: number; to_item_id: number; matches: number }[];
+};
+export type CombRow = { hero_ids: number[]; wins: number; losses: number; matches: number };
+export type PermRow = { item_ids: number[]; wins: number; losses: number; matches: number };
+export type BuffRow = { buff_type: string; is_permanent: boolean; pickups: number; avg_first_pickup_time_s: number };
+export type GameStatRow = { total_matches: number; total_players: number; avg_duration_s: number; avg_kills: number; avg_net_worth: number };
+export type LaneRow = { hero_ids: number[]; enemy_hero_ids: number[]; wins: number; matches_played: number; sample_time_s: number; net_worth_diff: number };
+export type BuildSummary = { hero_build: { hero_id: number; hero_build_id: number; name: string } };

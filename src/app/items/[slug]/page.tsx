@@ -5,13 +5,17 @@ import { Button } from "@/components/ui/button";
 import { FeaturedCard } from "@/components/ui/card";
 import { CATEGORY, CategoryChip, Chip } from "@/components/ui/chip";
 import { PosterHeader } from "@/components/ui/poster-header";
-import { fmtNum, stripHtml } from "@/lib/format";
+import { fmtDuration, fmtNum, fmtPct, stripHtml } from "@/lib/format";
+import { winRate } from "@/lib/analytics";
+import { DemoNote } from "@/components/ui/demo-note";
+import { SectionTitle } from "@/components/ui/section-title";
+import { loadItemStats } from "@/lib/meta-data";
 import { itemSections, plainStats } from "@/lib/item-sections";
 import { SECTION_LABEL } from "@/lib/labels";
 import { getItemIndex, getItems } from "@/lib/lookup";
 import type { Item } from "@/lib/types";
 
-export const revalidate = 43200;
+export const revalidate = 1800; // la ficha incluye estadísticas de uso (30 min)
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
@@ -50,6 +54,8 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
   const fallback = sections.length ? [] : plainStats(item);
   const desc = stripHtml(item.description?.desc);
   const cat = item.item_slot_type;
+  const usageRes = await loadItemStats({});
+  const usage = usageRes.ok ? usageRes.data.find((r) => r.item_id === item.id) : undefined;
 
   return (
     <div className="space-y-12">
@@ -108,6 +114,27 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
         </div>
       </section>
 
+
+      <section aria-labelledby="usage" className="space-y-4">
+        <SectionTitle id="usage">Estadísticas de uso</SectionTitle>
+        {usage ? (
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-5">
+            {[
+              [fmtPct(winRate(usage.wins, usage.matches)), "Win rate"],
+              [fmtNum(usage.matches), "Partidas"],
+              [fmtNum(usage.players), "Jugadores"],
+              [fmtDuration(usage.avg_buy_time_s), "Compra media"],
+              [fmtPct(usage.matches ? usage.sold / usage.matches : 0, 0), "Se acaba vendiendo"],
+            ].map(([v, l]) => (
+              <div key={l} className="rounded-md border border-brass/30 bg-surface p-4 text-center shadow-card"><p className="font-display text-2xl font-black">{v}</p><p className="mt-1 text-sm text-ink-muted">{l}</p></div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-ink-muted">{usageRes.ok ? "No hay datos de uso de este objeto." : "No se han podido cargar las estadísticas de uso."}</p>
+        )}
+        <p className="text-xs text-ink-muted">«Compra media» es el minuto de partida al que se compra de media (no hay desglose por minuto). Los héroes que más lo usan llegan con la API real.</p>
+        <DemoNote>Los datos de ejemplo son un único periodo, así que no hay tendencia por parche.</DemoNote>
+      </section>
 
       <div className="flex justify-center"><Button href="/items" variant="secondary">Volver a la tienda</Button></div>
     </div>

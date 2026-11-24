@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "motion/react";
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/cn";
 import { timeAgo } from "@/lib/format";
 
@@ -48,7 +49,7 @@ export function SortableTable({ columns, rows, initialSort, format }: { columns:
             // `layout`: al reordenar, cada fila se desliza a su nueva posición con un resorte
             <motion.tr layout transition={{ type: "spring", stiffness: 420, damping: 38 }} key={r.id} className="border-t border-brass/20 hover:bg-brass/5">
               {columns.map((c, i) => (
-                <td key={c.key} className={cn("whitespace-nowrap px-3 py-1.5", c.numeric && "text-right", i === 0 && "sticky left-0 z-10 bg-surface font-medium")}>{show(c.key, r[c.key])}</td>
+                <td key={c.key} className={cn("whitespace-nowrap px-3 py-1.5", c.numeric && "text-right", i === 0 && "sticky left-0 z-10 bg-surface font-medium")}>{i === 0 && typeof r.href === "string" ? <Link href={r.href} className="link-brass">{show(c.key, r[c.key])}</Link> : show(c.key, r[c.key])}</td>
               ))}
             </motion.tr>
           ))}

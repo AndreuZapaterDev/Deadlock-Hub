@@ -16,6 +16,11 @@ export async function SiteFooter() {
             <Link href="/npcs" className="link-brass text-cream">{t("npcs")}</Link>
             <Link href="/mechanics" className="link-brass text-cream">{t("mechanics")}</Link>
           </p>
+          <p className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
+            <span className="font-semibold text-cream">{t("tools")}:</span>
+            <Link href="/build-planner" className="link-brass text-cream">{t("planner")}</Link>
+            <Link href="/crosshair" className="link-brass text-cream">{t("crosshair")}</Link>
+          </p>
           <p>
             {t("credits")}{" "}
             <a href="https://deadlock-api.com" className="link-brass text-cream" rel="noopener noreferrer" target="_blank">Deadlock API</a>

@@ -34,7 +34,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
     </form>
   );
 
-  const header = <PosterHeader title="Comparar" subtitle="Dos jugadores, lado a lado" />;
+  const header = <PosterHeader compact title="Comparar" subtitle="Dos jugadores, lado a lado" />;
   if (aId === null || bId === null) {
     return (
       <div className="space-y-8">

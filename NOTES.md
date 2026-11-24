@@ -167,3 +167,59 @@ Cambio **autorizado por el usuario** respecto a la sección 7 de la spec ("no ha
 - Con la API real: formato exacto de `account_ids` en lote (se asume separado por comas), respuesta real de una cuenta privada (se asume 403) y caché de respaldo ante 503.
 - Sin tests e2e en el repo (fase 8) ni medición de Lighthouse.
 - Los textos relativos ("hace 2 meses") se calculan con la hora del servidor y la del navegador; podrían diferir un instante al hidratar.
+
+## Fase 4: meta y estadísticas (todo en modo mock, sin tocar `httpSource`)
+
+**Páginas:** `/tier-list`, `/counters`, `/meta`, `/leaderboard`, `/heroes/compare`; estadísticas de meta añadidas a `/heroes/[slug]` (componente `HeroMeta`) y a `/items/[slug]`.
+
+**Hallazgos en los datos**
+- `hero-stats` cuenta **partidas-jugador** (cada partida suma 12 filas): Σ = 82.034.091 ≈ 12 × las 6,83 M partidas de `game-stats`. Por eso **pick rate = partidas del héroe / (Σ / 12)** (% de partidas en las que aparece; 36,6 % para Infernus). El ban rate (`bans / matches`) usa el total de partidas de su propio endpoint.
+- **No hay duración por héroe**, así que no se puede dar "almas por minuto" (lo pide la spec en la tabla de la tier list): se da **almas por partida**.
+- **Filtros del OpenAPI:** rango = `min/max_average_badge` (decenas = tier, unidad = subrango; el tier t va de t·10+1 a t·10+6, máximo 116), fechas = `min/max_unix_timestamp`, duración = `min/max_duration_s`. **La región no existe en las analytics**, solo en el leaderboard (la spec la pedía como filtro común).
+- **Fixtures específicos de Infernus (id 1):** `ability-order-stats`, `hero-build-stats/1`, `item-flow-stats` y el leaderboard por héroe. El mock devuelve ese ejemplo para cualquier héroe, así que mostrarlo en otra ficha sería falso. En mock esas secciones solo se muestran para Infernus; las demás fichas dicen "Sin datos de ejemplo para este héroe" (`hasHeroSpecificData`). Con la API real aparecen para todos.
+- **Builds:** solo 17 de los 49.653 `hero_build_id` tienen nombre en `/v1/builds`; el resto se muestra como "Build #id".
+- `hero-comb-stats` del fixture solo trae parejas (`comb_size=2`) y **no respeta `include_hero_ids`**.
+- La tabla de sinergias guarda cada pareja una sola vez (id1 < id2); la de counters trae ambos sentidos.
+- Leaderboard por héroe: solo existe Europa/Infernus (36 filas); cualquier otra región o héroe devuelve ese ejemplo (o el de Europa global, 1000 filas).
+
+**Decisiones**
+- **Win rate ajustado** = (victorias + 500) / (partidas + 1000): equivale a añadir 1000 partidas ficticias al 50 %. Con millones apenas cambia; con pocas evita que un 3/3 sea 100 %.
+- **Tiers por percentil**, no por umbral: S 10 % mejor, A 20 %, B 40 %, C 20 %, D 10 % peor (44 héroes → 4/9/18/9/4). Siempre hay al menos un S. La fórmula está documentada en la propia página.
+- **Matchups y sinergias** exigen 1.000 partidas como mínimo para listarse como "fuerte/débil contra" o "mejor compañero".
+- **Radar del comparador:** 6 ejes (vida, velocidad, DPS, cadencia, cargador, alcance), cada uno min-max a 0-100 entre TODOS los héroes. No hay eje de "utilidad": no se puede medir con los datos (la spec lo mencionaba).
+- **Filtros comunes** (`analytics-filters.ts`): se leen de la URL, todo lo inválido se ignora y un rango imposible (mín > máx) descarta el máximo. Se traducen a los parámetros reales y se envían a la API (en mock no cambian los datos, y cada página lo avisa con `DemoNote`).
+- **Cartel compacto** (`PosterHeader compact`) para páginas de datos: sin cable ni emblema y título más pequeño, para que la tabla o la matriz queden a la vista.
+- Fichas con estadísticas pasan a `revalidate = 1800` (30 min, como pide la spec para analytics); la wiki estática sigue en 12 h.
+- Los filtros de la tier list no incluyen región; el leaderboard sí (pestañas) y por héroe (select).
+
+**Errores encontrados y corregidos al probar**
+- Con un solo elemento, `assignTiers` lo dejaba en tier B (el redondeo de los cortes): ahora siempre hay un S. Lo destapó un test.
+- Resto de un test con un símbolo inexistente (`bannedRateGuard`) escrito por error.
+- Tres falsos fallos de mi prueba en navegador (helper que ignoraba un argumento, selector que contaba también el título, espera corta): corregidos en la prueba, no en la web.
+
+**Verificado:** 76 tests unitarios (17 de analytics, 11 de filtros, 3 de Sankey, más los anteriores) y una batería en navegador real: las 7 rutas dan 200; tiers 4/9/18/9/4; filtros en URL y valores inválidos ignorados; matriz 44×44 con 1.892 celdas clicables y simétrica en sinergias; 156 objetos, 15 combinaciones, 15 parejas y 15 carriles en `/meta`; leaderboard con 50 filas, paginación y por héroe (36); comparador con 2 y 3 héroes, radar, mejor/peor valor y selector en la URL; ficha de Infernus con 3 órdenes, 5 builds, Sankey, 15 chips y top 10; la ficha de otro héroe no muestra datos de Infernus; sin errores de JavaScript ni desbordes a 390 px.
+
+**Rendimiento (a vigilar):** hacer clic en una celda de la matriz de counters tarda ~1,3 s porque el servidor vuelve a renderizar las 1.892 celdas. Aceptable, pero si molesta se puede resaltar la celda en el cliente sin renderizar de nuevo.
+
+**Pendiente / sin verificar**
+- Con la API real: los nombres exactos de varios parámetros están sacados del OpenAPI pero no probados; la respuesta real de `hero-ban-stats` frente a `hero-stats` (periodos distintos) podría desajustar el ban rate.
+- No hay tendencia por parche ni rendimiento por rango (gráficas): los fixtures tienen un único `bucket`. Se activan con la API real.
+- "Héroes que más usan un objeto" (ficha de objeto): sin datos en los fixtures.
+- Sin tests e2e en el repo (fase 8) ni Lighthouse.
+
+## Fase 5 — Builds y herramientas (solo mock)
+
+**Qué hay:** `/builds`, `/builds/[heroId]/[buildId]`, `/build-planner`, `/crosshair` y rutas `api/crosshair/{code,settings,image}` (validan y sanean la entrada). Lógica pura y testeada en `lib/build-planner.ts`, `crosshair.ts`, `builds.ts`.
+
+**Decisiones y hallazgos**
+- Calculadora aproximada (documentada en la propia página): vida = (base + plano) × (1 + %), DPS = base × (1 + %daño) × (1 + %cadencia), resistencias apiladas como 1 − Π(1 − r). Solo cuenta las secciones «innate».
+- Los objetos como Extra Health o Extended Magazine guardan su bonificación principal en `elevated_properties`, no en `properties`: `itemEffects` e `itemSections` leen ambas (sin duplicar si una clave está en las dos).
+- El estado del planner va en la URL (`?h=slug&i=a,b,c`) y se valida (desconocidos, repetidos y tope por categoría fuera); guardado local con `useSyncExternalStore`.
+- Vista previa del crosshair en SVG local, independiente de la API; la imagen oficial se pide bajo demanda.
+- Las descripciones de builds se «linkifican» solo con http/https y `rel="noopener noreferrer nofollow ugc"`.
+
+**Errores corregidos:** `elevated_properties` ignoradas (arriba); desborde horizontal a 390 px en detalle de build (URL larga en grid → `grid-cols-1`/`minmax(0,…)` + `overflow-wrap:anywhere`) y en el planner (la lista de objetos y el grid sin `grid-cols-1`).
+
+**Verificado:** 139 tests unitarios; batería en navegador real (build, planner, crosshair, móvil 390 px, sin errores JS); regresión de fases 3–4; tsc y eslint limpios.
+
+**Pendiente / sin verificar:** con la API real, los nombres de parámetros de builds y la respuesta de crosshair no están probados; la importación en el juego solo muestra el ID (no se sabe el flujo exacto); `currency_type` 2/1 = desbloquear/mejorar es inferencia; no hay e2e en el repo ni Lighthouse.

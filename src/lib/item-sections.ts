@@ -25,7 +25,8 @@ export function itemSections(item: Item): Section[] {
     const sec: Section = { type: s.section_type, stats: [] };
     for (const a of s.section_attributes) {
       if (a.loc_string) sec.text = [sec.text, stripHtml(a.loc_string)].filter(Boolean).join(" ");
-      for (const k of a.properties ?? []) {
+      // las propiedades "elevadas" son las destacadas del objeto (p. ej. el +30 % de cargador de Extended Magazine): van primero
+      for (const k of new Set([...(a.elevated_properties ?? []), ...(a.properties ?? [])])) {
         const st = toStat(item, k);
         if (st) sec.stats.push(st);
       }

@@ -7,8 +7,8 @@
 > **Modo mock primero (sección 3.0):** hasta la fase final, la web **no hace ni una sola petición a la API real**. Todos los datos salen de los fixtures de `mock/deadlock-mock/fixtures/`, que son respuestas reales de la API capturadas el 24/11/2026.
 > Si algo de este documento no coincide con los fixtures, **los fixtures mandan**: adapta el código y apunta la diferencia en `NOTES.md`.
 >
-> **Estado del proyecto (actualizado tras la fase 3):**
-> - ✅ **Fases 0, 1, 2 y 3** completadas (Docker y datos; sistema de diseño; wiki estática; tracker de jugadores y detalle de partida), todo con los fixtures y sin conectar la API real. ⏳ **Siguiente: fase 4** (meta y estadísticas).
+> **Estado del proyecto (actualizado tras la fase 4):**
+> - ✅ **Fases 0 a 5** completadas (Docker y datos; sistema de diseño; wiki estática; tracker de jugadores y partidas; meta y estadísticas; builds y herramientas), todo con los fixtures y sin conectar la API real. ⏳ **Siguiente: fase 6** (mapa y `/live`).
 > - Lo que cambió respecto al texto original va marcado como **(Cambio)** y detallado en `NOTES.md`. Los datos reales de los fixtures están en `docs/DATA_REPORT.md`. La referencia visual es `art-examples/`.
 
 ---
@@ -615,7 +615,7 @@ src/
   components/
     ui/                botones, tablas, tooltips, tabs…
     deco/              ornamentos art déco, marcos, fondos
-    hero/ item/ player/ match/ charts/ map/ filters/ layout/ motion/   (filters/filter-bar.tsx ✅: filtros en la URL)
+    hero/ item/ player/ match/ charts/ map/ filters/ layout/ motion/   (filters/: filter-bar ✅ filtros en la URL, analytics-fields ✅, compare-selector ✅; ui/: demo-note, tier-badge; hero/: hero-chip, hero-meta)
   lib/
     api/types.ts       ✅ tipos comunes: DataSource, ApiResult, ApiError
     api/manifest-resolver.ts  ✅ resolución exacta → misma ruta → plantilla → 404 (función pura, con tests)
@@ -629,6 +629,10 @@ src/
     player-stats.ts    ✅ victoria, resumen, curvas de win rate / partidas por día / rango, estados del perfil + 18 tests
     player-data.ts     ✅ carga del jugador, nombres en lote, búsqueda y vanity (solo servidor)
     match-data.ts      ✅ carga de una partida
+    analytics.ts       ✅ win rate ajustado, tiers por percentil, pick/ban rate, counters, sinergias y radar + 17 tests
+    analytics-filters.ts ✅ filtros comunes (rango, parche, duración) URL → parámetros del OpenAPI + 11 tests
+    meta-data.ts       ✅ todas las llamadas de estadísticas (solo servidor)
+    sankey.ts          ✅ flujo de objetos por fase como función pura + 3 tests
     patch-diff.ts      ⏳ comparación de assets entre parches (+ tests) (fase 7)
     lookup.ts          ✅ IDs → entidades (héroes y objetos); se ampliará por fases
     types.ts           ✅ tipos mínimos de los campos que usa la web
@@ -684,8 +688,8 @@ vitest.config.mts, next.config.ts, eslint.config.mjs, postcss.config.mjs   ✅
    - **Para y enséñame `/styleguide` antes de empezar la fase 2.** A partir de aquí, **todas las páginas se construyen solo con estas piezas**. Si hace falta una nueva, se añade primero al styleguide.
 2. ✅ **HECHA — Wiki estática:** héroes (lista y ficha sin stats de meta), objetos (tienda y ficha), rangos, NPCs y mecánicas. Si hace falta, genera aquí `scripts/prepare-mock-data.ts` (fixtures reducidos en `mock/derived/`) cuando se sepa qué campos se usan de verdad. Las habilidades salen de `hero.items.signature1..4` (sección 3.0). **(Estado)** Hecho: `/heroes` (filtros por tipo, dificultad, arma y búsqueda, guardados en la URL) y `/heroes/[slug]` (estadísticas base, arma, 4 habilidades con mejoras T1/T2/T3, héroe anterior/siguiente); `/items` (156 objetos de los tiers 1 a 4 en tres columnas, con tooltip rico y filtros) y `/items/[slug]` (por `class_name`; descripción, bonificaciones, activa/pasiva, "se construye con" y "se mejora en"); `/ranks`, `/npcs` y `/mechanics`. Sin estadísticas de meta (fase 4), sin "Comparar con…" (fase 4) y sin imágenes remotas (fase 9).
 3. ✅ **HECHA — Tracker:** buscador (todos los formatos de ID), perfil completo, historial y detalle de partida. Incluye los tests de `steam-id.ts`. **(Estado)** Hecho: `/players` (buscador con autocompletado accesible que acepta SteamID32/64/3, URL con SteamID64 o vanity y nombres; jugadores seguidos en localStorage), `/players/[accountId]` (resumen, rango, héroes favoritos, gráficas de win rate acumulado, partidas por día y rango en partidas ranked, historial paginado de 20 en 20, tabla de héroes, compañeros y rivales, builds, seguir, actualizar historial con cooldown de 10 min), `/players/compare` y `/matches/[matchId]` (marcador de los dos equipos, ventaja de almas, objetivos destruidos, menciones, compras por jugador y mapa de muertes). Estados: cargando (skeleton), privado, no existe, API ocupada y sin partidas. Pantalla 404 propia en español. **Limitaciones:** el historial no trae objetos finales (solo la partida detallada); los avatares son placeholders (sin imágenes remotas); los equipos se llaman A y B porque la API no dice qué facción es cada uno; en mock cualquier cuenta o partida devuelve el ejemplo.
-4. ⏳ **SIGUIENTE — Meta y estadísticas:** tier list, filtros comunes, stats en las fichas de héroes y objetos, counters/sinergias, `/meta`, leaderboard y **comparador de héroes**.
-5. **Builds y herramientas:** buscador de builds, build planner y crosshair.
+4. ✅ **HECHA — Meta y estadísticas:** tier list, filtros comunes, stats en las fichas de héroes y objetos, counters/sinergias, `/meta`, leaderboard y **comparador de héroes**. **(Estado)** Hecho: `/tier-list` (tiers por percentil sobre el win rate ajustado, vista de tabla ordenable, fórmula documentada en la página), `/counters` (matriz 44×44 de counters y de sinergias con celdas clicables y detalle de un cara a cara), `/meta` (panorama, objetos, mejores combinaciones de objetos, mejores parejas de héroes, power-ups, Sankey de objetos por héroe y duelos de carril en beta), `/leaderboard` (5 regiones, global o por héroe, paginado), `/heroes/compare` (2 o 3 héroes: estadísticas con mejor y peor valor, radar normalizado, habilidades en paralelo, meta y cara a cara), estadísticas de meta en las fichas de héroe (win, pick y ban rate, tier, orden de habilidades, builds, objetos por fase, counters, sinergias y leaderboard) y de objeto, y los filtros comunes (rango, parche y duración) en la URL. Variante compacta del cartel para páginas de datos. **Limitaciones:** en mock los filtros no cambian los datos; la región solo existe en el leaderboard (las demás analytics no la admiten); no hay almas por minuto por héroe (se da almas por partida); en mock el orden de habilidades, las builds y el flujo de objetos son solo de Infernus (las demás fichas lo avisan); solo 17 builds tienen nombre; sin tendencia por parche ni rango por héroe.
+5. ✅ **HECHA — Builds y herramientas:** `/builds` (filtros héroe/etiquetas/autor/idioma, orden por popularidad o fecha), `/builds/[heroId]/[buildId]` (objetos por fase, notas, orden de habilidades, ID para importar), `/build-planner` (máx. 6 por categoría, coste, estadísticas aproximadas, guardado local y enlace compartible) y `/crosshair` (vista previa SVG local, importar/copiar código). (Estado) En mock los filtros de builds se aplican en local y el crosshair devuelve siempre el código de ejemplo; el planner solo suma bonificaciones «innate» (incluidas `elevated_properties`), no pasivas ni activas; «desbloquear/mejorar» del orden de habilidades es una deducción. Código: `lib/build-planner.ts`, `crosshair.ts`, `builds.ts`, `builds-data.ts`, `components/tools`, `components/builds`.
 6. **Mapa y directo:** mapa interactivo con heatmap y `/live`.
 7. **Parches:** notas con enlazado automático de héroes y objetos, y **comparador automático de parches** con el historial de cambios en las fichas.
 8. **Pulido:** SEO, OG images, rendimiento (Lighthouse ≥ 90 en móvil en las páginas de la wiki), accesibilidad, smoke tests de Playwright, revisión final del modo "Noche" y **PWA** (sección 8.1).
@@ -707,7 +711,7 @@ Al final de cada fase, **todo dentro de Docker**: `docker compose run --rm app n
 - [x] Pegar un SteamID64, un SteamID32, una URL de Steam o un nombre lleva al perfil correcto. *(Comprobado con SteamID32, SteamID64, URL con SteamID64, URL con vanity, SteamID3 y nombre.)*
 - [x] Los perfiles privados o protegidos muestran un mensaje claro, no un error. *(En modo mock, con las cuentas de demostración 403, 404 y 503.)*
 - [x] Si la API devuelve 503/504/429, la web muestra datos en caché o un aviso amable, y nunca se rompe. *(Hoy muestra el aviso amable; la caché de respaldo llega con `httpSource`.)*
-- [ ] Los filtros de analytics se reflejan en la URL y se pueden compartir.
+- [x] Los filtros de analytics se reflejan en la URL y se pueden compartir. *(Rango, parche y duración; en mock los datos no cambian al filtrar porque los fixtures son un único periodo.)*
 - [ ] Todas las tablas se pueden ordenar y se usan bien en móvil.
 - [ ] Ninguna petición a la API externa sale del navegador sin pasar por caché, salvo las partidas en directo si se decide hacerlo así.
 - [x] El footer tiene el aviso de web no oficial y los créditos a Deadlock API.
@@ -718,7 +722,7 @@ Al final de cada fase, **todo dentro de Docker**: `docker compose run --rm app n
 - [x] Los fixtures grandes nunca llegan enteros al navegador (hasta la fase 1: se leen solo en servidor).
 - [ ] Los textos del juego se ven en inglés (fixtures) sin traducción automática, y el código ya pide `language=spanish` cuando `DATA_SOURCE=api`.
 - [ ] El comparador de parches muestra los cambios de números entre el último parche y el anterior (o `NOTES.md` explica por qué no es posible y qué alternativa se usó).
-- [ ] Se pueden comparar 2 o 3 héroes y la URL se puede compartir.
+- [x] Se pueden comparar 2 o 3 héroes y la URL se puede compartir. *(`/heroes/compare?h=a,b,c`.)*
 - [ ] La web se instala como PWA en Android e iOS y las páginas de la wiki ya visitadas funcionan sin conexión.
 - [x] `docker compose up app` arranca la web en desarrollo con hot reload en una máquina que solo tiene Docker instalado.
 - [x] La vista previa de producción (`preview`) funciona en local igual que en desarrollo.

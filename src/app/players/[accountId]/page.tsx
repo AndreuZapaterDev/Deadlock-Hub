@@ -222,7 +222,7 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
           <ul className="grid gap-3 sm:grid-cols-2">
             {builds.map((b) => (
               <li key={b.hero_build.hero_build_id} className="flex items-center justify-between gap-3 rounded-md border border-brass/30 bg-surface p-3 shadow-card">
-                <span className="min-w-0 truncate font-semibold">{b.hero_build.name}</span>
+                <Link href={`/builds/${b.hero_build.hero_id}/${b.hero_build.hero_build_id}`} className="link-brass min-w-0 truncate font-semibold">{b.hero_build.name}</Link>
                 <Chip>{heroNames.get(b.hero_build.hero_id) ?? `Héroe #${b.hero_build.hero_id}`}</Chip>
               </li>
             ))}
