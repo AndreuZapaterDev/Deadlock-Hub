@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useMemo, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -54,5 +55,26 @@ export function FollowedPlayers() {
         </li>
       ))}
     </ul>
+  );
+}
+
+/** Franja de la pantalla de inicio: los jugadores seguidos, para entrar a su perfil en un toque. No pinta nada si no sigues a nadie. */
+export function FollowedStrip() {
+  const t = useTranslations("home");
+  const list = useFollows();
+  if (!list.length) return null;
+  return (
+    <section aria-label={t("followedLabel")} className="space-y-3">
+      <h2 className="font-display text-xl font-black">{t("followedTitle")}</h2>
+      <ul className="flex flex-wrap gap-2">
+        {list.map((f) => (
+          <li key={f.id}>
+            <Link href={`/players/${f.id}`} className="inline-flex items-center gap-2 rounded-full border border-brass/40 bg-surface px-4 py-2 text-sm font-semibold hover:bg-brass/15">
+              {f.name}<span className="text-xs font-normal text-ink-muted">#{f.id}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }

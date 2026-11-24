@@ -1,6 +1,6 @@
 # Informe de datos (fase 0)
 
-Fuente: `mock/deadlock-mock/fixtures/` (respuestas reales capturadas el 24/11/2026, versión de cliente **6865**).
+Fuente: respuestas reales de la API capturadas el 24/11/2026 (versión de cliente **6865**) para el informe de la fase 0. **Histórico:** los fixtures ya no están en el repositorio (la web lee siempre de la API real); esto describe la forma de los datos.
 Todo está leído directamente de los ficheros; no se ha llamado a ninguna API. 116 GET reales en el manifest; la web usa unos 70.
 
 ## 1. Cómo se relacionan los datos

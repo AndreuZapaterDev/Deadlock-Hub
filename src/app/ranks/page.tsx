@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BarChartBase } from "@/components/charts/charts";
+import { BarChartBase } from "@/components/charts/lazy-charts";
 import { Reveal } from "@/components/motion/reveal";
 import { Card } from "@/components/ui/card";
 import { PosterHeader } from "@/components/ui/poster-header";
@@ -62,7 +62,7 @@ export default async function RanksPage() {
         <SectionTitle id="dist">Jugadores por rango</SectionTitle>
         <Card>
           <BarChartBase data={chart} height={300} />
-          <p className="mt-2 text-xs text-ink-muted">{fmtNum(total)} jugadores con rango en los datos de ejemplo.</p>
+          <p className="mt-2 text-xs text-ink-muted">{fmtNum(total)} jugadores con rango.</p>
         </Card>
       </section>
 

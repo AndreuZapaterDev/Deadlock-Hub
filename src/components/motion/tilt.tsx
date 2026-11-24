@@ -1,40 +1,47 @@
 "use client";
-import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
+import { useRef } from "react";
 
 /**
- * Inclinación 3D siguiendo el cursor, con un brillo que se desplaza por la tarjeta.
- * La estructura del DOM es la misma con o sin movimiento reducido (evita errores de hidratación):
- * con movimiento reducido simplemente no se actualizan los valores.
+ * Inclinación 3D siguiendo el cursor, con un brillo que se desplaza por la tarjeta. Solo con punteros finos (ratón): en pantallas
+ * táctiles no hace nada. Todo se resuelve con variables CSS (`--rx`, `--ry`, `--gx`, `--gy`) escritas directamente en el
+ * elemento, sin estado de React ni muelles de Motion: cada tarjeta es casi gratis de hidratar. El suavizado lo pone una
+ * transición CSS, y con prefers-reduced-motion no hay inclinación (ver `.tilt` en globals.css).
  */
 export function Tilt({ children, className }: { children: React.ReactNode; className?: string }) {
-  const reduced = useReducedMotion();
-  const x = useMotionValue(0.5);
-  const y = useMotionValue(0.5);
-  const spring = { stiffness: 220, damping: 22 };
-  const rotateY = useSpring(useTransform(x, [0, 1], [-9, 9]), spring);
-  const rotateX = useSpring(useTransform(y, [0, 1], [9, -9]), spring);
-  const gx = useTransform(x, [0, 1], [0, 100]);
-  const gy = useTransform(y, [0, 1], [0, 100]);
-  const glare = useMotionTemplate`radial-gradient(circle at ${gx}% ${gy}%, rgb(255 255 255 / 0.16), transparent 55%)`;
-  const glareOpacity = useSpring(0, spring);
+  const ref = useRef<HTMLDivElement>(null);
+  const frame = useRef(0);
+
+  const move = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "mouse") return;
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width;
+    const y = (e.clientY - r.top) / r.height;
+    cancelAnimationFrame(frame.current);
+    frame.current = requestAnimationFrame(() => {
+      el.style.setProperty("--rx", `${((0.5 - y) * 18).toFixed(2)}deg`);
+      el.style.setProperty("--ry", `${((x - 0.5) * 18).toFixed(2)}deg`);
+      el.style.setProperty("--gx", `${(x * 100).toFixed(1)}%`);
+      el.style.setProperty("--gy", `${(y * 100).toFixed(1)}%`);
+      el.style.setProperty("--glare", "1");
+    });
+  };
+  const leave = () => {
+    const el = ref.current;
+    if (!el) return;
+    cancelAnimationFrame(frame.current);
+    el.style.setProperty("--rx", "0deg");
+    el.style.setProperty("--ry", "0deg");
+    el.style.setProperty("--glare", "0");
+  };
 
   return (
-    <motion.div
-      className={className}
-      style={{ rotateX, rotateY, transformPerspective: 900 }}
-      onPointerMove={(e) => {
-        if (reduced) return;
-        const r = e.currentTarget.getBoundingClientRect();
-        x.set((e.clientX - r.left) / r.width);
-        y.set((e.clientY - r.top) / r.height);
-        glareOpacity.set(1);
-      }}
-      onPointerLeave={() => { x.set(0.5); y.set(0.5); glareOpacity.set(0); }}
-    >
-      <div className="relative">
+    <div ref={ref} className={`tilt${className ? ` ${className}` : ""}`} onPointerMove={move} onPointerLeave={leave}>
+      <div className="relative h-full">
         {children}
-        <motion.div aria-hidden className="chamfer pointer-events-none absolute inset-0" style={{ background: glare, opacity: glareOpacity }} />
+        <div aria-hidden className="tilt-glare chamfer pointer-events-none absolute inset-0" />
       </div>
-    </motion.div>
+    </div>
   );
 }

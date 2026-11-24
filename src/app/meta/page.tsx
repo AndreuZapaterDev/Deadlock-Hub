@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { BarChartBase, SankeyChart } from "@/components/charts/charts";
+import { BarChartBase, SankeyChart } from "@/components/charts/lazy-charts";
 import { analyticsFields } from "@/components/filters/analytics-fields";
 import { FilterBar } from "@/components/filters/filter-bar";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
-import { DemoNote } from "@/components/ui/demo-note";
-import { EmptyState, ErrorState } from "@/components/ui/feedback";
+import { ErrorState } from "@/components/ui/feedback";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { SectionTitle } from "@/components/ui/section-title";
 import { SortableTable } from "@/components/ui/sortable-table";
@@ -15,7 +14,7 @@ import { describeFilters, hasFilters, parseFilters } from "@/lib/analytics-filte
 import { fmtDuration, fmtNum } from "@/lib/format";
 import { humanize } from "@/lib/labels";
 import { byId, getHeroes, getItems, getRanks } from "@/lib/lookup";
-import { hasHeroSpecificData, loadBigDays, loadBuffs, loadCombs, loadFlow, loadGameStats, loadItemStats, loadLane, loadPermutations } from "@/lib/meta-data";
+import { loadBigDays, loadBuffs, loadCombs, loadFlow, loadGameStats, loadItemStats, loadLane, loadPermutations } from "@/lib/meta-data";
 import { buildFlowSankey } from "@/lib/sankey";
 import { slugify } from "@/lib/slug";
 
@@ -81,7 +80,6 @@ export default async function MetaPage({ searchParams }: { searchParams: Promise
         <FilterBar fields={[...analyticsFields(ranks, bigDays), { name: "hero", label: "Héroe (flujo de objetos)", type: "select", options: sortedHeroes.map((h) => ({ value: slugify(h.name), label: h.name })), allLabel: "Infernus (por defecto)" }]} />
       </Suspense>
       {hasFilters(filters) && <p className="text-sm text-ink-muted">Filtros activos: {describeFilters(filters, tierName).join(" · ")}</p>}
-      <DemoNote>Los filtros se guardan en la URL y se envían a la API, pero los datos de ejemplo son un único periodo y no cambian al filtrar.</DemoNote>
 
       <nav aria-label="Secciones" className="flex flex-wrap justify-center gap-2">
         {SECTIONS.map(([id, label]) => <a key={id} href={`#${id}`} className="rounded-full border border-brass/50 px-4 py-1.5 text-sm font-semibold transition-colors hover:bg-ink hover:text-bg">{label}</a>)}
@@ -157,9 +155,7 @@ export default async function MetaPage({ searchParams }: { searchParams: Promise
 
       <section id="flow" aria-labelledby="flow-t" className="scroll-mt-24 space-y-4">
         <SectionTitle id="flow-t">Flujo de objetos de {flowHero.name}</SectionTitle>
-        {!hasHeroSpecificData(flowHero.id) ? (
-          <EmptyState title="Sin datos de ejemplo para este héroe" hint="El modo demo solo incluye el flujo de objetos de Infernus. Con la API real estará disponible para todos los héroes." />
-        ) : sankey && sankey.nodes.length ? (
+        {sankey && sankey.nodes.length ? (
           <Card>
             <p className="mb-2 text-xs text-ink-muted">Los 4 objetos más comprados en cada fase de la partida (de izquierda a derecha) y cómo se pasa de uno a otro.</p>
             <SankeyChart data={sankey} />

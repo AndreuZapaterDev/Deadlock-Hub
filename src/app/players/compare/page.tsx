@@ -74,7 +74,6 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
     <div className="space-y-8">
       {header}
       {form}
-      {process.env.DATA_SOURCE !== "api" && aId !== bId && <p className="text-center text-sm text-ink-muted">Modo demo: ambas cuentas muestran el mismo perfil de ejemplo, así que no habrá diferencias.</p>}
       <Card className="overflow-x-auto">
         <table className="w-full min-w-[28rem] text-sm">
           <thead>

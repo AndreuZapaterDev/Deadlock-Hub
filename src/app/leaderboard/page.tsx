@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { FilterBar } from "@/components/filters/filter-bar";
 import { Chip } from "@/components/ui/chip";
-import { DemoNote } from "@/components/ui/demo-note";
 import { EmptyState, ErrorState } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { PosterHeader } from "@/components/ui/poster-header";
@@ -49,7 +48,6 @@ export default async function LeaderboardPage({ searchParams }: { searchParams: 
       <Suspense fallback={null}>
         <FilterBar fields={[{ name: "hero", label: "Héroe", type: "select", options: heroes.map((h) => ({ value: slugify(h.name), label: h.name })), allLabel: "Global (todos los héroes)" }]} />
       </Suspense>
-      <DemoNote>El mock solo guarda el leaderboard de Europa y el de Infernus en Europa: cualquier otra región o héroe muestra esos mismos datos de ejemplo.</DemoNote>
 
       {!lb.ok ? (
         <ErrorState title="No se ha podido cargar el leaderboard" hint={lb.status === 503 || lb.status === 429 ? "La API está ocupada. Inténtalo en unos segundos." : "Inténtalo de nuevo en unos minutos."} />

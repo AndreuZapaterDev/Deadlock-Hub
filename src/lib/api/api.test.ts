@@ -1,75 +1,97 @@
-import { describe, expect, it, vi } from "vitest";
-import { createResolver, type Manifest } from "./manifest-resolver";
-import { mockSource } from "./mock-source";
-import { httpSource } from "./http-source";
-import { ApiError } from "./types";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { forgetCached, httpSource } from "./http-source";
+import { getSource } from "./index";
 
-const entry = (file: string, status = 200) => ({ file, status, content_type: "application/json" });
-const manifest: Manifest = {
-  routes: {
-    "/v1/a?x=1": entry("a1.json"),
-    "/v1/a?x=1&y=2": entry("a12.json"),
-    "/v1/items/5": entry("item5.json"),
-    "/v1/bad": entry("bad.json", 500),
-  },
-};
-const resolve = createResolver(manifest, ["/v1/a", "/v1/items/{id}", "/v1/bad"]);
+const json = (body: unknown, status = 200, headers: Record<string, string> = {}) =>
+  new Response(JSON.stringify(body), { status, headers: { "content-type": "application/json", ...headers } });
 
-describe("manifest resolver", () => {
-  it("ruta exacta (query ordenada)", () => {
-    expect(resolve("/v1/a", { y: "2", x: "1" })).toMatchObject({ match: "exact", entry: { file: "a12.json" } });
-  });
-  it("misma ruta: la query guardada que más parámetros comparte", () => {
-    expect(resolve("/v1/a", { x: "1", z: "9" })).toMatchObject({ match: "same-path", entry: { file: "a1.json" } });
-  });
-  it("plantilla OpenAPI: otro id devuelve el fixture guardado", () => {
-    expect(resolve("/v1/items/999")).toMatchObject({ match: "template", entry: { file: "item5.json" } });
-  });
-  it("conserva el estado guardado (500)", () => {
-    expect(resolve("/v1/bad")?.entry.status).toBe(500);
-  });
-  it("sin fixture devuelve null", () => {
-    expect(resolve("/v1/nope")).toBeNull();
+afterEach(() => {
+  vi.restoreAllMocks();
+  vi.unstubAllEnvs();
+});
+
+describe("getSource", () => {
+  it("toda la web lee de la API real", () => {
+    expect(getSource()).toBe(httpSource);
   });
 });
 
-describe("mockSource (fixtures reales)", () => {
-  it("héroes: exacta", async () => {
-    const r = await mockSource.get<unknown[]>("/v1/assets/heroes");
+describe("httpSource (fetch simulado)", () => {
+  it("pide los assets en español, manda X-Api-Key y devuelve el estado", async () => {
+    vi.stubEnv("DEADLOCK_API_KEY", "clave-test");
+    const f = vi.spyOn(globalThis, "fetch").mockResolvedValue(json([{ id: 1 }]));
+    const r = await httpSource.get("/v1/assets/ranks", { only_active: true });
+    const [url, init] = f.mock.calls[0] as [URL, RequestInit];
+    expect(url.origin).toBe("https://api.deadlock-api.com");
+    expect(url.searchParams.get("language")).toBe("spanish");
+    expect(url.searchParams.get("only_active")).toBe("true");
+    expect((init.headers as Record<string, string>)["X-Api-Key"]).toBe("clave-test");
+    expect(r).toMatchObject({ status: 200, data: [{ id: 1 }] });
+  });
+
+  it("sin clave configurada no manda X-Api-Key", async () => {
+    vi.stubEnv("DEADLOCK_API_KEY", "");
+    const f = vi.spyOn(globalThis, "fetch").mockResolvedValue(json([]));
+    await httpSource.get("/v1/analytics/game-stats");
+    expect((f.mock.calls[0][1] as RequestInit).headers).not.toHaveProperty("X-Api-Key");
+  });
+
+  it("no añade language fuera de los assets (builds usa otro enum)", async () => {
+    const f = vi.spyOn(globalThis, "fetch").mockResolvedValue(json([]));
+    await httpSource.get("/v1/builds");
+    expect((f.mock.calls[0][0] as URL).searchParams.has("language")).toBe(false);
+  });
+
+  it("reintenta el 503 respetando Retry-After y acaba devolviendo el 200", async () => {
+    const f = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(json({}, 503, { "retry-after": "0" }))
+      .mockResolvedValueOnce(json({ ok: true }));
+    const r = await httpSource.get("/v1/analytics/hero-ban-stats");
+    expect(f).toHaveBeenCalledTimes(2);
     expect(r.status).toBe(200);
-    expect(Array.isArray(r.data)).toBe(true);
   });
-  it("otra cuenta devuelve el mismo ejemplo por plantilla", async () => {
-    const r = await mockSource.get("/v1/players/1/rank");
+
+  it("no reintenta el 504 ni el 429 de una consulta normal: los devuelve tal cual", async () => {
+    const f = vi.spyOn(globalThis, "fetch").mockResolvedValue(json({}, 504));
+    expect((await httpSource.get("/v1/analytics/hero-synergy-stats")).status).toBe(504);
+    expect(f).toHaveBeenCalledTimes(1);
+  });
+
+  it("los errores 4xx se devuelven como resultado (las páginas los tratan), sin excepción", async () => {
+    vi.spyOn(globalThis, "fetch").mockResolvedValue(json({ error: "forbidden" }, 403));
+    expect((await httpSource.get("/v1/players/1/rank")).status).toBe(403);
+  });
+
+  it("peticiones idénticas simultáneas comparten una sola llamada", async () => {
+    const f = vi.spyOn(globalThis, "fetch").mockImplementation(async () => { await new Promise((r) => setTimeout(r, 20)); return json([{ id: 1 }]); });
+    const [a, b] = await Promise.all([httpSource.get("/v1/analytics/item-stats"), httpSource.get("/v1/analytics/item-stats")]);
+    expect(f).toHaveBeenCalledTimes(1);
+    expect(a.data).toEqual(b.data);
+  });
+});
+
+describe("caché en memoria de las respuestas grandes", () => {
+  it("la segunda petición no sale a la red hasta que se olvida (p. ej. tras «Actualizar historial»)", async () => {
+    const f = vi.spyOn(globalThis, "fetch").mockImplementation(async () => json([{ match_id: 1 }]));
+    const path = "/v1/players/123456/match-history";
+    await httpSource.get(path);
+    await httpSource.get(path);
+    expect(f).toHaveBeenCalledTimes(1);
+    forgetCached("/v1/players/123456/match-history");
+    await httpSource.get(path);
+    expect(f).toHaveBeenCalledTimes(2);
+  });
+});
+
+describe("consultas lentas (kill-death-stats)", () => {
+  it("reintenta el 504 y devuelve el resultado cuando la API ya lo tiene calculado", async () => {
+    const f = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response("error code: 504", { status: 504, headers: { "content-type": "text/plain" } }))
+      .mockResolvedValueOnce(json([{ kills: 1 }]));
+    const r = await httpSource.get("/v1/analytics/kill-death-stats", { hero_ids: 99 });
+    expect(f).toHaveBeenCalledTimes(2);
     expect(r.status).toBe(200);
-    expect(r.match).toBe("template");
-  });
-  it("devuelve el 500 real de live/url", async () => {
-    expect((await mockSource.get("/v1/matches/1/live/url")).status).toBe(500);
-  });
-  it("ruta desconocida lanza ApiError 404", async () => {
-    await expect(mockSource.get("/v1/no-existe")).rejects.toMatchObject({ status: 404 });
-  });
-});
-
-describe("cuentas de demostración del mock (estados de error del tracker)", () => {
-  it("403, 404 y 503 devuelven ese estado", async () => {
-    expect((await mockSource.get("/v1/players/403/rank")).status).toBe(403);
-    expect((await mockSource.get("/v1/players/404/match-history")).status).toBe(404);
-    expect((await mockSource.get("/v1/players/503/hero-stats")).status).toBe(503);
-    expect((await mockSource.get("/v1/matches/404/metadata")).status).toBe(404);
-  });
-  it("una cuenta normal sigue devolviendo el ejemplo (200)", async () => {
-    expect((await mockSource.get("/v1/players/483770846/rank")).status).toBe(200);
-    expect((await mockSource.get("/v1/players/4030/rank")).status).toBe(200);
-    expect((await mockSource.get("/v1/matches/142529961/metadata")).status).toBe(200);
-  });
-});
-
-describe("modo mock sin red", () => {
-  it("httpSource lanza si DATA_SOURCE no es api y nunca llama a fetch", async () => {
-    const f = vi.spyOn(globalThis, "fetch");
-    await expect(httpSource.get("/v1/assets/heroes")).rejects.toBeInstanceOf(ApiError);
-    expect(f).not.toHaveBeenCalled();
   });
 });

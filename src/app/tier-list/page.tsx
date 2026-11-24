@@ -5,7 +5,6 @@ import { analyticsFields } from "@/components/filters/analytics-fields";
 import { FilterBar } from "@/components/filters/filter-bar";
 import { HeroChip } from "@/components/hero/hero-chip";
 import { Card } from "@/components/ui/card";
-import { DemoNote } from "@/components/ui/demo-note";
 import { ErrorState } from "@/components/ui/feedback";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { SortableTable } from "@/components/ui/sortable-table";
@@ -41,7 +40,6 @@ export default async function TierListPage({ searchParams }: { searchParams: Pro
         <FilterBar fields={analyticsFields(ranks, bigDays)} />
       </Suspense>
       {hasFilters(filters) && <p className="text-sm text-ink-muted">Filtros activos: {describeFilters(filters, tierName).join(" · ")}</p>}
-      <DemoNote>Los filtros se guardan en la URL y se envían a la API, pero los datos de ejemplo son un único periodo y no cambian al filtrar.</DemoNote>
 
       {!meta.ok ? (
         <ErrorState title="No se han podido cargar las estadísticas" hint={meta.status === 503 || meta.status === 429 ? "La API está ocupada. Inténtalo en unos segundos." : "Inténtalo de nuevo en unos minutos."} />

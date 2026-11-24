@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BarChartBase, LineChartBase } from "@/components/charts/charts";
+import { BarChartBase, LineChartBase } from "@/components/charts/lazy-charts";
 import { HeroPortrait } from "@/components/hero/hero-card";
 import { MatchRow } from "@/components/match/match-row";
 import { FollowButton } from "@/components/player/follows";
@@ -26,7 +26,6 @@ import { parseAccountId } from "@/lib/steam-id";
 import type { Relation } from "@/lib/types";
 
 const PAGE_SIZE = 20;
-const DEMO_ACCOUNT = 483770846;
 
 export async function generateMetadata({ params }: { params: Promise<{ accountId: string }> }): Promise<Metadata> {
   const id = parseAccountId((await params).accountId);
@@ -88,11 +87,6 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
 
   return (
     <div className="space-y-12">
-      {process.env.DATA_SOURCE !== "api" && id !== DEMO_ACCOUNT && (
-        <p className="rounded-sm border border-brass/40 bg-brass/10 px-4 py-2 text-center text-sm">
-          Modo demo: en este modo cualquier cuenta muestra el perfil de ejemplo ({profile?.personaname ?? "cosmetical"}).
-        </p>
-      )}
 
       <PosterHeader title={name} subtitle={`Cuenta #${id}${region ? ` · ${region}` : ""}`}>
         <div className="flex flex-wrap items-start justify-center gap-3">

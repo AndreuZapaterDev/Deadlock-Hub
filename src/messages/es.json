@@ -13,7 +13,7 @@
   },
   "search": { "label": "Buscar jugador", "placeholder": "Nombre, Steam ID o URL" },
   "theme": { "day": "Día", "night": "Noche" },
-  "demo": { "banner": "Modo demo: datos de ejemplo" },
+  "language": { "label": "Idioma del juego" },
   "footer": {
     "disclaimer": "Deadlock Hub es una web fan no oficial. No está afiliada ni respaldada por Valve. Deadlock y todos sus recursos son propiedad de Valve Corporation.",
     "credits": "Datos de",
@@ -26,5 +26,53 @@
     "npcs": "NPCs",
     "mechanics": "Mecánicas",
     "status": "Estado"
+  },
+  "common": {
+    "pagination": "Paginación",
+    "prevPage": "Página anterior",
+    "nextPage": "Página siguiente",
+    "apply": "Aplicar",
+    "clearFilters": "Quitar filtros"
+  },
+  "home": {
+    "subtitle": "Todo sobre Deadlock en un solo sitio: héroes, objetos, estadísticas y tu perfil",
+    "findAccount": "Busca tu cuenta",
+    "seeHeroes": "Ver héroes",
+    "liveCount": "{count, plural, one {partida en directo ahora mismo} other {partidas en directo ahora mismo}}",
+    "watchLive": "Ver en directo",
+    "matches": "partidas analizadas",
+    "players": "jugadores distintos",
+    "heroes": "héroes jugables",
+    "duration": "duración media",
+    "topHeroes": "Los héroes con más victorias",
+    "wins": "de victorias",
+    "quickLinks": "Accesos rápidos",
+    "heroesText": "Habilidades, estadísticas base y lore de cada uno.",
+    "itemsText": "La tienda completa por categoría y tier.",
+    "tierListText": "Quién gana más ahora mismo, por rango y parche.",
+    "plannerText": "Monta tu build y calcula el coste en almas.",
+    "followedTitle": "Tus jugadores",
+    "followedLabel": "Jugadores seguidos"
+  },
+  "notFound": {
+    "subtitle": "Esta calle no lleva a ninguna parte",
+    "home": "Volver al inicio",
+    "searchPlayer": "Buscar un jugador",
+    "text": "No existe la página que buscas. Puede que el enlace esté mal escrito, que el jugador, el héroe o el objeto no exista, o que se haya movido."
+  },
+  "offline": {
+    "title": "Sin conexión",
+    "subtitle": "La calle está a oscuras",
+    "heroes": "Héroes guardados",
+    "items": "Objetos guardados",
+    "text": "No hay conexión y no tenemos guardada esta página. La wiki (héroes, objetos, mecánicas, NPCs y rangos) se puede consultar sin red una vez visitada; los perfiles, partidas y estadísticas necesitan conexión la primera vez."
+  },
+  "pwa": {
+    "offlineBanner": "Sin conexión: se muestran los últimos datos guardados.",
+    "update": "Nueva versión disponible.",
+    "reload": "Recargar",
+    "install": "Instalar app",
+    "iosTip": "Para instalar la app en iOS: pulsa <b>Compartir</b> y después <b>Añadir a pantalla de inicio</b>.",
+    "close": "Cerrar"
   }
 }

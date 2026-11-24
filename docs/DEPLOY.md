@@ -15,27 +15,27 @@ URL objetivo: **https://deadlockhub.vercel.app** (proyecto `deadlockhub`). Verce
 
    | Variable | Valor |
    |---|---|
-   | `DATA_SOURCE` | `mock` |
-   | `MOCK_REMOTE_IMAGES` | `false` |
-   | `MOCK_LATENCY_MS` | `0` |
    | `NEXT_PUBLIC_SITE_URL` | `https://deadlockhub.vercel.app` |
 
-   `DEADLOCK_API_KEY` y `STEAM_API_KEY` **solo** cuando se conecte la API real (fase 9), y siempre aquí, nunca en el código.
+   `DEADLOCK_API_KEY` (opcional pero recomendable: sin ella se aplica el límite por IP, y en Vercel las IP se comparten) y, si algún día se usa el login con Steam, `STEAM_API_KEY`: siempre aquí, nunca en el código.
 5. **Deploy**. Después, cada push a `main` publica en producción y cada pull request genera una URL de vista previa.
 6. Comprueba `https://deadlockhub.vercel.app/api/health` (debe dar `{"ok":true}`) y `/styleguide` (también desde el móvil).
 
 Alternativa por línea de comandos (dentro del contenedor): `docker compose run --rm app npx vercel --prod`.
 
-## Fixtures en modo demo
+## Datos y límites de la API
 
-`next.config.ts` incluye `mock/deadlock-mock/fixtures/**` en las funciones (se leen en runtime con una ruta dinámica, así que Vercel no los detecta solo) y excluye lo que la web no usa: sonidos, modelos, `demo/schema`, `live-requests`, `*.bin`, `synthetic/`, `sql`, `patron`, `custom`, `commands`.
+La web lee **siempre de la API real**: no hay fixtures ni modo demo. Consecuencias al desplegar:
 
-Tamaño estimado de fixtures por función: **~49 MB** (de 75 MB), muy por debajo del límite de 250 MB descomprimidos. Es una estimación local: tras el primer despliegue, mira el tamaño real en Vercel → Deployment → Functions y apúntalo en `NOTES.md`. Si se acerca al límite, se generan versiones reducidas en `mock/derived/` (`scripts/prepare-mock-data.ts`).
+- **El build necesita internet** (consulta héroes y objetos para generar las rutas). Con la API caída, el build falla.
+- **Límite de peticiones:** ≈200/min por IP sin clave. Las respuestas se cachean (caché de datos de Next, caché en memoria de las grandes y deduplicación de peticiones idénticas), pero con mucho tráfico conviene configurar `DEADLOCK_API_KEY`.
+- **Funciones de Vercel:** las rutas que llaman a consultas lentas (`/api/map/heat`, «Actualizar historial») declaran `maxDuration = 60`; el plan Hobby puede limitar la duración máxima de una función.
+- **Tamaño de las funciones:** ya no incluyen ningún fixture (antes ~35-49 MB).
 
 ## Notas
 
 - **Plan Hobby (gratuito):** solo uso personal y **no comercial**. Si la web lleva anuncios o patrocinios hay que pasar a Pro.
 - **Caché:** la ISR (`revalidate`) funciona de serie; no hace falta ningún volumen.
-- **Imágenes:** en modo demo no se cargan imágenes remotas, así que no se consume cuota de optimización.
+- **Imágenes:** las de héroes, objetos y el minimapa salen directamente del CDN de la API (`unoptimized`), así que no consumen cuota de optimización de Vercel.
 - **Analítica** (Vercel Analytics / Speed Insights): desactivada. Solo se activa si lo pides.
 - El build de producción fija `NODE_ENV=production` desde el script `npm run build`.

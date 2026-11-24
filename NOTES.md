@@ -223,3 +223,168 @@ Cambio **autorizado por el usuario** respecto a la sección 7 de la spec ("no ha
 **Verificado:** 139 tests unitarios; batería en navegador real (build, planner, crosshair, móvil 390 px, sin errores JS); regresión de fases 3–4; tsc y eslint limpios.
 
 **Pendiente / sin verificar:** con la API real, los nombres de parámetros de builds y la respuesta de crosshair no están probados; la importación en el juego solo muestra el ID (no se sabe el flujo exacto); `currency_type` 2/1 = desbloquear/mejorar es inferencia; no hay e2e en el repo ni Lighthouse.
+
+## Fase 6 — Mapa y directo
+
+**Qué hay:** `/map` (SVG propio: objetivos, campamentos y heatmap de kills/muertes con filtro de héroe y de momento de la partida en la URL; clic en un objetivo o campamento = ficha), `/live` (lista refrescada cada 60 s desde `/api/live`, solo con la pestaña visible) y la lógica pura de `lib/map.ts` (con tests).
+
+**Decisiones y hallazgos**
+- Coordenadas: `left = (x + radius) / (2·radius)` y `top = (radius − y) / (2·radius)`; coincide con `left_relative`/`top_relative` de la API (test).
+- `kill-death-stats` trae decenas de miles de puntos y valores centinela (-32768): se agrupan en una rejilla 48×48 **en el servidor** y solo se envían ~1.400 celdas al navegador.
+- El minimapa real solo se dibuja con imágenes remotas activas; sin ellas, panel con cuadrícula.
+- `matches/active` no trae duración ni rango medio: la duración se calcula con `start_time`; el rango medio se omite. El enlace de retransmisión (`live/urls`) se muestra si existe.
+- En mock los filtros del heatmap no cambian los datos (un único periodo) y `/live` no cambia al refrescar.
+
+## Fase 7 — Parches
+
+**Qué hay:** `/patches` (feed de `/v2/patches`, filtro foro/Steam, «gran actualización» según `big-days`), `/patches/[id]` (HTML sanitizado con `sanitize-html` en el servidor y nombres de héroes y objetos enlazados), `/patches/diff` (comparador automático, filtros en la URL) y «Historial de cambios» en las fichas de héroe y objeto. Lógica pura y testeada: `lib/patch-diff.ts`, `lib/patches.ts`.
+
+**Decisiones y hallazgos**
+- Id de parche = número final del `guid`. Un parche del foro es «gran actualización» si la fecha de su título (`MM-DD-AAAA`) coincide con un big day.
+- **El comparador solo compara números** (y booleanos): al principio también comparaba textos y listas de nombres de estadística, y salían decenas de «cambios» falsos por traducciones y reordenaciones. Se ignoran ids, rutas, imágenes y campos de depuración; héroes no jugables fuera.
+- «Más es mejor» / «menos es mejor» por nombre de campo (regex en `patch-diff.ts`); lo que no encaja es «neutral» (◆). Es una heurística: puede equivocarse con campos ambiguos (p. ej. `duration`).
+- **Con la API real `client_version` sí funciona** (6865 y 6864 son idénticas; 6800 y 6000 difieren). Muchas versiones son actualizaciones sin cambios de equilibrio, así que, si el «anterior» no cambia nada, el comparador retrocede hasta justo antes del último gran día y lo indica en la página.
+- **Mock:** los fixtures solo tienen una versión. `mock/derived/patch-demo.json` describe cómo era la versión anterior con cambios **inventados** (la página lo avisa). No es un dato real del juego.
+- Las fichas solo muestran el historial del último parche comparado (no una lista de todos los parches en que cambió: eso exigiría pedir muchas versiones). La comparación por defecto se calcula una vez por hora y proceso.
+- Las imágenes de las notas solo se permiten con imágenes remotas activas (en mock se quitan, para no salir a ningún CDN).
+
+## Fase 8 — Pulido
+
+**Hecho**
+- **SEO:** `robots.ts`, `sitemap.ts` (344 URLs: páginas, héroes, objetos y parches), metadatos por página y **imágenes Open Graph** generadas (portada, héroe y perfil; la del perfil es genérica a propósito, sin datos del jugador).
+- **PWA:** `manifest.ts` con iconos 192/512/maskable generados (`/icons/*`), icono de Apple y favicon; `public/sw.js` **escrito a mano** (Serwist aún no soporta el build con Turbopack de Next 16) con las estrategias de la sección 8.1; página `/offline`; botón «Instalar app», instrucciones para iOS, aviso «Nueva versión disponible» y aviso sin conexión (`components/pwa/pwa.tsx`); jugadores seguidos en el inicio.
+- **e2e:** 29 tests Playwright × 2 (escritorio y móvil = 58) contra la vista previa de producción en modo mock: carga de 23 páginas, sin scroll horizontal, **ninguna petición externa en modo mock**, buscador de jugadores, mapa, tema Día/Noche, manifest/robots/sitemap y service worker + wiki sin conexión. `docker compose run --rm e2e`.
+
+**Errores que destapó la fase**
+- El service worker recargaba la página sola en la primera visita (`controllerchange` al tomar el control). Ahora solo recarga si el usuario pulsa «Recargar».
+- Un bucle infinito en `httpSource` (se borró un `return` al editar con `sed`) y `cache: "no-store"` en el prerender, que Next interpreta como «página dinámica». Ver fase 9.
+
+**No hecho / sin verificar**
+- **Lighthouse ≥ 90 en móvil: no medido** (el entorno no permitió descargar la herramienta). Hay que pasarlo.
+- **Accesibilidad:** solo el contraste medido de fases anteriores y los roles/etiquetas de los componentes nuevos; no hay auditoría automática (axe).
+- La instalación en Android/iOS reales no se ha probado; sí el registro del worker y el modo sin conexión en Chromium.
+
+## Fase 9 — Conexión con la API real (parcial)
+
+**Hecho:** `httpSource` con reintentos (503 con `Retry-After` y backoff; fallos de red; 504/429 no se reintentan), timeout de 15 s, máximo 5 peticiones en paralelo, `X-Api-Key` opcional, `language=spanish` solo en `/v1/assets/*` (en `/v1/builds`, `language` es otro enum), caché por tipo de dato y **caché en memoria** para las respuestas de más de 2 MB (la caché de Next las rechaza), deduplicación de peticiones simultáneas, imágenes remotas de héroes y objetos (`next/image` con `unoptimized`), banner «Modo demo» oculto con la API real.
+
+**Hallazgos**
+- `lane-matchup-stats` sin filtrar pesa 161 MB y da 504; con `min_matches=2000` devuelve `[]`. «Duelos de carril» muestra un error amable en `/meta`.
+- Con la API real, el **build de producción prerenderiza ~320 páginas** y supera el rate limit (429) y los timeouts. Se limitó `experimental.cpus` a 3 en producción, pero **el build contra la API real no se ha visto terminar**. En Vercel se despliega con `DATA_SOURCE=mock` (modo demo) y ese build sí pasa.
+- Las imágenes de héroe son recortes verticales 280×380: se muestran con `object-contain`.
+
+**Pendiente:** Zod para validar respuestas; avatares de Steam y iconos de habilidades; build real; revisar los nombres de parámetros no probados de fases 4–5 contra la API.
+
+## Idiomas
+
+**Disponibles:** inglés, español, portugués, francés, alemán y ruso (`lib/languages.ts`). La API admite 29 para los textos del juego (brazilian, bulgarian, czech, danish, dutch, finnish, greek, hungarian, indonesian, italian, japanese, koreana, latam, norwegian, polish, romanian, schinese, swedish, tchinese, thai, turkish, ukrainian, vietnamese además de los seis): añadir uno es una línea en `LANGUAGES` y su `src/messages/<ui>.json`.
+
+**Cómo funciona:** cookie `lang` → `getLanguage()` (servidor). Decide a la vez el parámetro `language` de `/v1/assets/*` y el fichero de mensajes de la interfaz. Sin cookie: español.
+
+**Traducido (núcleo de la interfaz):** menú, encabezado, buscador, selector, pie, banner demo, inicio completo, 404, `/offline`, avisos de la PWA, paginación, filtros («Aplicar», «Quitar filtros») y «Tus jugadores». `languages.test.ts` comprueba que los seis ficheros tienen **exactamente las mismas claves**, ninguna vacía, y las mismas variables y etiquetas (y las cuatro formas de plural del ruso).
+
+**NO traducido (sigue en español, en todos los idiomas):** el texto escrito en el código de las demás páginas (tier list, meta, counters, tracker, builds, planner, crosshair, mapa, directo, parches, rangos, NPCs, mecánicas, estado…), títulos de página y metadatos SEO, las etiquetas de `lib/labels.ts` y los mensajes de error/vacío que pasan las páginas. Un usuario en inglés ve el menú y el inicio en inglés, y el resto de páginas con los **datos del juego** en inglés pero la interfaz en español. Pasarlas a mensajes es el siguiente paso (≈90 ficheros).
+- Números, porcentajes y fechas relativas siguen formateados en `es-ES` (`lib/format.ts`).
+- La página `/offline` se guarda en el idioma en que estaba la web al instalar el service worker.
+- Las traducciones las he escrito yo (no son de un traductor profesional): conviene una revisión nativa, sobre todo las de ruso y portugués (de Portugal).
+
+## Mapa (rehecho)
+
+**Qué hay:** minimapa real con **zoom** (rueda, botones +/−, pellizco, teclado `+ − 0`) y **arrastre**; pantalla completa; **capas** activables (objetivos, campamentos, tirolinas con el color de la API, túneles y túneles de ratas, heatmap y 16 tipos de entidad: tiendas, teletransportadores con su destino, urnas de almas, botín, almohadillas de salto, cuerdas…); tooltip al pasar el ratón; ficha al pulsar (con «Centrar»); leyenda y control de intensidad del heatmap; etiquetas BASE A/B. Las capas activas van en la URL (`?capas=`) y la vista se comparte.
+
+**Decisiones**
+- **Heatmap:** se normaliza por percentiles (se oculta el 25 % inferior y se satura el 3 % superior). Normalizar por el máximo —con escala lineal, de raíz o logarítmica— dejaba todo el mapa teñido. Se dibuja en un canvas de 64×64 escalado con interpolación y se colorea con una máscara SVG (usa el token del tema); antes eran ~4.000 círculos.
+- Las posiciones se redondean a 4 decimales y solo llegan al navegador los ~900 símbolos que se pintan; el fichero de kills (decenas de miles de puntos) se agrega en el servidor.
+- Lo muy abundante (cajas, estatuas, respiraderos, velos…) empieza apagado. Solo los objetivos se pueden recorrer con el tabulador; el resto de símbolos son para ratón o toque (serían cientos de paradas de tabulador).
+- La página se renderiza en cada visita (depende de la cookie de idioma y de la URL), pero los datos de la API van en caché.
+
+**Errores que destapó**
+- `getLanguage()` capturaba la señal interna de Next que marca una página como dinámica, así que **en producción la cookie de idioma se ignoraba** (las páginas se prerenderizaban en español). Corregido y con test e2e.
+
+**Limitaciones:** en modo demo no hay minimapa ni túneles (son imágenes remotas) y el heatmap no cambia con los filtros (un único periodo). Las etiquetas de las entidades están escritas por mí a partir de los nombres de la API, no vienen de ella: conviene revisarlas. No se ha medido el rendimiento en móviles reales.
+
+### Mapa — filtros reales y más herramientas
+
+**Filtros (todos probados con la API real: cada uno cambia los datos):** héroe, desde/hasta el minuto, rango desde/hasta, parche, duración y tipo de partida (ranked / normales). Se aplican sin recargar la página (`/api/map/heat`), con indicador de carga, estado «sin datos», error con «Reintentar», chips de lo activo, «Quitar filtros» y caché por combinación en el navegador. Viajan en la URL junto a las capas y la vista (`z`, `cx`, `cy`). Lógica pura y testeada en `lib/map-filters.ts`.
+
+**Por qué antes «no funcionaban»:** con el filtro de héroe la API tarda 20 s o da 504 y el cliente cortaba a los 15 s, así que el heatmap fallaba. Ahora `kill-death-stats` tiene 50 s de margen y reintenta el 504 (la API deja el cálculo en su caché y el segundo intento sale al instante). Medido: 574 M muertes sin filtros → 18 M con Infernus (8 s en frío).
+
+**Más:** buscador de lugares (objetivos, campamentos, tiendas, teletransportadores, urnas…), minivista con zoom, nombres de los lugares con zoom ≥ 3 y zoom/centro compartibles.
+
+**Limitaciones**
+- En modo demo los filtros se aplican y viajan en la URL, pero **no cambian el heatmap** (los fixtures son un único periodo): el panel lo avisa.
+- No se ofrece el filtro `team` de la API: no está claro si filtra al equipo que mata o al que muere. El resto de filtros de la API (patrimonio, grupos de habilidad, nuevos jugadores…) tampoco se exponen.
+- Los totales del heatmap son de **toda la muestra de la API** (cientos de millones), no de una partida.
+
+## Héroes (mejorados)
+
+**Ficha `/heroes/[slug]`:** menú de secciones fijo con la actual marcada, cabecera con el color propio del héroe (suavizado), historia en párrafos con «seguir leyendo», datos clave y **radar frente a la media** de los 44 héroes; **barras de posición** en cada estadística (puesto entre los héroes y diferencia con la media); **curva de daño del arma**; **calculadora de nivel** (1–36: almas, vida, daño por bala y por segundo, cuerpo a cuerpo y poder espiritual); habilidades con icono, datos clave y mejoras T1/T2/T3 en columnas; **objetos más comprados por fase** (con uso y win rate, de los datos del propio héroe); y las secciones de meta de antes. Lógica pura y testeada en `lib/hero-stats.ts`.
+
+**Lista `/heroes`:** cabecera compacta, **tier y win rate/pick rate en cada tarjeta**, orden (nombre, win rate, pick rate, vida, daño por segundo, dificultad), filtro por tier, **vista de tabla** ordenable y **comparar hasta 3 héroes** desde las tarjetas (barra inferior, guardada en `sessionStorage`).
+
+**Errores corregidos:** el lore mostraba `<br>` sueltos; un aviso de «datos de ejemplo» salía también con la API real; las unidades de las habilidades salían duplicadas («24m m») porque el `postfix` de la API lleva un espacio (« m»); la etiqueta de tipo en las tarjetas salía en inglés («brawler»); el pie enlazaba a `/about`, que no existía (ahora hay una página «Acerca de»).
+
+**Aproximado (y la página lo dice):** la calculadora de nivel suma de forma lineal la mejora por nivel de `standard_level_up_upgrades` (no sabemos si algún valor es porcentual: p. ej. daño de bala 0,052/nivel), y la curva de daño es lineal entre el inicio y el fin de la caída, sin `damage_falloff_bias`. Ninguna incluye objetos ni mejoras de habilidades.
+
+**Pendiente:** el comparador `/heroes/compare` no se ha tocado (ya tenía radar y stats); las imágenes grandes de fondo/nombre del héroe que trae la API no se usan; los textos nuevos están solo en español.
+
+## Rendimiento
+
+**Cómo se midió:** vista previa de producción con la API real, Chromium con el perfil de un Pixel 5, CPU 4× más lenta y red tipo 4G rápido (LCP, CLS y TBT con `PerformanceObserver`; `Performance.getMetrics` de CDP para scripts/estilos/diseño). Lighthouse no se pudo ejecutar en este entorno. Las medidas varían ±30 % entre pasadas: se compararon varias.
+
+**Qué pesaba (antes → después)**
+- **CPU con la página quieta, en 4 s:** 3.784 ms → ~800 ms (−79 %). El culpable era `Ambient`: un canvas a pantalla completa redibujado en cada fotograma + un bucle `requestAnimationFrame` que repintaba la ventana aunque el ratón estuviera quieto (~40 % de la CPU). Ahora son brasas con animaciones CSS de `transform`/`opacity` (GPU, sin hilo principal) y una luz que solo se mueve mientras se mueve el ratón. Además el skyline del pie y el cartel no procesan sus animaciones fuera de pantalla (`content-visibility`) y el halo del emblema pulsa 3 veces y se queda encendido.
+- **JavaScript inicial en fichas, meta y perfil:** 1.180 kB → ~690 kB. Recharts (~490 kB) se carga solo cuando la gráfica está cerca de verse (`charts/lazy-charts.tsx`), reservando su altura.
+- **`/items`:** 4.176 → ~2.000 nodos, HTML 900 → 450 kB, TBT 1,5 s → ~0,7 s. Los 156 tooltips se piden al pasar el ratón (`/api/items/[cls]/tooltip`, JSON + caché del navegador) en vez de ir en la página.
+- **`/live`:** 4.164 → ~1.450 nodos, HTML 900 → 276 kB, TBT 1,5 s → ~0,2 s. 30 partidas y «Mostrar más»; héroes en un diccionario (cada URL de imagen una vez).
+- **`/counters`:** 4.400 → ~2.500 nodos, HTML 1,6 MB → 0,82 MB, TBT 1,2–1,5 s → ~1,0–1,2 s. Cuadrícula CSS con un nodo por celda, color en 15 clases prefabricadas, `<a>` normales y navegación en un único manejador (en vez de 1.936 `<Link>` que se hidratan uno a uno).
+- **Aparición y tilt de tarjetas:** `Reveal` (un solo IntersectionObserver + CSS) y `Tilt` (variables CSS, sin muelles de Motion) ya no montan componentes de Motion por elemento.
+- **LCP de la ficha de héroe:** 2,7 s → ~1,8 s (`priority` en el retrato y `preconnect` al CDN de imágenes).
+- **Streaming:** en la ficha, meta, objetos populares y cambios llegan por Suspense; el resto no espera.
+- **Arranque:** `instrumentation.ts` calienta en segundo plano héroes, objetos, rangos y estadísticas globales (solo con la API real).
+- **Cliente de la API:** las respuestas de más de 2 MB y las consultas lentas ya iban en caché de memoria; ver «Fase 9».
+
+**Lo que sigue pesando**
+- `/counters` aún bloquea ~1 s en un móvil lento (2.500 nodos y una cuadrícula de 1.936 celdas con color por celda).
+- Base de ~690 kB de JS en todas las páginas (React, Next, Motion). `SectionTitle`, el menú, `CountUp`, las pestañas y `SortableTable` aún usan Motion.
+- CLS de ~0,05 en `/heroes` por el cambio de tipografía (por debajo del umbral de 0,1).
+- Las páginas son dinámicas (la cookie de idioma impide servirlas estáticas): los datos van en caché, pero el HTML se genera en cada visita.
+- Todas las animaciones infinitas CSS siguen costando ~800 ms por cada 4 s de página quieta en un móvil lento.
+
+**Errores que destapó:** `docker compose up --build preview` mostraba solo la última línea y ocultó durante un rato que el build de producción fallaba (importar `react-dom/server` en una ruta); se comprueba ahora el código de salida del build.
+
+## Mocks
+
+Se **podaron los fixtures que la web nunca usa**: 76 ficheros (~44 MB) de 129, y sus entradas del `manifest.json` (129 → 53). Quedan 53 (~35 MB). Detalle y cómo recuperar algo en `mock/deadlock-mock/PRUNED.md`. Verificado con los 236 tests, el build de producción y los 80 e2e en modo demo (sin «sin fixture» en el log).
+- Se conserva `openapi.json.json` aunque ninguna página lo pida: el resolvedor del mock lo lee para conocer las plantillas de rutas.
+- Un test pide `/v1/matches/1/live/url` y se resuelve por plantilla a otro fixture: el análisis usa el resolvedor real, no solo coincidencia de rutas.
+- `next.config.ts` ya no necesita la lista de exclusiones de Vercel (sounds, models, demo schema, .bin, synthetic, sql, patron, custom, commands): esos ficheros ya no existen.
+- **Ojo:** `EXAMPLES.md`, el `README.md` del mock y los scripts de Python describen el conjunto completo y ya no coinciden. Si se añade una función que pida un endpoint nuevo, hay que restaurar su fixture desde git y añadir su entrada al manifest.
+
+## Sin mock: la web usa solo la API real
+
+**Decisión:** se eliminó el modo mock. `getSource()` devuelve siempre `httpSource`; ya no existen `DATA_SOURCE`, `MOCK_*`, `mockSource`, el resolvedor del manifest, los banners/avisos de «modo demo», los datos de ejemplo del comparador de parches, la carpeta `mock/` (fixtures, scripts de Python, `mock/derived`) ni las cuentas de demostración (`/players/403`, `/404`, `/503`). Todo sigue en el historial de git.
+
+**Qué cambió**
+- **Código:** `lib/api/index.ts`, `http-source.ts` (sin la salvaguarda de `DATA_SOURCE`), `patch-data.ts` (solo comparación real con `client_version`), `builds-data.ts` (la API filtra, ordena y pagina; se quitó el filtrado local `filterBuilds`/`sortBuilds`), `lookup.ts` (imágenes remotas siempre), `meta-data.ts` (fuera `isMock` y `hasHeroSpecificData`: orden de habilidades, builds y flujo de objetos salen para **todos** los héroes), fichas y páginas sin avisos de demo, selector de idioma siempre activo, `instrumentation.ts` calienta siempre la caché.
+- **«Actualizar historial» ahora funciona de verdad:** `/api/players/[id]/refresh` llama a la API con `force_refetch=true` (límite ≈5/h; el botón mantiene su cooldown) y olvida la caché en memoria del historial (`forgetCached`). Antes devolvía 501 con la API real.
+- **OpenAPI:** `mock/deadlock-mock/fixtures/openapi.json.json` → `src/lib/api/openapi.json` (lo usa `languages.test.ts` para comprobar que los idiomas existen en la API).
+- **Configuración:** `.env.example` sin variables de mock; `docker-compose.yml` sin los volúmenes `./mock` ni `PREVIEW_DATA_SOURCE`; `next.config.ts` sin el trazado de fixtures; `docs/DEPLOY.md` y `README.md` actualizados.
+- **Tests:** unitarios 224 (la capa de datos se prueba con `fetch` simulado: cabeceras, idioma, reintentos, 504 lento, caché y `forgetCached`); **e2e (80) contra la API real**: se quitaron los que dependían de datos fijos (aviso «Modo demo», selector desactivado, «ninguna petición externa en modo mock») y se añadieron «el navegador nunca llama directamente a la API», «una partida enlazada desde el historial carga» y «el selector cambia el idioma».
+
+**Consecuencias (hay que tenerlas presentes)**
+- Sin internet o con la API caída **no se puede desarrollar, construir ni pasar los e2e**. El build consulta la API.
+- Los e2e dependen de datos vivos (la cuenta `483770846`, que haya partidas en curso…): pueden fallar por cambios en la API, no por la web. `playwright.config.ts` da 120 s por test y reintenta una vez.
+- Límite de ≈200 peticiones/min por IP sin clave: conviene `DEADLOCK_API_KEY` en `.env` y en Vercel.
+- Los tests e2e ya no controlan los datos: no hay forma de probar los estados de error del tracker (perfil privado, 503…) de forma determinista; siguen cubiertos por las pruebas unitarias de `player-stats`.
+- Las secciones anteriores de este fichero que hablan de fixtures, «en mock…» o «modo demo» son **históricas**.
+
+## Héroes (ronda 2): rendimiento
+- Ficha: sección «Rendimiento» (`components/hero/hero-performance.tsx`) con win rate por rango (`hero-stats?bucket=avg_badge`, tiers = ⌊cubo/10⌋, cubo 0 ignorado) y win/pick rate semanal (`bucket=start_time_week`, últimas 16 semanas; se descartan semanas incompletas y puntos con <300 partidas). Lógica pura y tests en `lib/hero-trends.ts`. Las dos peticiones (todas las héroes) se comparten entre fichas vía caché en memoria (`hero-stats$` en `LARGE`).
+- Listado: vista «Por tier» (`?vista=tiers`) y `/heroes/random` (redirige a un héroe al azar).
+
+## Objetos: rediseño
+- Lista: columnas por categoría con color propio (`--c`: Weapon naranja, Vitality verde, Spirit violeta), cabecera con win rate medio, tarjetas con icono en marco oscuro (`ItemIcon`), coste, etiqueta «Activo» y barra de win rate (40–60 %, marca en 50 %); tiers con rombos (`TierPips`). Orden por nombre / win rate / más usados.
+- Ficha: banner con el icono grande y color de categoría, camino de construcción (componentes → objeto → mejoras), tarjetas de uso con acento, posición por win rate en su grupo y objetos parecidos. Cálculo en `lib/item-meta.ts`.
+- 7 objetos de tienda no traen `image_webp`: se usa `shop_image_webp` (lo traen los 156).
+- La rejilla interior usa `grid-cols-[minmax(0,1fr)]`: sin eso, los nombres largos ensanchan la columna y la tarjeta se sale del panel.

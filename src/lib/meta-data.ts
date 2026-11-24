@@ -1,5 +1,6 @@
 import "server-only";
 import { cache } from "react";
+import type { BucketRow } from "@/lib/hero-trends";
 import { getSource } from "@/lib/api";
 import type { AnalyticsFilters } from "@/lib/analytics-filters";
 import { toApiQuery } from "@/lib/analytics-filters";
@@ -28,14 +29,7 @@ export async function orElse<T>(path: string, fallback: T, query?: Record<string
   return r.ok ? r.data : fallback;
 }
 
-export const isMock = () => process.env.DATA_SOURCE !== "api";
 
-/**
- * Los fixtures de `ability-order`, `hero-build-stats/{id}` e `item-flow` son SOLO de Infernus (id 1) y el mock devuelve ese
- * mismo ejemplo para cualquier héroe. En modo demo, estas secciones solo se muestran para él; con la API real, para todos.
- */
-export const MOCK_HERO_SPECIFIC_ID = 1;
-export const hasHeroSpecificData = (heroId: number) => !isMock() || heroId === MOCK_HERO_SPECIFIC_ID;
 
 // ---------- Meta de héroes (tier list, fichas, comparador) ----------
 export type HeroMeta = {
@@ -79,7 +73,16 @@ export const loadHeroMeta = cache(async (filters: AnalyticsFilters): Promise<Fet
 export const loadCounters = cache((f: AnalyticsFilters) => fetchData<Counter[]>("/v1/analytics/hero-counter-stats", toApiQuery(f)));
 export const loadSynergy = cache((f: AnalyticsFilters) => fetchData<Synergy[]>("/v1/analytics/hero-synergy-stats", toApiQuery(f)));
 
-export const loadBigDays = cache(() => orElse<string[]>("/v1/patches/big-days", []));
+/** Todos los héroes por rango medio de la partida (cubos de `avg_badge`). Una sola petición compartida por todas las fichas. */
+export const loadHeroStatsByRank = cache(() => fetchData<BucketRow[]>("/v1/analytics/hero-stats", { bucket: "avg_badge" }));
+/** Todos los héroes por semana, últimas 16. El inicio se redondea al día para que la clave de caché no cambie en cada petición. */
+export const loadHeroStatsWeekly = cache(() => {
+  const day = 86400;
+  const from = Math.floor(Date.now() / 1000 / day) * day - 16 * 7 * day;
+  return fetchData<BucketRow[]>("/v1/analytics/hero-stats", { bucket: "start_time_week", min_unix_timestamp: from });
+});
+
+export const loadBigDays =cache(() => orElse<string[]>("/v1/patches/big-days", []));
 
 // ---------- Objetos y meta ----------
 export const loadItemStats = cache((f: AnalyticsFilters) => fetchData<ItemStatRow[]>("/v1/analytics/item-stats", toApiQuery(f)));
@@ -87,7 +90,8 @@ export const loadPermutations = (f: AnalyticsFilters) => fetchData<PermRow[]>("/
 export const loadCombs = (f: AnalyticsFilters) => fetchData<CombRow[]>("/v1/analytics/hero-comb-stats", { comb_size: 2, ...toApiQuery(f) });
 export const loadBuffs = (f: AnalyticsFilters) => fetchData<BuffRow[]>("/v1/analytics/buff-stats", toApiQuery(f));
 export const loadGameStats = (f: AnalyticsFilters) => fetchData<GameStatRow[]>("/v1/analytics/game-stats", toApiQuery(f));
-export const loadLane = (f: AnalyticsFilters) => fetchData<LaneRow[]>("/v1/analytics/lane-matchup-stats", toApiQuery(f));
+// Sin `min_matches` la API devuelve todas las parejas de héroes (más de 150 MB): la página solo muestra las más jugadas.
+export const loadLane = (f: AnalyticsFilters) => fetchData<LaneRow[]>("/v1/analytics/lane-matchup-stats", { min_matches: 2000, ...toApiQuery(f) });
 export const loadFlow = (heroId: number, f: AnalyticsFilters) => fetchData<FlowData>("/v1/analytics/item-flow-stats", { hero_ids: heroId, min_matches: 500, ...toApiQuery(f) });
 
 // ---------- Datos específicos de un héroe ----------

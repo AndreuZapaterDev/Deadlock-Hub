@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { Select } from "@/components/ui/select";
 
 type Option = { value: string; label: string };
 
@@ -15,14 +16,14 @@ export function CompareSelector({ options, selected }: { options: Option[]; sele
   };
 
   return (
-    <form role="search" aria-label="Elegir héroes a comparar" className="grid gap-3 rounded-md border border-brass/30 bg-surface p-3 sm:grid-cols-3">
+    <form role="search" aria-label="Elegir héroes a comparar" className="grid gap-3 rounded-md border border-brass/30 bg-panel p-3 sm:grid-cols-3">
       {[0, 1, 2].map((i) => (
         <label key={i} className="flex flex-col gap-1 text-xs font-semibold text-ink-muted">
           Héroe {i + 1}{i === 2 ? " (opcional)" : ""}
-          <select value={selected[i] ?? ""} onChange={(e) => change(i, e.target.value)} className="rounded-sm border border-brass/50 bg-surface px-3 py-2 text-sm text-ink focus-visible:border-brass">
+          <Select value={selected[i] ?? ""} onChange={(e) => change(i, e.target.value)}>
             <option value="">Elige héroe</option>
             {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-          </select>
+          </Select>
         </label>
       ))}
     </form>

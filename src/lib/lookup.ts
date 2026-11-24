@@ -1,16 +1,18 @@
 import "server-only";
 import { getSource } from "@/lib/api";
-import { slugify } from "@/lib/slug";
+import { getLanguage } from "@/lib/language";
+import { decodeSlug, slugify } from "@/lib/slug";
 import type { Hero, Item, Npc, Rank, Season } from "@/lib/types";
 
-// Único sitio donde se resuelven ids → entidades. Los ficheros grandes se parsean una vez (mock-source).
+// Único sitio donde se resuelven ids → entidades. Las respuestas grandes se cachean en memoria (http-source).
 export async function getHeroes(): Promise<Hero[]> {
   const { data } = await getSource().get<Hero[]>("/v1/assets/heroes");
   return data.filter((h) => h.player_selectable);
 }
 
 export async function getHeroBySlug(slug: string) {
-  return (await getHeroes()).find((h) => slugify(h.name) === slug);
+  const wanted = decodeSlug(slug);
+  return (await getHeroes()).find((h) => slugify(h.name) === wanted);
 }
 
 export async function getItems(): Promise<Item[]> {
@@ -20,16 +22,22 @@ export async function getItems(): Promise<Item[]> {
 
 export const byId = <T extends { id: number }>(list: T[]) => new Map(list.map((x) => [x.id, x]));
 
-/** Índices de objetos calculados una sola vez: por class_name y "quién usa este objeto como componente". */
-let itemIndex: Promise<{ byClass: Map<string, Item>; usedBy: Map<string, Item[]> }> | undefined;
-export function getItemIndex() {
-  itemIndex ??= getItems().then((items) => {
-    const byClass = new Map(items.map((i) => [i.class_name, i]));
-    const usedBy = new Map<string, Item[]>();
-    for (const i of items) for (const c of i.component_items ?? []) usedBy.set(c, [...(usedBy.get(c) ?? []), i]);
-    return { byClass, usedBy };
-  });
-  return itemIndex;
+/** Índices de objetos calculados una vez por idioma (los nombres cambian con él): por class_name y "quién usa este objeto como componente". */
+const itemIndexes = new Map<string, Promise<{ byClass: Map<string, Item>; usedBy: Map<string, Item[]> }>>();
+export async function getItemIndex() {
+  const lang = await getLanguage();
+  let idx = itemIndexes.get(lang);
+  if (!idx) {
+    idx = getItems().then((items) => {
+      const byClass = new Map(items.map((i) => [i.class_name, i]));
+      const usedBy = new Map<string, Item[]>();
+      for (const i of items) for (const c of i.component_items ?? []) usedBy.set(c, [...(usedBy.get(c) ?? []), i]);
+      return { byClass, usedBy };
+    });
+    idx.catch(() => itemIndexes.delete(lang));
+    itemIndexes.set(lang, idx);
+  }
+  return idx;
 }
 
 /** Las 4 habilidades firma de un héroe (`hero.items.signature1..4`, ver 3.0 de la spec). */
@@ -56,4 +64,19 @@ export async function getNpcs(): Promise<Npc[]> {
 export async function getHeroNames(): Promise<Map<number, string>> {
   const { data } = await getSource().get<Hero[]>("/v1/assets/heroes");
   return new Map(data.map((h) => [h.id, h.name]));
+}
+
+
+export type HeroImages = { card?: string; small?: string };
+let heroImages: Promise<Map<number, HeroImages>> | undefined;
+/** id → retrato (carta y miniatura) de TODOS los héroes. Se calcula una vez; si falla la API, se reintenta en la siguiente petición. */
+export function getHeroImages(): Promise<Map<number, HeroImages>> {
+  heroImages ??= getSource()
+    .get<(Hero & { images?: Record<string, string> })[]>("/v1/assets/heroes")
+    .then(({ data }) => new Map(data.map((h) => [h.id, { card: h.images?.icon_hero_card_webp, small: h.images?.icon_image_small_webp }])))
+    .catch(() => {
+      heroImages = undefined;
+      return new Map();
+    });
+  return heroImages;
 }

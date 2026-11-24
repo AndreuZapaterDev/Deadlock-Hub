@@ -1,0 +1,78 @@
+{
+  "nav": {
+    "label": "Hauptmenü",
+    "heroes": "Helden",
+    "items": "Gegenstände",
+    "tierList": "Tier-Liste",
+    "meta": "Meta",
+    "builds": "Builds",
+    "map": "Karte",
+    "players": "Spieler",
+    "live": "Live",
+    "patches": "Patches"
+  },
+  "search": { "label": "Spieler suchen", "placeholder": "Name, Steam-ID oder URL" },
+  "theme": { "day": "Tag", "night": "Nacht" },
+  "language": { "label": "Spielsprache" },
+  "footer": {
+    "disclaimer": "Deadlock Hub ist eine inoffizielle Fanseite. Sie ist weder mit Valve verbunden noch von Valve unterstützt. Deadlock und alle zugehörigen Inhalte sind Eigentum der Valve Corporation.",
+    "credits": "Daten von",
+    "about": "Über uns",
+    "wiki": "Wiki",
+    "tools": "Werkzeuge",
+    "planner": "Build-Planer",
+    "crosshair": "Fadenkreuz",
+    "ranks": "Ränge",
+    "npcs": "NPCs",
+    "mechanics": "Mechaniken",
+    "status": "Status"
+  },
+  "common": {
+    "pagination": "Seitennavigation",
+    "prevPage": "Vorherige Seite",
+    "nextPage": "Nächste Seite",
+    "apply": "Anwenden",
+    "clearFilters": "Filter zurücksetzen"
+  },
+  "home": {
+    "subtitle": "Alles zu Deadlock an einem Ort: Helden, Gegenstände, Statistiken und dein Profil",
+    "findAccount": "Finde dein Konto",
+    "seeHeroes": "Helden ansehen",
+    "liveCount": "{count, plural, one {Spiel läuft gerade live} other {Spiele laufen gerade live}}",
+    "watchLive": "Live ansehen",
+    "matches": "analysierte Spiele",
+    "players": "verschiedene Spieler",
+    "heroes": "spielbare Helden",
+    "duration": "durchschnittliche Dauer",
+    "topHeroes": "Die Helden mit den meisten Siegen",
+    "wins": "Siegquote",
+    "quickLinks": "Schnellzugriff",
+    "heroesText": "Fähigkeiten, Grundwerte und Hintergrundgeschichte jedes Helden.",
+    "itemsText": "Der komplette Shop nach Kategorie und Tier.",
+    "tierListText": "Wer gerade am meisten gewinnt – nach Rang und Patch.",
+    "plannerText": "Stelle dein Build zusammen und berechne die Seelenkosten.",
+    "followedTitle": "Deine Spieler",
+    "followedLabel": "Gefolgte Spieler"
+  },
+  "notFound": {
+    "subtitle": "Diese Straße führt ins Nichts",
+    "home": "Zurück zur Startseite",
+    "searchPlayer": "Spieler suchen",
+    "text": "Die gesuchte Seite existiert nicht. Vielleicht ist der Link falsch geschrieben, der Spieler, Held oder Gegenstand existiert nicht oder die Seite wurde verschoben."
+  },
+  "offline": {
+    "title": "Offline",
+    "subtitle": "Die Straße liegt im Dunkeln",
+    "heroes": "Gespeicherte Helden",
+    "items": "Gespeicherte Gegenstände",
+    "text": "Du bist offline und diese Seite ist nicht gespeichert. Das Wiki (Helden, Gegenstände, Mechaniken, NPCs und Ränge) lässt sich nach dem ersten Besuch ohne Verbindung lesen; Profile, Spiele und Statistiken brauchen beim ersten Mal eine Verbindung."
+  },
+  "pwa": {
+    "offlineBanner": "Offline: Es werden die zuletzt gespeicherten Daten angezeigt.",
+    "update": "Neue Version verfügbar.",
+    "reload": "Neu laden",
+    "install": "App installieren",
+    "iosTip": "So installierst du die App unter iOS: Tippe auf <b>Teilen</b> und dann auf <b>Zum Home-Bildschirm</b>.",
+    "close": "Schließen"
+  }
+}

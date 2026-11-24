@@ -1,12 +1,10 @@
 export type Query = Record<string, string | number | boolean | undefined>;
 
 export type ApiResult<T = unknown> = {
-  /** Código HTTP guardado en el fixture (puede ser 4xx/5xx real). */
+  /** Código HTTP de la API (puede ser 4xx/5xx: las páginas lo tratan, no es una excepción). */
   status: number;
   contentType: string;
   data: T;
-  /** Cómo se resolvió: útil para depurar el mock. */
-  match?: "exact" | "same-path" | "template";
 };
 
 export class ApiError extends Error {
@@ -19,7 +17,7 @@ export class ApiError extends Error {
   }
 }
 
-/** Contrato único: páginas y componentes no saben si los datos vienen del mock o de la API. */
+/** Contrato único de acceso a los datos: las páginas y los componentes no saben cómo se piden. */
 export interface DataSource {
   get<T = unknown>(path: string, query?: Query): Promise<ApiResult<T>>;
 }

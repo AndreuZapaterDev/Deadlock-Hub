@@ -7,11 +7,12 @@ export function Card({ className, children }: { className?: string; children: Re
 }
 
 /** Tarjeta destacada: marco de latón de doble línea, esquinas achaflanadas y ornamentos. */
-export function FeaturedCard({ className, children }: { className?: string; children: React.ReactNode }) {
+/** `fill`: la tarjeta ocupa toda la altura de su celda (para que las de una cuadrícula midan lo mismo). */
+export function FeaturedCard({ className, children, fill }: { className?: string; children: React.ReactNode; fill?: boolean }) {
   return (
-    <div className={cn("chamfer bg-brass p-px shadow-card", className)}>
-      <div className="chamfer relative bg-surface p-1">
-        <div className="chamfer relative border border-brass/50 p-4">
+    <div className={cn("chamfer bg-brass p-px shadow-card", fill && "h-full", className)}>
+      <div className={cn("chamfer relative bg-surface p-1", fill && "h-full")}>
+        <div className={cn("chamfer relative border border-brass/50 p-4", fill && "flex h-full flex-col")}>
           <Corner className="left-1 top-1" />
           <Corner className="right-1 top-1" rotate={90} />
           <Corner className="bottom-1 right-1" rotate={180} />

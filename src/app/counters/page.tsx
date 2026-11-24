@@ -6,7 +6,6 @@ import { analyticsFields } from "@/components/filters/analytics-fields";
 import { FilterBar } from "@/components/filters/filter-bar";
 import { HeroChip } from "@/components/hero/hero-chip";
 import { Card } from "@/components/ui/card";
-import { DemoNote } from "@/components/ui/demo-note";
 import { ErrorState } from "@/components/ui/feedback";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { SectionTitle } from "@/components/ui/section-title";
@@ -73,7 +72,6 @@ export default async function CountersPage({ searchParams }: { searchParams: Pro
           ]}
         />
       </Suspense>
-      <DemoNote>Los filtros se guardan en la URL y se envían a la API, pero los datos de ejemplo son un único periodo y no cambian al filtrar.</DemoNote>
 
       {!data.ok ? (
         <ErrorState title="No se han podido cargar los datos" hint={data.status === 503 || data.status === 429 ? "La API está ocupada. Inténtalo en unos segundos." : "Inténtalo de nuevo en unos minutos."} />

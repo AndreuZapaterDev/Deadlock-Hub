@@ -3,13 +3,11 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { BuildCard } from "@/components/builds/build-card";
 import { FilterBar } from "@/components/filters/filter-bar";
-import { DemoNote } from "@/components/ui/demo-note";
 import { EmptyState, ErrorState } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { BUILD_LANGUAGES, hasBuildFilters, parseBuildQuery } from "@/lib/builds";
-import { loadBuildList, loadBuildTags, PAGE_SIZE } from "@/lib/builds-data";
-import { fmtNum } from "@/lib/format";
+import { loadBuildList, loadBuildTags } from "@/lib/builds-data";
 import { getHeroNames } from "@/lib/lookup";
 import { loadNames } from "@/lib/player-data";
 
@@ -28,7 +26,7 @@ export default async function BuildsPage({ searchParams }: { searchParams: Promi
   };
 
   const heroOptions = [...heroNames].filter(([, n]) => n).sort((a, b) => a[1].localeCompare(b[1])).map(([id, label]) => ({ value: String(id), label }));
-  const pages = res.ok ? (res.data.total !== null ? Math.max(1, Math.ceil(res.data.total / PAGE_SIZE)) : res.data.hasMore ? q.page + 1 : q.page) : 1;
+  const pages = res.ok ? (res.data.hasMore ? q.page + 1 : q.page) : 1;
 
   return (
     <div className="space-y-8">
@@ -50,7 +48,6 @@ export default async function BuildsPage({ searchParams }: { searchParams: Promi
           <Link href={href(1, { author: undefined })} className="rounded-full border border-brass/50 px-2 py-0.5 text-xs font-semibold hover:bg-brass/15" aria-label="Quitar el filtro de autor">✕ quitar</Link>
         </p>
       )}
-      <DemoNote>El modo demo tiene 100 builds de ejemplo (16 héroes y un único idioma, el inglés). Los filtros se aplican sobre ellas; solo 18 de las 69 etiquetas que usan tienen nombre conocido.</DemoNote>
 
       {!res.ok ? (
         <ErrorState title="No se han podido cargar las builds" hint={res.status === 503 || res.status === 429 ? "La API está ocupada. Inténtalo en unos segundos." : "Inténtalo de nuevo en unos minutos."} />
@@ -59,7 +56,7 @@ export default async function BuildsPage({ searchParams }: { searchParams: Promi
       ) : (
         <>
           <p className="text-sm text-ink-muted" aria-live="polite">
-            {res.data.total !== null ? `${fmtNum(res.data.total)} ${res.data.total === 1 ? "build" : "builds"}` : `Página ${q.page}`}
+            Página {q.page}
             {" · "}{q.sort === "updated" ? "más recientes primero" : "más populares primero"}
           </p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

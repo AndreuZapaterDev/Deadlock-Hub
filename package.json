@@ -11,15 +11,18 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@types/sanitize-html": "^2.16.2",
     "motion": "^14.14.0",
     "next": "^16.4.6",
     "next-intl": "^4.16.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "recharts": "^3.11.1",
+    "sanitize-html": "^2.18.2",
     "server-only": "^0.0.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.51.1",
     "@tailwindcss/postcss": "^4.3.5",
     "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",

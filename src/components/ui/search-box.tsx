@@ -3,7 +3,7 @@ import { cn } from "@/lib/cn";
 export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
-      className={cn("w-full rounded-sm border border-brass/50 bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-muted focus-visible:border-brass", className)}
+      className={cn("w-full rounded-sm border border-brass/50 bg-panel px-3 py-2 text-sm text-ink placeholder:text-ink-muted focus-visible:border-brass", className)}
       {...props}
     />
   );

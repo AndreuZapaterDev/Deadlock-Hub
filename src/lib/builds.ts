@@ -52,26 +52,7 @@ export function parseBuildQuery(sp: Raw, heroIds: Set<number>, tagIds: Set<numbe
 
 export const hasBuildFilters = (q: BuildQuery) => q.q !== undefined || q.hero !== undefined || q.tag !== undefined || q.lang !== undefined || q.author !== undefined;
 
-export function filterBuilds(list: BuildEntry[], q: BuildQuery): BuildEntry[] {
-  const term = q.q?.toLowerCase();
-  return list.filter((b) => {
-    const h = b.hero_build;
-    return (
-      (q.hero === undefined || h.hero_id === q.hero) &&
-      (q.tag === undefined || !!h.tags?.includes(q.tag)) &&
-      (q.lang === undefined || h.language === q.lang) &&
-      (q.author === undefined || h.author_account_id === q.author) &&
-      (!term || h.name.toLowerCase().includes(term) || (h.description ?? "").toLowerCase().includes(term))
-    );
-  });
-}
-
-export function sortBuilds(list: BuildEntry[], sort: BuildSort): BuildEntry[] {
-  const key = sort === "updated" ? (b: BuildEntry) => b.hero_build.last_updated_timestamp : (b: BuildEntry) => b.num_favorites ?? 0;
-  return [...list].sort((a, b) => key(b) - key(a));
-}
-
-/** Parámetros del endpoint `/v1/builds` (nombres del OpenAPI). Solo se usan con la API real: los fixtures ignoran los filtros. */
+/** Parámetros del endpoint `/v1/builds` (nombres del OpenAPI). */
 export function toApiParams(q: BuildQuery, pageSize: number): Record<string, string | number> {
   const p: Record<string, string | number> = {
     sort_by: q.sort === "updated" ? "updated_at" : "favorites",
@@ -120,7 +101,7 @@ export function linkify(text: string): Piece[] {
   return out;
 }
 
-/** Pasos de la subida de habilidades. Interpretación: `currency_type` 2 = desbloquear, 1 = mejorar (a partir de los datos de ejemplo). */
+/** Pasos de la subida de habilidades. Interpretación: `currency_type` 2 = desbloquear, 1 = mejorar. */
 export function orderSteps(b: BuildEntry): OrderStep[] {
   return (b.hero_build.details?.ability_order?.currency_changes ?? []).filter((s) => s.delta !== 0);
 }

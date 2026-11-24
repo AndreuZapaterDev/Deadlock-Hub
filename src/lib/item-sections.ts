@@ -9,7 +9,7 @@ const isZero = (v: unknown) => v === undefined || v === null || v === "" || pars
 /** La API a veces ya incluye la unidad en el valor ("20m" con postfix "m"): no se duplica. */
 export const propText = (p: ItemProperty) => {
   const v = String(p.value);
-  return p.postfix && !v.endsWith(p.postfix) ? v + p.postfix : v;
+  return p.postfix && !v.endsWith(p.postfix.trim()) ? v + p.postfix : v;
 };
 
 function toStat(item: Item, key: string): Stat | null {
@@ -48,7 +48,7 @@ export function abilityUpgrades(item: Item): Stat[][] {
       const p = item.properties?.[pu.name];
       const n = Number(pu.bonus);
       const sign = n > 0 && !String(pu.bonus).startsWith("+") ? "+" : "";
-      return { label: p?.label && !p.label.startsWith("#") ? p.label : humanize(pu.name), text: `${sign}${pu.bonus}${p?.postfix && !String(pu.bonus).endsWith(p.postfix) ? p.postfix : ""}` };
+      return { label: p?.label && !p.label.startsWith("#") ? p.label : humanize(pu.name), text: `${sign}${pu.bonus}${p?.postfix && !String(pu.bonus).endsWith(p.postfix.trim()) ? p.postfix : ""}` };
     }),
   );
 }

@@ -14,6 +14,8 @@
 :root {
   --bg: #eadcbd;
   --surface: #f6eedb;
+  /* Panel de controles (filtros, desplegables, campos): en Día casi del color del fondo, como en Noche. */
+  --panel: color-mix(in srgb, var(--bg) 72%, var(--surface));
   --ink: #1b1512;
   --ink-muted: #5b4d40;
   --brass: #96691c;
@@ -43,6 +45,7 @@
 [data-theme="dark"] {
   --bg: #101e1e;
   --surface: #182b2a;
+  --panel: #182b2a;
   --ink: #f0e6ce;
   --ink-muted: #a69d88;
   --brass: #d6a441;
@@ -71,6 +74,7 @@
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
+  --color-panel: var(--panel);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
   --color-night: var(--night);
@@ -180,11 +184,13 @@ body::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle, var(--brass) 2.4px, transparent 3px) 0 50% / 40px 10px repeat-x;
+  /* Baldosa de 40 px con la bombilla a 10 px (capa A) o a 30 px (capa B) y repetición «round»: el número de baldosas encaja exacto en el ancho y
+     ninguna bombilla queda cortada en los extremos (antes, con 40 px y un desplazamiento, la primera y la última salían a medias). */
+  background: radial-gradient(circle at 10px 50%, var(--brass) 2.4px, transparent 3px) 0 50% / 40px 10px round no-repeat;
   animation: blink 1.8s steps(1) infinite;
 }
 /* mitad de las bombillas, desfasada: parpadean alternas como en una marquesina */
-.bulbs::after { background-position: 20px 50%; animation-direction: reverse; }
+.bulbs::after { background-image: radial-gradient(circle at 30px 50%, var(--brass) 2.4px, transparent 3px); animation-direction: reverse; }
 @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } }
 [data-theme="dark"] .bulbs { filter: drop-shadow(0 0 3px color-mix(in srgb, var(--brass) 80%, transparent)); }
 
@@ -282,8 +288,113 @@ body::after {
 
 /* Halo pulsante del disco del emblema */
 @keyframes halo { from { filter: drop-shadow(0 0 0 transparent); } to { filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 60%, transparent)); } }
-.halo { animation: halo 3s ease-in-out infinite alternate; }
+/* Tres pulsos y se queda encendido: un filtro animado (drop-shadow) no se compone en la GPU y repintaba el emblema sin parar. */
+.halo { animation: halo 3s ease-in-out 3 alternate forwards; }
 
 /* Pulsación de botón */
 .press { transition: transform 120ms; }
 .press:active { transform: scale(0.97); }
+
+/* ---------- Rendimiento: aparición y tilt con CSS puro (sin Motion por elemento) ---------- */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease-deco) var(--reveal-delay, 0s), transform 0.7s var(--ease-deco) var(--reveal-delay, 0s); }
+.reveal-curtain { transform: translateY(36px); clip-path: inset(14% 0 0 0); transition: opacity 0.7s var(--ease-deco) var(--reveal-delay, 0s), transform 0.7s var(--ease-deco) var(--reveal-delay, 0s), clip-path 0.7s var(--ease-deco) var(--reveal-delay, 0s); }
+.reveal.is-in { opacity: 1; transform: none; clip-path: inset(0% 0 0 0); }
+/* Sin JavaScript no hay quien dispare la aparición: todo se ve desde el principio. */
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; clip-path: none; transition: none; } }
+
+.tilt { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 0.18s ease-out; will-change: auto; }
+.tilt-glare { background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgb(255 255 255 / 0.16), transparent 55%); opacity: var(--glare, 0); transition: opacity 0.2s; }
+@media (hover: none), (prefers-reduced-motion: reduce) { .tilt { transform: none; } .tilt-glare { display: none; } }
+
+/* Listas largas: el navegador no pinta ni calcula el diseño de lo que está fuera de pantalla (menos trabajo al cargar). */
+.cv-auto { content-visibility: auto; contain-intrinsic-size: auto var(--cv-h, 120px); }
+
+/* Heatmap de /counters (1.936 celdas por matriz): cuadrícula CSS con un solo nodo por celda. El color está prefabricado en 15 niveles por signo. */
+.hm-grid { display: grid; grid-template-columns: max-content repeat(var(--cols), 2.25rem); gap: 2px; width: max-content; }
+.hm-cell, .hm-empty { display: flex; height: 2rem; align-items: center; justify-content: center; border-radius: 2px; color: var(--ink); }
+.hm-empty { color: var(--ink-muted); }
+.hm-sel { outline: 2px solid var(--brass); outline-offset: 1px; }
+.hm-pos.hm-t0 { background: color-mix(in srgb, var(--sage) 0%, var(--surface)); }
+.hm-neg.hm-t0 { background: color-mix(in srgb, var(--rose) 0%, var(--surface)); }
+.hm-pos.hm-t1 { background: color-mix(in srgb, var(--sage) 5%, var(--surface)); }
+.hm-neg.hm-t1 { background: color-mix(in srgb, var(--rose) 5%, var(--surface)); }
+.hm-pos.hm-t2 { background: color-mix(in srgb, var(--sage) 10%, var(--surface)); }
+.hm-neg.hm-t2 { background: color-mix(in srgb, var(--rose) 10%, var(--surface)); }
+.hm-pos.hm-t3 { background: color-mix(in srgb, var(--sage) 15%, var(--surface)); }
+.hm-neg.hm-t3 { background: color-mix(in srgb, var(--rose) 15%, var(--surface)); }
+.hm-pos.hm-t4 { background: color-mix(in srgb, var(--sage) 20%, var(--surface)); }
+.hm-neg.hm-t4 { background: color-mix(in srgb, var(--rose) 20%, var(--surface)); }
+.hm-pos.hm-t5 { background: color-mix(in srgb, var(--sage) 25%, var(--surface)); }
+.hm-neg.hm-t5 { background: color-mix(in srgb, var(--rose) 25%, var(--surface)); }
+.hm-pos.hm-t6 { background: color-mix(in srgb, var(--sage) 30%, var(--surface)); }
+.hm-neg.hm-t6 { background: color-mix(in srgb, var(--rose) 30%, var(--surface)); }
+.hm-pos.hm-t7 { background: color-mix(in srgb, var(--sage) 35%, var(--surface)); }
+.hm-neg.hm-t7 { background: color-mix(in srgb, var(--rose) 35%, var(--surface)); }
+.hm-pos.hm-t8 { background: color-mix(in srgb, var(--sage) 40%, var(--surface)); }
+.hm-neg.hm-t8 { background: color-mix(in srgb, var(--rose) 40%, var(--surface)); }
+.hm-pos.hm-t9 { background: color-mix(in srgb, var(--sage) 45%, var(--surface)); }
+.hm-neg.hm-t9 { background: color-mix(in srgb, var(--rose) 45%, var(--surface)); }
+.hm-pos.hm-t10 { background: color-mix(in srgb, var(--sage) 50%, var(--surface)); }
+.hm-neg.hm-t10 { background: color-mix(in srgb, var(--rose) 50%, var(--surface)); }
+.hm-pos.hm-t11 { background: color-mix(in srgb, var(--sage) 55%, var(--surface)); }
+.hm-neg.hm-t11 { background: color-mix(in srgb, var(--rose) 55%, var(--surface)); }
+.hm-pos.hm-t12 { background: color-mix(in srgb, var(--sage) 60%, var(--surface)); }
+.hm-neg.hm-t12 { background: color-mix(in srgb, var(--rose) 60%, var(--surface)); }
+.hm-pos.hm-t13 { background: color-mix(in srgb, var(--sage) 65%, var(--surface)); }
+.hm-neg.hm-t13 { background: color-mix(in srgb, var(--rose) 65%, var(--surface)); }
+.hm-pos.hm-t14 { background: color-mix(in srgb, var(--sage) 70%, var(--surface)); }
+.hm-neg.hm-t14 { background: color-mix(in srgb, var(--rose) 70%, var(--surface)); }
+
+/* ---------- Ambiente (brasas y luz de farola): solo transform y opacity, que se animan en la GPU ---------- */
+.embers, .lamp { display: none; position: fixed; pointer-events: none; z-index: -1; }
+[data-theme="dark"] .embers, [data-theme="dark"] .lamp { display: block; }
+.embers { inset: 0; overflow: hidden; }
+.ember {
+  position: absolute; left: var(--l); bottom: calc(var(--s) * -1); width: var(--s); height: var(--s); border-radius: 50%;
+  background: radial-gradient(circle, rgb(240 200 110 / 0.95) 0 22%, rgb(214 164 65 / 0.3) 23% 48%, transparent 70%);
+  will-change: transform, opacity;
+  animation: ember-rise var(--d) linear var(--dl) infinite, ember-twinkle var(--tw) ease-in-out infinite alternate;
+}
+@keyframes ember-rise { to { transform: translate3d(var(--sw), calc(-100vh - 40px), 0); } }
+@keyframes ember-twinkle { from { opacity: 0.25; } to { opacity: 0.9; } }
+.lamp {
+  left: 0; top: 0; width: 920px; height: 920px; margin: -460px 0 0 -460px;
+  background: radial-gradient(circle, rgb(214 164 65 / 0.11), transparent 62%);
+  transform: translate3d(50vw, 30vh, 0); will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) { .embers, .lamp { display: none !important; } }
+
+/* ---------- Desplegables: la lista que abre el navegador usa los colores del tema ---------- */
+select option, select optgroup { background-color: var(--panel); color: var(--ink); font-weight: 500; }
+select option:checked { background-color: color-mix(in srgb, var(--brass) 30%, var(--panel)); }
+select option[value=""] { color: var(--ink-muted); }
+select option:disabled { color: var(--ink-muted); opacity: 0.6; }
+
+/* ---------- Cartel de cabecera en modo Día: pergamino, no verde oscuro ----------
+   En Noche el cartel (verde petróleo) ya es casi del color del fondo. En Día destacaba como un bloque oscuro sobre el pergamino:
+   aquí se redefinen SOLO dentro del cartel el fondo, los rayos y el texto, y el emblema conserva su disco bermellón con rueda crema. */
+html:not([data-theme="dark"]) .poster-surface {
+  --poster: color-mix(in srgb, var(--bg) 86%, #96691c);
+  --poster-ray: color-mix(in srgb, var(--bg) 72%, #96691c);
+}
+/* El texto crema del cartel pasa a tinta oscura (las utilidades `text-cream` llevan el color ya resuelto, no una variable). */
+html:not([data-theme="dark"]) .poster-surface.text-cream,
+html:not([data-theme="dark"]) .poster-surface .text-cream { color: var(--ink); }
+html:not([data-theme="dark"]) .poster-surface .text-cream-muted { color: #5b4d40; }
+/* …salvo el emblema: rueda crema sobre su disco bermellón. */
+
+/* Cable con símbolos y bombillas en modo Día: sobre el pergamino el dorado claro y el gris no se veían; se pasan a un latón oscuro,
+   con más trazo y más opacidad en el parpadeo (en Noche se queda como estaba, con su resplandor). */
+html:not([data-theme="dark"]) .poster-surface .sigil-wire :is(path, circle, g > *) { stroke-opacity: 1; }
+html:not([data-theme="dark"]) .poster-surface .bulbs::before { background-image: radial-gradient(circle at 10px 50%, #8a5e14 3.1px, transparent 3.7px); animation-name: blink-day; }
+html:not([data-theme="dark"]) .poster-surface .bulbs::after { background-image: radial-gradient(circle at 30px 50%, #8a5e14 3.1px, transparent 3.7px); animation-name: blink-day; }
+@keyframes blink-day { 0% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* Las utilidades con "!" de Tailwind viven en `@layer utilities` y sus !important ganan a los de fuera de capa: estas reglas van en la
+   misma capa para que, a igual capa, decida la especificidad (más alta aquí). */
+@layer utilities {
+  html:not([data-theme="dark"]) .poster-surface .\!text-cream-muted { color: #5b4d40 !important; }
+  html:not([data-theme="dark"]) .poster-surface .sigil-wire { color: #8a5e14 !important; stroke-width: 2; }
+  html:not([data-theme="dark"]) .poster-surface .halo,
+  html:not([data-theme="dark"]) .poster-surface .halo .\!text-cream { color: #f3e8d0 !important; }
+}

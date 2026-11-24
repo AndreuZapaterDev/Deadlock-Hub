@@ -6,7 +6,7 @@ describe("conversión SteamID32 ↔ SteamID64", () => {
     expect(accountIdToSteam64(483770846)).toBe("76561198444036574");
     expect(steam64ToAccountId("76561198444036574")).toBe(483770846);
   });
-  it("par real de los fixtures (steam-search)", () => {
+  it("par real de una respuesta de steam-search", () => {
     expect(steam64ToAccountId("76561199831362513")).toBe(1871096785);
     expect(parseSteamQuery("https://steamcommunity.com/profiles/76561199831362513/")).toMatchObject({ kind: "account", accountId: 1871096785 });
   });

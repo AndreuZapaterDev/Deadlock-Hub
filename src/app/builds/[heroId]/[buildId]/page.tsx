@@ -5,7 +5,6 @@ import { CopyButton } from "@/components/tools/copy-button";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
-import { DemoNote } from "@/components/ui/demo-note";
 import { ErrorState } from "@/components/ui/feedback";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { SectionTitle } from "@/components/ui/section-title";
@@ -52,11 +51,9 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
   const plannerHref = `/build-planner?${encodeBuild(slugify(heroName), shopItems)}`;
 
   const desc = (h.description ?? "").trim();
-  const demoMismatch = process.env.DATA_SOURCE !== "api" && !(hid === 2 && bid === 1007);
 
   return (
     <div className="space-y-12">
-      {demoMismatch && <DemoNote>En modo demo cualquier identificador muestra la build de ejemplo (héroe 2, build 1007).</DemoNote>}
 
       <PosterHeader title={h.name} subtitle={`Build de ${heroName}`}>
         <div className="flex flex-wrap items-center justify-center gap-2">

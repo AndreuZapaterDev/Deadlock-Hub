@@ -11,7 +11,6 @@ export const revalidate = 60;
 type Health = { services: Record<string, boolean> };
 
 export default async function StatusPage() {
-  const mode = process.env.DATA_SOURCE === "api" ? "API real" : "Mock (fixtures)";
   let health: Health | null = null;
   let error: string | null = null;
   try {
@@ -24,10 +23,10 @@ export default async function StatusPage() {
 
   return (
     <div className="space-y-6">
-      <PosterHeader title="Estado" subtitle="Salud de la API y origen de los datos" />
+      <PosterHeader title="Estado" subtitle="Salud de la API de la que salen todos los datos" />
       <Card className="space-y-3">
         <p className="text-sm text-ink-muted">Origen de datos</p>
-        <p className="text-lg font-semibold">{mode}</p>
+        <p className="text-lg font-semibold">API real · api.deadlock-api.com</p>
         <p className="text-xs text-ink-muted">Actualizado {new Date().toLocaleString("es-ES")} · caché de 60 s</p>
       </Card>
       {error && <ErrorState title="No se pudo comprobar el estado" hint={error} />}

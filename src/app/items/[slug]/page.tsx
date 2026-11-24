@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CAT_COLOR, catVar, ItemIcon, TierPips } from "@/components/item/item-tile";
+import { PatchHistory } from "@/components/patch/patch-history";
 import { Button } from "@/components/ui/button";
 import { FeaturedCard } from "@/components/ui/card";
 import { CATEGORY, CategoryChip, Chip } from "@/components/ui/chip";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { fmtDuration, fmtNum, fmtPct, stripHtml } from "@/lib/format";
 import { winRate } from "@/lib/analytics";
-import { DemoNote } from "@/components/ui/demo-note";
 import { SectionTitle } from "@/components/ui/section-title";
+import { groupWinRate, usageMap, winRank } from "@/lib/item-meta";
 import { loadItemStats } from "@/lib/meta-data";
 import { itemSections, plainStats } from "@/lib/item-sections";
 import { SECTION_LABEL } from "@/lib/labels";
@@ -35,10 +37,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 function ItemLink({ item }: { item: Item }) {
   return (
-    <Link href={`/items/${item.class_name}`} className="flex items-center justify-between gap-3 rounded-sm border border-brass/30 bg-surface px-3 py-2 text-sm transition-colors hover:bg-brass/10">
-      <span className="font-semibold">{item.name}</span>
-      <span className="text-xs text-ink-muted">{fmtNum(item.cost ?? 0)} almas</span>
+    <Link
+      href={`/items/${item.class_name}`}
+      style={catVar(item.item_slot_type)}
+      className="flex items-center gap-3 rounded-lg border border-(--c)/40 bg-linear-to-r from-[color-mix(in_srgb,var(--c)_14%,var(--surface))] to-surface p-2 pr-3 text-sm shadow-card transition duration-150 hover:-translate-y-0.5 hover:border-(--c)"
+    >
+      <ItemIcon item={item} size={40} />
+      <span className="min-w-0 flex-1">
+        <span className="block truncate font-bold leading-tight">{item.name}</span>
+        <span className="text-xs tabular-nums text-ink-muted"><span aria-hidden className="text-(--c)">◆</span> {fmtNum(item.cost ?? 0)}</span>
+      </span>
+      {item.item_tier && <TierPips tier={item.item_tier} />}
     </Link>
+  );
+}
+
+/** Flecha entre pasos del camino de construcción. */
+function Arrow({ label }: { label: string }) {
+  return (
+    <p className="flex items-center gap-2 py-1 text-xs font-semibold uppercase tracking-wide text-ink-muted" aria-hidden>
+      <span className="h-px flex-1 bg-brass/30" />
+      <span>↓ {label}</span>
+      <span className="h-px flex-1 bg-brass/30" />
+    </p>
   );
 }
 
@@ -56,10 +77,22 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
   const cat = item.item_slot_type;
   const usageRes = await loadItemStats({});
   const usage = usageRes.ok ? usageRes.data.find((r) => r.item_id === item.id) : undefined;
+  // Comparación con los objetos de su misma categoría y tier
+  const peers = (await getItems()).filter((i) => i.type === "upgrade" && i.shopable && i.item_slot_type === cat && i.item_tier === item.item_tier);
+  const peerIds = peers.map((p) => p.id);
+  const um = usageRes.ok ? usageMap(usageRes.data) : new Map<number, { winRate: number; matches: number }>();
+  const rank = winRank(um, peerIds, item.id);
+  const peerAvg = groupWinRate(um, peerIds);
+  const similar = peers.filter((p) => p.id !== item.id).sort((a, b) => (um.get(b.id)?.winRate ?? 0) - (um.get(a.id)?.winRate ?? 0)).slice(0, 6);
 
   return (
     <div className="space-y-12">
-      <PosterHeader title={item.name} subtitle={desc ? undefined : "Objeto de la tienda"}>
+      <PosterHeader
+        title={item.name}
+        subtitle={desc ? undefined : "Objeto de la tienda"}
+        color={cat ? `color-mix(in srgb, ${CAT_COLOR[cat].c} 24%, var(--poster-ray))` : undefined}
+      >
+        <ItemIcon item={item} size={96} className="mx-auto mb-3 rounded-xl" />
         <div className="flex flex-wrap items-center justify-center gap-2">
           {cat && <CategoryChip category={cat} />}
           {item.item_tier && <Chip>Tier {item.item_tier}</Chip>}
@@ -99,16 +132,19 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
             </dl>
           )}
           {!desc && !sections.length && !fallback.length && <p className="text-ink-muted">Este objeto no tiene descripción publicada.</p>}
-          <p className="mt-4 text-xs text-ink-muted">Textos del juego en inglés (datos de ejemplo del modo demo).</p>
         </FeaturedCard>
 
         <div className="space-y-6">
-          <section aria-labelledby="parts" className="space-y-2">
+          <section aria-label="Camino de construcción" className="space-y-2 rounded-xl border border-brass/30 bg-panel/60 p-3" style={catVar(cat)}>
             <h2 id="parts" className="font-display text-lg font-black">Se construye con</h2>
             {parts.length ? parts.map((p) => <ItemLink key={p.id} item={p} />) : <p className="text-sm text-ink-muted">Es un objeto base: no tiene componentes.</p>}
-          </section>
-          <section aria-labelledby="into" className="space-y-2">
-            <h2 id="into" className="font-display text-lg font-black">Se mejora en</h2>
+            <Arrow label="da lugar a" />
+            <div style={catVar(cat)} className="flex items-center gap-3 rounded-lg border-2 border-(--c) bg-[color-mix(in_srgb,var(--c)_14%,var(--surface))] p-2 pr-3">
+              <ItemIcon item={item} size={40} />
+              <span className="font-display text-base font-black">{item.name}</span>
+            </div>
+            <Arrow label="se mejora en" />
+            <h2 id="into" className="sr-only">Se mejora en</h2>
             {upgradesTo.length ? upgradesTo.map((p) => <ItemLink key={p.id} item={p} />) : <p className="text-sm text-ink-muted">No forma parte de ningún otro objeto.</p>}
           </section>
         </div>
@@ -126,15 +162,32 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
               [fmtDuration(usage.avg_buy_time_s), "Compra media"],
               [fmtPct(usage.matches ? usage.sold / usage.matches : 0, 0), "Se acaba vendiendo"],
             ].map(([v, l]) => (
-              <div key={l} className="rounded-md border border-brass/30 bg-surface p-4 text-center shadow-card"><p className="font-display text-2xl font-black">{v}</p><p className="mt-1 text-sm text-ink-muted">{l}</p></div>
+              <div key={l} style={catVar(cat)} className="rounded-lg border border-(--c)/40 border-t-4 border-t-(--c) bg-surface p-4 text-center shadow-card"><p className="font-display text-2xl font-black">{v}</p><p className="mt-1 text-sm text-ink-muted">{l}</p></div>
             ))}
           </div>
         ) : (
           <p className="text-sm text-ink-muted">{usageRes.ok ? "No hay datos de uso de este objeto." : "No se han podido cargar las estadísticas de uso."}</p>
         )}
+        {usage && rank && (
+          <p className="text-sm">
+            Es el <strong>nº {rank.pos} de {rank.of}</strong> objetos de {cat ? CATEGORY[cat].label.toLowerCase() : "su categoría"} de tier {item.item_tier} por win rate
+            {peerAvg !== null && <> (la media de ese grupo es {fmtPct(peerAvg)})</>}.
+          </p>
+        )}
         <p className="text-xs text-ink-muted">«Compra media» es el minuto de partida al que se compra de media (no hay desglose por minuto). Los héroes que más lo usan llegan con la API real.</p>
-        <DemoNote>Los datos de ejemplo son un único periodo, así que no hay tendencia por parche.</DemoNote>
       </section>
+
+      {similar.length > 0 && (
+        <section aria-labelledby="similar" className="space-y-3">
+          <SectionTitle id="similar">Objetos parecidos</SectionTitle>
+          <p className="text-sm text-ink-muted">Mismo tier y categoría, de mayor a menor win rate.</p>
+          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {similar.map((p) => <ItemLink key={p.id} item={p} />)}
+          </div>
+        </section>
+      )}
+
+      <PatchHistory kind="items" id={item.id} name={item.name} />
 
       <div className="flex justify-center"><Button href="/items" variant="secondary">Volver a la tienda</Button></div>
     </div>

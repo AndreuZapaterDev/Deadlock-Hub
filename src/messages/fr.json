@@ -1,0 +1,78 @@
+{
+  "nav": {
+    "label": "Principal",
+    "heroes": "Héros",
+    "items": "Objets",
+    "tierList": "Tier list",
+    "meta": "Méta",
+    "builds": "Builds",
+    "map": "Carte",
+    "players": "Joueurs",
+    "live": "En direct",
+    "patches": "Correctifs"
+  },
+  "search": { "label": "Rechercher un joueur", "placeholder": "Nom, Steam ID ou URL" },
+  "theme": { "day": "Jour", "night": "Nuit" },
+  "language": { "label": "Langue du jeu" },
+  "footer": {
+    "disclaimer": "Deadlock Hub est un site de fans non officiel. Il n'est ni affilié à Valve ni approuvé par elle. Deadlock et toutes ses ressources sont la propriété de Valve Corporation.",
+    "credits": "Données de",
+    "about": "À propos",
+    "wiki": "Wiki",
+    "tools": "Outils",
+    "planner": "Planificateur de build",
+    "crosshair": "Réticule",
+    "ranks": "Rangs",
+    "npcs": "PNJ",
+    "mechanics": "Mécaniques",
+    "status": "État"
+  },
+  "common": {
+    "pagination": "Pagination",
+    "prevPage": "Page précédente",
+    "nextPage": "Page suivante",
+    "apply": "Appliquer",
+    "clearFilters": "Effacer les filtres"
+  },
+  "home": {
+    "subtitle": "Tout sur Deadlock au même endroit : héros, objets, statistiques et votre profil",
+    "findAccount": "Trouvez votre compte",
+    "seeHeroes": "Voir les héros",
+    "liveCount": "{count, plural, one {partie en direct en ce moment} other {parties en direct en ce moment}}",
+    "watchLive": "Voir en direct",
+    "matches": "parties analysées",
+    "players": "joueurs distincts",
+    "heroes": "héros jouables",
+    "duration": "durée moyenne",
+    "topHeroes": "Les héros avec le plus de victoires",
+    "wins": "de victoires",
+    "quickLinks": "Accès rapides",
+    "heroesText": "Capacités, statistiques de base et histoire de chacun.",
+    "itemsText": "La boutique complète par catégorie et par tier.",
+    "tierListText": "Qui gagne le plus en ce moment, par rang et par patch.",
+    "plannerText": "Composez votre build et calculez son coût en âmes.",
+    "followedTitle": "Vos joueurs",
+    "followedLabel": "Joueurs suivis"
+  },
+  "notFound": {
+    "subtitle": "Cette rue ne mène nulle part",
+    "home": "Retour à l'accueil",
+    "searchPlayer": "Rechercher un joueur",
+    "text": "La page que vous cherchez n'existe pas. Le lien est peut-être mal écrit, le joueur, le héros ou l'objet n'existe peut-être pas, ou la page a été déplacée."
+  },
+  "offline": {
+    "title": "Hors ligne",
+    "subtitle": "La rue est plongée dans l'obscurité",
+    "heroes": "Héros enregistrés",
+    "items": "Objets enregistrés",
+    "text": "Vous êtes hors ligne et cette page n'est pas enregistrée. Le wiki (héros, objets, mécaniques, PNJ et rangs) se consulte sans connexion une fois visité ; les profils, parties et statistiques nécessitent une connexion la première fois."
+  },
+  "pwa": {
+    "offlineBanner": "Hors ligne : affichage des dernières données enregistrées.",
+    "update": "Nouvelle version disponible.",
+    "reload": "Recharger",
+    "install": "Installer l'app",
+    "iosTip": "Pour installer l'app sur iOS : appuyez sur <b>Partager</b>, puis sur <b>Sur l'écran d'accueil</b>.",
+    "close": "Fermer"
+  }
+}

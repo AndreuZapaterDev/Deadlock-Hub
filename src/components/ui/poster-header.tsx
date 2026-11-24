@@ -13,14 +13,14 @@ import { SpinEmblem } from "@/components/motion/spin-emblem";
  */
 export function PosterHeader({ title, subtitle, color = "var(--poster-ray)", compact, children }: { title: string; subtitle?: string; color?: string; compact?: boolean; children?: React.ReactNode }) {
   return (
-    <header className="stepped bg-brass p-px shadow-card">
-      <div className={`stepped relative isolate overflow-hidden bg-poster px-6 text-center text-cream ${compact ? "pb-5 pt-5" : "pb-8 pt-4"}`}>
+    <header className="cv-auto stepped bg-brass p-px shadow-card [--cv-h:340px]">
+      <div className={`poster-surface stepped relative isolate overflow-hidden bg-poster px-6 text-center text-cream ${compact ? "pb-5 pt-5" : "pb-8 pt-4"}`}>
         <Sunburst animate color={color} strength={1} className="rays-drift" />
         {/* trama de puntos que se desvanece hacia arriba */}
         <div aria-hidden className="halftone absolute inset-0 opacity-40 [mask-image:linear-gradient(to_top,black,transparent_75%)]" />
         {/* velo radial: deja los rayos en los bordes y una zona calmada donde va el texto */}
         <div aria-hidden className="absolute inset-0 bg-[radial-gradient(ellipse_55%_75%_at_50%_48%,var(--poster)_40%,transparent_100%)]" />
-        {!compact && <SigilWire className="h-28 !text-cream-muted dark:!text-brass" />}
+        {!compact && <SigilWire className="aspect-[1000/120] min-h-28 !text-cream-muted dark:!text-brass" />}
         <div className={`relative ${compact ? "pt-1" : "pt-10"}`}>
           {/* emblema crema sobre disco bermellón, como el logo de la portada */}
           {!compact && (

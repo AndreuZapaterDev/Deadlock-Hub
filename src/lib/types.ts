@@ -13,7 +13,17 @@ export type Hero = {
   description: { lore?: string; role?: string; playstyle?: string };
   items: Record<string, string>;
   starting_stats: Record<string, { value: number }>;
+  /** Color propio del héroe (`#RRGGBB`). */
+  colors?: { style_hex?: string };
+  /** Almas acumuladas necesarias para cada nivel (claves "1".."36"). */
+  level_info?: Record<string, { required_gold: number }>;
+  /** Mejora que da cada nivel (claves `MODIFIER_VALUE_*`). */
+  standard_level_up_upgrades?: Record<string, number>;
+  /** Objetos más comprados por fase de la partida, con su uso y win rate. */
+  popular_items?: { early_game?: PopularItem[]; mid_game?: PopularItem[]; late_game?: PopularItem[] };
 };
+
+export type PopularItem = { item_id: number; class_name: string; pick_pct: number; winrate_pct: number };
 
 export type ItemProperty = {
   value?: number | string;
@@ -38,6 +48,9 @@ export type Item = {
   item_tier?: number;
   cost?: number;
   is_active_item?: boolean;
+  image_webp?: string;
+  /** Icono de tienda: lo traen todos los objetos de la tienda, incluso los 7 que no tienen `image_webp`. */
+  shop_image_webp?: string;
   shopable?: boolean;
   component_items?: string[];
   description?: { desc?: string };

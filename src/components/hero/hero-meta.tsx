@@ -1,15 +1,14 @@
 import Link from "next/link";
-import { BarChartBase, SankeyChart } from "@/components/charts/charts";
+import { BarChartBase, SankeyChart } from "@/components/charts/lazy-charts";
 import { HeroChip } from "@/components/hero/hero-chip";
 import { Card } from "@/components/ui/card";
-import { DemoNote } from "@/components/ui/demo-note";
 import { EmptyState, ErrorState } from "@/components/ui/feedback";
 import { SectionTitle } from "@/components/ui/section-title";
 import { TierBadge } from "@/components/ui/tier-badge";
 import { assignTiers, bestPartners, rankMatchups, winRate } from "@/lib/analytics";
 import { fmtDec, fmtNum, fmtPct } from "@/lib/format";
 import { byId, getHeroes, getItems } from "@/lib/lookup";
-import { hasHeroSpecificData, loadCounters, loadFlow, loadHeroDeep, loadHeroMeta, loadLeaderboard, loadSynergy } from "@/lib/meta-data";
+import { loadCounters, loadFlow, loadHeroDeep, loadHeroMeta, loadLeaderboard, loadSynergy } from "@/lib/meta-data";
 import { buildFlowSankey } from "@/lib/sankey";
 import { slugify } from "@/lib/slug";
 import type { Hero, Item } from "@/lib/types";
@@ -28,13 +27,12 @@ function Stat({ value, label, children }: { value: string; label: string; childr
 
 /** Estadísticas de meta de una ficha de héroe: win/pick/ban, orden de habilidades, builds, flujo de objetos, counters, sinergias y leaderboard. */
 export async function HeroMeta({ hero, abilities }: { hero: Hero; abilities: Item[] }) {
-  const specific = hasHeroSpecificData(hero.id);
   const [meta, counters, synergy, deep, flow, board, heroes, items] = await Promise.all([
     loadHeroMeta({}),
     loadCounters({}),
     loadSynergy({}),
-    specific ? loadHeroDeep(hero.id) : Promise.resolve(null),
-    specific ? loadFlow(hero.id, {}) : Promise.resolve(null),
+    loadHeroDeep(hero.id),
+    loadFlow(hero.id, {}),
     loadLeaderboard("Europe", hero.id),
     getHeroes(),
     getItems().then(byId),
@@ -73,15 +71,12 @@ export async function HeroMeta({ hero, abilities }: { hero: Hero; abilities: Ite
         ) : (
           <ErrorState title="No se han podido cargar las estadísticas de este héroe" />
         )}
-        <DemoNote>Los datos de ejemplo son un único periodo, así que la tendencia por parche y el rendimiento por rango (gráficas) no están disponibles; con la API real se activan.</DemoNote>
         <p className="text-xs text-ink-muted">Ver todos los héroes en la <Link href="/tier-list" className="link-brass font-semibold">tier list</Link>.</p>
       </section>
 
       <section aria-labelledby="order" className="space-y-4">
         <SectionTitle id="order">Orden de habilidades</SectionTitle>
-        {!specific ? (
-          <EmptyState title="Sin datos de ejemplo para este héroe" hint="El modo demo solo incluye el orden de habilidades, las builds y el flujo de objetos de Infernus. Con la API real estarán para todos los héroes." />
-        ) : order.length && orderIsThisHero ? (
+        {order.length && orderIsThisHero ? (
           <div className="grid gap-4 lg:grid-cols-2">
             <div className="space-y-3">
               {order.map((o, i) => (
@@ -116,9 +111,7 @@ export async function HeroMeta({ hero, abilities }: { hero: Hero; abilities: Ite
 
       <section aria-labelledby="builds" className="space-y-4">
         <SectionTitle id="builds">Builds populares</SectionTitle>
-        {!specific ? (
-          <EmptyState title="Sin datos de ejemplo para este héroe" hint="El modo demo solo incluye las builds de Infernus." />
-        ) : builds.length ? (
+        {builds.length ? (
           <div className="overflow-x-auto rounded-md border border-brass/30">
             <table className="w-full min-w-lg border-collapse text-sm">
               <thead className="bg-brass/10 text-left"><tr><th scope="col" className="px-3 py-2 font-semibold">Build</th><th scope="col" className="px-3 py-2 text-right font-semibold">Partidas</th><th scope="col" className="px-3 py-2 text-right font-semibold">Win rate</th><th scope="col" className="px-3 py-2 text-right font-semibold">Jugadores</th></tr></thead>
@@ -142,9 +135,7 @@ export async function HeroMeta({ hero, abilities }: { hero: Hero; abilities: Ite
 
       <section aria-labelledby="flow" className="space-y-4">
         <SectionTitle id="flow">Objetos por fase</SectionTitle>
-        {!specific ? (
-          <EmptyState title="Sin datos de ejemplo para este héroe" hint="El modo demo solo incluye el flujo de objetos de Infernus." />
-        ) : sankey && sankey.nodes.length ? (
+        {sankey && sankey.nodes.length ? (
           <Card>
             <p className="mb-2 text-xs text-ink-muted">Los 4 objetos más comprados en cada fase de la partida (de izquierda a derecha) y cómo se pasa de uno a otro.</p>
             <SankeyChart data={sankey} />
@@ -193,7 +184,6 @@ export async function HeroMeta({ hero, abilities }: { hero: Hero; abilities: Ite
         ) : (
           <EmptyState title="Aún no hay clasificación de este héroe" />
         )}
-        <DemoNote>El mock solo guarda el leaderboard de Infernus en Europa: cualquier héroe muestra esa misma lista de ejemplo.</DemoNote>
       </section>
     </>
   );

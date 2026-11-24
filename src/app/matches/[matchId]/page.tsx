@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { LineChartBase } from "@/components/charts/charts";
+import { LineChartBase } from "@/components/charts/lazy-charts";
 import { ProfileProblem } from "@/components/player/profile-problem";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
@@ -15,7 +15,6 @@ import { gameModeLabel, matchModeLabel } from "@/lib/player-stats";
 import { getSource } from "@/lib/api";
 import type { MatchPlayer } from "@/lib/types";
 
-const EXAMPLE_MATCH = 142529961;
 // Los equipos son 0 y 1; la API no dice cuál es cada facción, así que se llaman A y B.
 const TEAM = ["Equipo A", "Equipo B"];
 
@@ -67,9 +66,6 @@ export default async function MatchPage({ params }: { params: Promise<{ matchId:
 
   return (
     <div className="space-y-12">
-      {process.env.DATA_SOURCE !== "api" && matchId !== EXAMPLE_MATCH && (
-        <p className="rounded-sm border border-brass/40 bg-brass/10 px-4 py-2 text-center text-sm">Modo demo: cualquier partida muestra la partida de ejemplo #{EXAMPLE_MATCH}.</p>
-      )}
 
       <PosterHeader title={`Partida #${matchId}`} subtitle={`${gameModeLabel(match.game_mode)} · ${matchModeLabel(match.match_mode)}`}>
         <div className="flex flex-wrap items-center justify-center gap-2">

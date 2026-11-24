@@ -11,9 +11,9 @@
     "live": "Live",
     "patches": "Patches"
   },
-  "search": { "label": "Search player", "placeholder": "Find your account (name, Steam ID or URL)" },
+  "search": { "label": "Search player", "placeholder": "Name, Steam ID or URL" },
   "theme": { "day": "Day", "night": "Night" },
-  "demo": { "banner": "Demo mode: sample data" },
+  "language": { "label": "Game language" },
   "footer": {
     "disclaimer": "Deadlock Hub is an unofficial fan site. It is not affiliated with or endorsed by Valve. Deadlock and all its assets are property of Valve Corporation.",
     "credits": "Data from",
@@ -26,5 +26,53 @@
     "npcs": "NPCs",
     "mechanics": "Mechanics",
     "status": "Status"
+  },
+  "common": {
+    "pagination": "Pagination",
+    "prevPage": "Previous page",
+    "nextPage": "Next page",
+    "apply": "Apply",
+    "clearFilters": "Clear filters"
+  },
+  "home": {
+    "subtitle": "Everything about Deadlock in one place: heroes, items, stats and your profile",
+    "findAccount": "Find your account",
+    "seeHeroes": "See heroes",
+    "liveCount": "{count, plural, one {match live right now} other {matches live right now}}",
+    "watchLive": "Watch live",
+    "matches": "matches analysed",
+    "players": "unique players",
+    "heroes": "playable heroes",
+    "duration": "average duration",
+    "topHeroes": "Heroes with the most wins",
+    "wins": "win rate",
+    "quickLinks": "Quick links",
+    "heroesText": "Abilities, base stats and lore for each one.",
+    "itemsText": "The full shop by category and tier.",
+    "tierListText": "Who wins the most right now, by rank and patch.",
+    "plannerText": "Put your build together and work out its soul cost.",
+    "followedTitle": "Your players",
+    "followedLabel": "Followed players"
+  },
+  "notFound": {
+    "subtitle": "This street leads nowhere",
+    "home": "Back to home",
+    "searchPlayer": "Find a player",
+    "text": "The page you are looking for does not exist. The link may be mistyped, the player, hero or item may not exist, or it may have moved."
+  },
+  "offline": {
+    "title": "Offline",
+    "subtitle": "The street is dark",
+    "heroes": "Saved heroes",
+    "items": "Saved items",
+    "text": "You are offline and this page is not saved. The wiki (heroes, items, mechanics, NPCs and ranks) can be read without a connection once visited; profiles, matches and stats need a connection the first time."
+  },
+  "pwa": {
+    "offlineBanner": "Offline: showing the last saved data.",
+    "update": "A new version is available.",
+    "reload": "Reload",
+    "install": "Install app",
+    "iosTip": "To install the app on iOS: tap <b>Share</b> and then <b>Add to Home Screen</b>.",
+    "close": "Close"
   }
 }

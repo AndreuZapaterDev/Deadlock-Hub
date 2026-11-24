@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
-import { RadarChartBase } from "@/components/charts/charts";
+import { LineChartBase, RadarChartBase } from "@/components/charts/lazy-charts";
 import { CompareSelector } from "@/components/filters/compare-selector";
 import { HeroPortrait } from "@/components/hero/hero-card";
 import { Card } from "@/components/ui/card";
@@ -12,8 +12,9 @@ import { normalizeAxis, pairRate, matchup } from "@/lib/analytics";
 import { fmtDec, fmtNum, fmtPct } from "@/lib/format";
 import { abilityStats } from "@/lib/item-sections";
 import { HERO_STATS, heroTypeLabel, unitsToMeters } from "@/lib/labels";
-import { getHeroAbilities, getHeroes, getItemIndex } from "@/lib/lookup";
-import { loadCounters, loadHeroMeta, loadSynergy } from "@/lib/meta-data";
+import { mergeSeries, tierSeries, tightDomain, weeklySeries } from "@/lib/hero-trends";
+import { getHeroAbilities, getHeroes, getItemIndex, getRanks } from "@/lib/lookup";
+import { loadCounters, loadHeroMeta, loadHeroStatsByRank, loadHeroStatsWeekly, loadSynergy } from "@/lib/meta-data";
 import { slugify } from "@/lib/slug";
 import type { Hero, Item } from "@/lib/types";
 
@@ -90,6 +91,20 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
     loadSynergy({}),
   ]);
   const metaBy = meta.ok ? new Map(meta.data.rows.map((r) => [r.id, r])) : new Map();
+
+  // Evolución por rango y por semana de cada héroe elegido (una línea por héroe)
+  const [byRank, weekly, ranks] = await Promise.all([loadHeroStatsByRank(), loadHeroStatsWeekly(), getRanks()]);
+  const tierName = (t: number) => ranks.find((r) => r.tier === t)?.name ?? `Rango ${t}`;
+  const pct = (n: number) => +(n * 100).toFixed(1);
+  const fmtDay = new Intl.DateTimeFormat("es", { day: "numeric", month: "short" });
+  const lineSeries = chosen.map((x) => ({ key: `h${x.id}`, label: x.name }));
+  const vals = (row: Record<string, string | number>) => Object.entries(row).filter(([k]) => k !== "x").map(([, v]) => Number(v));
+  const tierLines = byRank.ok
+    ? mergeSeries(chosen.map((x) => ({ name: `h${x.id}`, points: tierSeries(byRank.data, x.id) })), (p) => p.tier, (p) => pct(p.winRate)).map((r) => ({ ...r, x: tierName(Number(r.x)) }))
+    : [];
+  const weekLines = weekly.ok
+    ? mergeSeries(chosen.map((x) => ({ name: `h${x.id}`, points: weeklySeries(weekly.data, x.id) })), (p) => p.ts, (p) => pct(p.winRate)).map((r) => ({ ...r, x: fmtDay.format(new Date(Number(r.x) * 1000)) }))
+    : [];
 
   const radar = AXES.map((a) => {
     const all = everyone.map((c) => a.get(c) ?? 0);
@@ -190,6 +205,26 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
           </div>
         )}
       </section>
+
+      {(tierLines.length > 1 || weekLines.length > 2) && (
+        <section aria-labelledby="trend" className="space-y-4">
+          <SectionTitle id="trend">Rendimiento por rango y semana</SectionTitle>
+          <div className="grid gap-4 lg:grid-cols-2">
+            {tierLines.length > 1 && (
+              <Card>
+                <h3 className="mb-2 font-display text-lg font-black">Win rate por rango</h3>
+                <LineChartBase data={tierLines} xKey="x" series={lineSeries} yDomain={tightDomain(tierLines.flatMap(vals))} suffix="%" height={260} />
+              </Card>
+            )}
+            {weekLines.length > 2 && (
+              <Card>
+                <h3 className="mb-2 font-display text-lg font-black">Win rate por semana</h3>
+                <LineChartBase data={weekLines} xKey="x" series={lineSeries} yDomain={tightDomain(weekLines.flatMap(vals))} suffix="%" height={260} />
+              </Card>
+            )}
+          </div>
+        </section>
+      )}
 
       <section aria-labelledby="h2h" className="space-y-4">
         <SectionTitle id="h2h">Cara a cara y sinergia</SectionTitle>

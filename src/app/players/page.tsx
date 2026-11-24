@@ -83,7 +83,6 @@ export default async function PlayersPage({ searchParams }: { searchParams: Prom
             ))}
           </dl>
         </Card>
-        <p className="text-xs text-ink-muted">Modo demo: en este modo, cualquier cuenta muestra el perfil de ejemplo (cosmetical). Prueba <Link href="/players/403" className="link-brass font-semibold">/players/403</Link> (perfil privado), <Link href="/players/404" className="link-brass font-semibold">/players/404</Link> (no existe) o <Link href="/players/503" className="link-brass font-semibold">/players/503</Link> (API ocupada) para ver los estados de error.</p>
       </section>
     </div>
   );

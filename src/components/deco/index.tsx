@@ -177,7 +177,7 @@ function Glyph({ kind }: { kind: number }) {
  */
 export function SigilWire({ className }: SvgProps) {
   return (
-    <svg role="presentation" aria-hidden className={cn("pointer-events-none absolute inset-x-0 top-0 w-full text-brass", className)} viewBox="0 0 1000 120" preserveAspectRatio="xMidYMin slice" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <svg role="presentation" aria-hidden className={cn("sigil-wire pointer-events-none absolute inset-x-0 top-0 w-full text-brass", className)} viewBox="0 0 1000 120" preserveAspectRatio="xMidYMin slice" fill="none" stroke="currentColor" strokeWidth="1.5">
       <path d={`M${SEG1.p0} Q${SEG1.c} ${SEG1.p1} Q${SEG2.c} ${SEG2.p1}`} opacity=".7" />
       {HANGS.map(([seg, t], i) => {
         const [x, y] = quad(seg, t);

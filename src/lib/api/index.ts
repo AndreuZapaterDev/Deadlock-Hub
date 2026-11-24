@@ -1,6 +1,6 @@
 import { httpSource } from "./http-source";
-import { mockSource } from "./mock-source";
 import type { DataSource } from "./types";
 
-export const getSource = (): DataSource => (process.env.DATA_SOURCE === "api" ? httpSource : mockSource);
+/** Toda la web lee de la API real (`api.deadlock-api.com`): no hay modo demo ni fixtures. */
+export const getSource = (): DataSource => httpSource;
 export * from "./types";

@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Sigil } from "@/components/deco";
 import { HeroCard } from "@/components/hero/hero-card";
+import { FollowedStrip } from "@/components/player/follows";
 import { Button } from "@/components/ui/button";
 import { CountUp } from "@/components/motion/count-up";
 import { Reveal } from "@/components/motion/reveal";
@@ -14,15 +16,17 @@ import type { HeroStat } from "@/lib/types";
 
 type GameStats = { total_matches: number; total_players: number; avg_duration_s: number };
 
-const TILES = [
-  { href: "/heroes", title: "Héroes", text: "Habilidades, estadísticas base y lore de cada uno.", accent: "bg-lilac" },
-  { href: "/items", title: "Objetos", text: "La tienda completa por categoría y tier.", accent: "bg-apricot" },
-  { href: "/tier-list", title: "Tier list", text: "Quién gana más ahora mismo, por rango y parche.", accent: "bg-sage" },
-  { href: "/build-planner", title: "Build planner", text: "Monta tu build y calcula el coste en almas.", accent: "bg-teal" },
-];
 
+
+const TILES = [
+  { href: "/heroes", title: "nav.heroes", text: "home.heroesText", accent: "bg-lilac" },
+  { href: "/items", title: "nav.items", text: "home.itemsText", accent: "bg-apricot" },
+  { href: "/tier-list", title: "nav.tierList", text: "home.tierListText", accent: "bg-sage" },
+  { href: "/build-planner", title: "footer.planner", text: "home.plannerText", accent: "bg-teal" },
+] as const;
 
 export default async function Home() {
+  const t = await getTranslations();
   const api = getSource();
   const [heroes, stats, game, live] = await Promise.all([
     getHeroes(),
@@ -38,25 +42,25 @@ export default async function Home() {
     .slice(0, 3);
 
   const figures = [
-    { value: game.total_matches, kind: "num" as const, label: "partidas analizadas" },
-    { value: game.total_players, kind: "num" as const, label: "jugadores distintos" },
-    { value: heroes.length, kind: "num" as const, label: "héroes jugables" },
-    { value: game.avg_duration_s, kind: "duration" as const, label: "duración media" },
+    { value: game.total_matches, kind: "num" as const, label: t("home.matches") },
+    { value: game.total_players, kind: "num" as const, label: t("home.players") },
+    { value: heroes.length, kind: "num" as const, label: t("home.heroes") },
+    { value: game.avg_duration_s, kind: "duration" as const, label: t("home.duration") },
   ];
 
   return (
     <div className="space-y-14">
-      <PosterHeader title="Deadlock Hub" subtitle="Todo sobre Deadlock en un solo sitio: héroes, objetos, estadísticas y tu perfil">
+      <PosterHeader title="Deadlock Hub" subtitle={t("home.subtitle")}>
         <div className="flex flex-wrap justify-center gap-3">
-          <Button href="/players">Busca tu cuenta</Button>
-          <Button href="/heroes" variant="secondary">Ver héroes</Button>
+          <Button href="/players">{t("home.findAccount")}</Button>
+          <Button href="/heroes" variant="secondary">{t("home.seeHeroes")}</Button>
         </div>
       </PosterHeader>
 
       <Link href="/live" className="group flex flex-wrap items-center justify-center gap-x-3 gap-y-1 rounded-sm border border-accent/60 bg-accent/10 px-4 py-2.5 text-sm transition-colors hover:bg-accent/20">
         <span aria-hidden className="relative flex size-2.5"><span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-70" /><span className="relative inline-flex size-2.5 rounded-full bg-accent" /></span>
-        <span><strong className="font-display text-base font-black">{live.length}</strong> partidas en directo ahora mismo</span>
-        <span className="link-brass font-semibold">Ver en directo</span>
+        <span><strong className="font-display text-base font-black">{live.length}</strong> {t("home.liveCount", { count: live.length })}</span>
+        <span className="link-brass font-semibold">{t("home.watchLive")}</span>
       </Link>
 
       <dl className="grid grid-cols-2 gap-y-6 border-y-4 border-double border-brass/60 py-6 lg:grid-cols-4">
@@ -69,24 +73,26 @@ export default async function Home() {
       </dl>
 
       <section aria-labelledby="top-heroes" className="space-y-5">
-        <SectionTitle id="top-heroes">Los héroes con más victorias</SectionTitle>
+        <SectionTitle id="top-heroes">{t("home.topHeroes")}</SectionTitle>
         <div className="grid gap-6 sm:grid-cols-3">
           {top.map(({ hero, rate }, i) => (
-            <Reveal key={hero.id} variant="curtain" delay={i * 0.14} className="space-y-2">
+            <Reveal key={hero.id} variant="curtain" delay={i * 0.14} className="flex flex-col gap-2">
               <HeroCard hero={hero} href={`/heroes/${slugify(hero.name)}`} />
-              <p className="text-center text-sm text-ink-muted"><span className="font-semibold text-sage-ink">{fmtPct(rate)}</span> de victorias</p>
+              <p className="text-center text-sm text-ink-muted"><span className="font-semibold text-sage-ink">{fmtPct(rate)}</span> {t("home.wins")}</p>
             </Reveal>
           ))}
         </div>
       </section>
 
-      <section aria-label="Accesos rápidos" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {TILES.map((t, i) => (
-          <Reveal key={t.href} delay={i * 0.08} className="h-full"><Link href={t.href} className="shine group relative block h-full overflow-hidden rounded-md border border-brass/40 bg-surface p-5 pt-6 shadow-card transition-transform duration-300 hover:-translate-y-0.5">
-            <span aria-hidden className={`absolute inset-x-0 top-0 h-1.5 ${t.accent}`} />
+      <FollowedStrip />
+
+      <section aria-label={t("home.quickLinks")} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {TILES.map((tile, i) => (
+          <Reveal key={tile.href} delay={i * 0.08} className="h-full"><Link href={tile.href} className="shine group relative block h-full overflow-hidden rounded-md border border-brass/40 bg-surface p-5 pt-6 shadow-card transition-transform duration-300 hover:-translate-y-0.5">
+            <span aria-hidden className={`absolute inset-x-0 top-0 h-1.5 ${tile.accent}`} />
             <Sigil className="absolute -bottom-8 -right-8 h-32 w-32 opacity-20 transition-all duration-700 group-hover:rotate-45 group-hover:opacity-40" />
-            <h3 className="relative font-display text-lg font-black uppercase tracking-[0.06em]">{t.title}</h3>
-            <p className="relative mt-2 text-sm text-ink-muted">{t.text}</p>
+            <h3 className="relative font-display text-lg font-black uppercase tracking-[0.06em]">{t(tile.title)}</h3>
+            <p className="relative mt-2 text-sm text-ink-muted">{t(tile.text)}</p>
           </Link></Reveal>
         ))}
       </section>

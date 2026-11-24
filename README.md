@@ -17,5 +17,5 @@ Todo corre en Docker. En el anfitrión solo hacen falta Docker y Docker Compose:
 
 Atajos equivalentes en el `Makefile` (`make dev`, `make test`…).
 
-Datos: por defecto `DATA_SOURCE=mock`, que lee `mock/deadlock-mock/fixtures/` sin hacer ninguna petición de red.
+Datos: **todo sale de la API real** (`api.deadlock-api.com`); no hay modo demo ni datos de ejemplo, así que hace falta conexión a internet. `DEADLOCK_API_KEY` es opcional (sube el límite de peticiones); copia `.env.example` a `.env`.
 Informe de los datos: [docs/DATA_REPORT.md](docs/DATA_REPORT.md). Decisiones: [NOTES.md](NOTES.md).

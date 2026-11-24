@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { CATEGORY, Chip } from "@/components/ui/chip";
 import { Input } from "@/components/ui/search-box";
+import { Select } from "@/components/ui/select";
 import {
   CORE_ROWS, MAX_PER_CATEGORY, computeBuild, costSummary, describeEffects, encodeBuild, moveItem,
   type Category, type PlannerHero, type PlannerItem,
@@ -80,9 +81,9 @@ export function BuildPlanner({ heroes, items, initial }: { heroes: PlannerHero[]
         <Card className="space-y-3">
           <label className="flex flex-col gap-1 text-xs font-semibold text-ink-muted">
             Héroe
-            <select value={heroSlug} onChange={(e) => setHeroSlug(e.target.value)} className="rounded-sm border border-brass/50 bg-surface px-3 py-2 text-sm text-ink focus-visible:border-brass">
+            <Select value={heroSlug} onChange={(e) => setHeroSlug(e.target.value)}>
               {heroes.map((h) => <option key={h.slug} value={h.slug}>{h.name}</option>)}
-            </select>
+            </Select>
           </label>
           <div role="tablist" aria-label="Categoría de objetos" className="flex flex-wrap gap-2">
             {CATS.map((c, i) => (
@@ -98,10 +99,10 @@ export function BuildPlanner({ heroes, items, initial }: { heroes: PlannerHero[]
             </label>
             <label className="flex flex-col gap-1 text-xs font-semibold text-ink-muted">
               Tier
-              <select value={tier} onChange={(e) => setTier(e.target.value)} className="rounded-sm border border-brass/50 bg-surface px-3 py-2 text-sm text-ink">
+              <Select value={tier} onChange={(e) => setTier(e.target.value)}>
                 <option value="">Todos</option>
                 {[1, 2, 3, 4].map((t) => <option key={t} value={t}>Tier {t}</option>)}
-              </select>
+              </Select>
             </label>
           </div>
         </Card>

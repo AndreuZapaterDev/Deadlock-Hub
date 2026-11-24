@@ -1,8 +1,10 @@
 "use client";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/search-box";
+import { Select } from "@/components/ui/select";
 
 export type FilterField =
   | { name: string; label: string; type: "search"; placeholder?: string }
@@ -13,6 +15,7 @@ export type FilterField =
  * la búsqueda espera 300 ms tras la última tecla. Sin JS, "Aplicar" envía el formulario por GET.
  */
 export function FilterBar({ fields }: { fields: FilterField[] }) {
+  const t = useTranslations("common");
   const router = useRouter();
   const path = usePathname();
   const params = useSearchParams();
@@ -34,7 +37,7 @@ export function FilterBar({ fields }: { fields: FilterField[] }) {
 
   const active = [...params.keys()].length > 0;
   return (
-    <form action={path} role="search" className="flex flex-wrap items-end gap-3 rounded-md border border-brass/30 bg-surface p-3">
+    <form action={path} role="search" className="flex flex-wrap items-end gap-3 rounded-md border border-brass/30 bg-panel p-3">
       {fields.map((f) =>
         f.type === "search" ? (
           <label key={f.name} className="flex min-w-48 flex-1 flex-col gap-1 text-xs font-semibold text-ink-muted">
@@ -44,15 +47,15 @@ export function FilterBar({ fields }: { fields: FilterField[] }) {
         ) : (
           <label key={f.name} className="flex flex-col gap-1 text-xs font-semibold text-ink-muted">
             {f.label}
-            <select name={f.name} value={params.get(f.name) ?? ""} onChange={(e) => apply(f.name, e.target.value)} className="rounded-sm border border-brass/50 bg-surface px-3 py-2 text-sm text-ink focus-visible:border-brass">
+            <Select name={f.name} value={params.get(f.name) ?? ""} onChange={(e) => apply(f.name, e.target.value)}>
               <option value="">{f.allLabel ?? "Todos"}</option>
               {f.options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-            </select>
+            </Select>
           </label>
         ),
       )}
-      <noscript><button type="submit" className="rounded-sm border border-brass px-3 py-2 text-sm">Aplicar</button></noscript>
-      {active && <Link href={path} className="link-brass pb-2 text-sm font-semibold">Quitar filtros</Link>}
+      <noscript><button type="submit" className="rounded-sm border border-brass px-3 py-2 text-sm">{t("apply")}</button></noscript>
+      {active && <Link href={path} className="link-brass pb-2 text-sm font-semibold">{t("clearFilters")}</Link>}
     </form>
   );
 }
