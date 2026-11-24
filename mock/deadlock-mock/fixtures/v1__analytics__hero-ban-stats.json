@@ -1,0 +1,266 @@
+[
+ {
+  "hero_id": 1,
+  "bucket": 0,
+  "bans": 155753,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 2,
+  "bucket": 0,
+  "bans": 82398,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 3,
+  "bucket": 0,
+  "bans": 414683,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 4,
+  "bucket": 0,
+  "bans": 207371,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 6,
+  "bucket": 0,
+  "bans": 159447,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 7,
+  "bucket": 0,
+  "bans": 364488,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 8,
+  "bucket": 0,
+  "bans": 274388,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 10,
+  "bucket": 0,
+  "bans": 90267,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 11,
+  "bucket": 0,
+  "bans": 126180,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 12,
+  "bucket": 0,
+  "bans": 229926,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 13,
+  "bucket": 0,
+  "bans": 639241,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 14,
+  "bucket": 0,
+  "bans": 98836,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 15,
+  "bucket": 0,
+  "bans": 517892,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 16,
+  "bucket": 0,
+  "bans": 99314,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 17,
+  "bucket": 0,
+  "bans": 70205,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 18,
+  "bucket": 0,
+  "bans": 252390,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 19,
+  "bucket": 0,
+  "bans": 174060,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 20,
+  "bucket": 0,
+  "bans": 41224,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 25,
+  "bucket": 0,
+  "bans": 62224,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 27,
+  "bucket": 0,
+  "bans": 189493,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 31,
+  "bucket": 0,
+  "bans": 272603,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 35,
+  "bucket": 0,
+  "bans": 90517,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 50,
+  "bucket": 0,
+  "bans": 48052,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 52,
+  "bucket": 0,
+  "bans": 43874,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 58,
+  "bucket": 0,
+  "bans": 80175,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 60,
+  "bucket": 0,
+  "bans": 92024,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 63,
+  "bucket": 0,
+  "bans": 130807,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 64,
+  "bucket": 0,
+  "bans": 292209,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 65,
+  "bucket": 0,
+  "bans": 54169,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 66,
+  "bucket": 0,
+  "bans": 477089,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 67,
+  "bucket": 0,
+  "bans": 94761,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 69,
+  "bucket": 0,
+  "bans": 443349,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 72,
+  "bucket": 0,
+  "bans": 122768,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 76,
+  "bucket": 0,
+  "bans": 816642,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 77,
+  "bucket": 0,
+  "bans": 537850,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 78,
+  "bucket": 0,
+  "bans": 952305,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 79,
+  "bucket": 0,
+  "bans": 117272,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 80,
+  "bucket": 0,
+  "bans": 142175,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 81,
+  "bucket": 0,
+  "bans": 241020,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 84,
+  "bucket": 0,
+  "bans": 94990,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 85,
+  "bucket": 0,
+  "bans": 127909,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 86,
+  "bucket": 0,
+  "bans": 188827,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 87,
+  "bucket": 0,
+  "bans": 274191,
+  "matches": 4642908
+ },
+ {
+  "hero_id": 88,
+  "bucket": 0,
+  "bans": 240712,
+  "matches": 4642908
+ }
+]

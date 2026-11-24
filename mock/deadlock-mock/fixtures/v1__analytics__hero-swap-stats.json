@@ -1,0 +1,398 @@
+[
+ {
+  "hero_id": 1,
+  "bucket": 0,
+  "matches": 282592,
+  "swapped_in": 58642,
+  "swapped_in_wins": 27902,
+  "pregame_picks": 252012,
+  "swapped_away": 28062
+ },
+ {
+  "hero_id": 2,
+  "bucket": 0,
+  "matches": 216407,
+  "swapped_in": 50530,
+  "swapped_in_wins": 26122,
+  "pregame_picks": 184043,
+  "swapped_away": 18166
+ },
+ {
+  "hero_id": 3,
+  "bucket": 0,
+  "matches": 184689,
+  "swapped_in": 35197,
+  "swapped_in_wins": 17099,
+  "pregame_picks": 164081,
+  "swapped_away": 14589
+ },
+ {
+  "hero_id": 4,
+  "bucket": 0,
+  "matches": 239483,
+  "swapped_in": 40148,
+  "swapped_in_wins": 19950,
+  "pregame_picks": 225850,
+  "swapped_away": 26515
+ },
+ {
+  "hero_id": 6,
+  "bucket": 0,
+  "matches": 239617,
+  "swapped_in": 56912,
+  "swapped_in_wins": 28494,
+  "pregame_picks": 218890,
+  "swapped_away": 36185
+ },
+ {
+  "hero_id": 7,
+  "bucket": 0,
+  "matches": 250815,
+  "swapped_in": 40561,
+  "swapped_in_wins": 20311,
+  "pregame_picks": 223576,
+  "swapped_away": 13322
+ },
+ {
+  "hero_id": 8,
+  "bucket": 0,
+  "matches": 89413,
+  "swapped_in": 19704,
+  "swapped_in_wins": 9725,
+  "pregame_picks": 77987,
+  "swapped_away": 8278
+ },
+ {
+  "hero_id": 10,
+  "bucket": 0,
+  "matches": 205164,
+  "swapped_in": 41417,
+  "swapped_in_wins": 19676,
+  "pregame_picks": 183080,
+  "swapped_away": 19333
+ },
+ {
+  "hero_id": 11,
+  "bucket": 0,
+  "matches": 163917,
+  "swapped_in": 42416,
+  "swapped_in_wins": 21509,
+  "pregame_picks": 135759,
+  "swapped_away": 14258
+ },
+ {
+  "hero_id": 12,
+  "bucket": 0,
+  "matches": 130165,
+  "swapped_in": 26104,
+  "swapped_in_wins": 13546,
+  "pregame_picks": 115476,
+  "swapped_away": 11415
+ },
+ {
+  "hero_id": 13,
+  "bucket": 0,
+  "matches": 319944,
+  "swapped_in": 35929,
+  "swapped_in_wins": 18346,
+  "pregame_picks": 296391,
+  "swapped_away": 12376
+ },
+ {
+  "hero_id": 14,
+  "bucket": 0,
+  "matches": 157739,
+  "swapped_in": 29153,
+  "swapped_in_wins": 14367,
+  "pregame_picks": 142053,
+  "swapped_away": 13467
+ },
+ {
+  "hero_id": 15,
+  "bucket": 0,
+  "matches": 280471,
+  "swapped_in": 42986,
+  "swapped_in_wins": 20951,
+  "pregame_picks": 261331,
+  "swapped_away": 23846
+ },
+ {
+  "hero_id": 16,
+  "bucket": 0,
+  "matches": 122211,
+  "swapped_in": 30413,
+  "swapped_in_wins": 15066,
+  "pregame_picks": 112703,
+  "swapped_away": 20905
+ },
+ {
+  "hero_id": 17,
+  "bucket": 0,
+  "matches": 126859,
+  "swapped_in": 31260,
+  "swapped_in_wins": 14609,
+  "pregame_picks": 108833,
+  "swapped_away": 13234
+ },
+ {
+  "hero_id": 18,
+  "bucket": 0,
+  "matches": 147672,
+  "swapped_in": 38267,
+  "swapped_in_wins": 18570,
+  "pregame_picks": 135682,
+  "swapped_away": 26277
+ },
+ {
+  "hero_id": 19,
+  "bucket": 0,
+  "matches": 227723,
+  "swapped_in": 48362,
+  "swapped_in_wins": 23230,
+  "pregame_picks": 213054,
+  "swapped_away": 33693
+ },
+ {
+  "hero_id": 20,
+  "bucket": 0,
+  "matches": 164034,
+  "swapped_in": 34134,
+  "swapped_in_wins": 17313,
+  "pregame_picks": 143006,
+  "swapped_away": 13106
+ },
+ {
+  "hero_id": 25,
+  "bucket": 0,
+  "matches": 110029,
+  "swapped_in": 30134,
+  "swapped_in_wins": 14486,
+  "pregame_picks": 96822,
+  "swapped_away": 16927
+ },
+ {
+  "hero_id": 27,
+  "bucket": 0,
+  "matches": 171288,
+  "swapped_in": 39926,
+  "swapped_in_wins": 19380,
+  "pregame_picks": 158197,
+  "swapped_away": 26835
+ },
+ {
+  "hero_id": 31,
+  "bucket": 0,
+  "matches": 264166,
+  "swapped_in": 50521,
+  "swapped_in_wins": 25464,
+  "pregame_picks": 240494,
+  "swapped_away": 26849
+ },
+ {
+  "hero_id": 35,
+  "bucket": 0,
+  "matches": 84383,
+  "swapped_in": 19219,
+  "swapped_in_wins": 9253,
+  "pregame_picks": 74285,
+  "swapped_away": 9121
+ },
+ {
+  "hero_id": 50,
+  "bucket": 0,
+  "matches": 134795,
+  "swapped_in": 32229,
+  "swapped_in_wins": 14808,
+  "pregame_picks": 116473,
+  "swapped_away": 13907
+ },
+ {
+  "hero_id": 52,
+  "bucket": 0,
+  "matches": 60013,
+  "swapped_in": 18684,
+  "swapped_in_wins": 8340,
+  "pregame_picks": 49290,
+  "swapped_away": 7961
+ },
+ {
+  "hero_id": 58,
+  "bucket": 0,
+  "matches": 78720,
+  "swapped_in": 16011,
+  "swapped_in_wins": 7692,
+  "pregame_picks": 70886,
+  "swapped_away": 8177
+ },
+ {
+  "hero_id": 60,
+  "bucket": 0,
+  "matches": 58227,
+  "swapped_in": 17071,
+  "swapped_in_wins": 7846,
+  "pregame_picks": 46785,
+  "swapped_away": 5629
+ },
+ {
+  "hero_id": 63,
+  "bucket": 0,
+  "matches": 221970,
+  "swapped_in": 49720,
+  "swapped_in_wins": 23269,
+  "pregame_picks": 193542,
+  "swapped_away": 21292
+ },
+ {
+  "hero_id": 64,
+  "bucket": 0,
+  "matches": 281091,
+  "swapped_in": 54190,
+  "swapped_in_wins": 26768,
+  "pregame_picks": 260383,
+  "swapped_away": 33482
+ },
+ {
+  "hero_id": 65,
+  "bucket": 0,
+  "matches": 235089,
+  "swapped_in": 53196,
+  "swapped_in_wins": 25405,
+  "pregame_picks": 207407,
+  "swapped_away": 25514
+ },
+ {
+  "hero_id": 66,
+  "bucket": 0,
+  "matches": 198652,
+  "swapped_in": 41100,
+  "swapped_in_wins": 20259,
+  "pregame_picks": 183946,
+  "swapped_away": 26394
+ },
+ {
+  "hero_id": 67,
+  "bucket": 0,
+  "matches": 222207,
+  "swapped_in": 41009,
+  "swapped_in_wins": 21424,
+  "pregame_picks": 192298,
+  "swapped_away": 11100
+ },
+ {
+  "hero_id": 69,
+  "bucket": 0,
+  "matches": 91327,
+  "swapped_in": 20890,
+  "swapped_in_wins": 9775,
+  "pregame_picks": 77718,
+  "swapped_away": 7281
+ },
+ {
+  "hero_id": 72,
+  "bucket": 0,
+  "matches": 215207,
+  "swapped_in": 48863,
+  "swapped_in_wins": 23686,
+  "pregame_picks": 196445,
+  "swapped_away": 30101
+ },
+ {
+  "hero_id": 76,
+  "bucket": 0,
+  "matches": 246478,
+  "swapped_in": 32369,
+  "swapped_in_wins": 16528,
+  "pregame_picks": 231668,
+  "swapped_away": 17559
+ },
+ {
+  "hero_id": 77,
+  "bucket": 0,
+  "matches": 147200,
+  "swapped_in": 28011,
+  "swapped_in_wins": 14042,
+  "pregame_picks": 136113,
+  "swapped_away": 16924
+ },
+ {
+  "hero_id": 78,
+  "bucket": 0,
+  "matches": 136107,
+  "swapped_in": 23631,
+  "swapped_in_wins": 11641,
+  "pregame_picks": 120529,
+  "swapped_away": 8053
+ },
+ {
+  "hero_id": 79,
+  "bucket": 0,
+  "matches": 157603,
+  "swapped_in": 31990,
+  "swapped_in_wins": 14833,
+  "pregame_picks": 136714,
+  "swapped_away": 11101
+ },
+ {
+  "hero_id": 80,
+  "bucket": 0,
+  "matches": 145300,
+  "swapped_in": 31619,
+  "swapped_in_wins": 15346,
+  "pregame_picks": 134479,
+  "swapped_away": 20798
+ },
+ {
+  "hero_id": 81,
+  "bucket": 0,
+  "matches": 149537,
+  "swapped_in": 33139,
+  "swapped_in_wins": 16215,
+  "pregame_picks": 139348,
+  "swapped_away": 22950
+ },
+ {
+  "hero_id": 84,
+  "bucket": 0,
+  "matches": 202903,
+  "swapped_in": 38819,
+  "swapped_in_wins": 19249,
+  "pregame_picks": 190001,
+  "swapped_away": 25917
+ },
+ {
+  "hero_id": 85,
+  "bucket": 0,
+  "matches": 58937,
+  "swapped_in": 14764,
+  "swapped_in_wins": 6862,
+  "pregame_picks": 48888,
+  "swapped_away": 4715
+ },
+ {
+  "hero_id": 86,
+  "bucket": 0,
+  "matches": 121917,
+  "swapped_in": 25293,
+  "swapped_in_wins": 12322,
+  "pregame_picks": 104799,
+  "swapped_away": 8175
+ },
+ {
+  "hero_id": 87,
+  "bucket": 0,
+  "matches": 149683,
+  "swapped_in": 22999,
+  "swapped_in_wins": 11447,
+  "pregame_picks": 132372,
+  "swapped_away": 5688
+ },
+ {
+  "hero_id": 88,
+  "bucket": 0,
+  "matches": 66730,
+  "swapped_in": 17496,
+  "swapped_in_wins": 9112,
+  "pregame_picks": 57271,
+  "swapped_away": 8037
+ }
+]

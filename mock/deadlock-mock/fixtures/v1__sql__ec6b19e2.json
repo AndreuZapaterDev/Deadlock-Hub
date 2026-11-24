@@ -1,0 +1,72 @@
+[
+ {
+  "match_id": 0,
+  "cluster_id": 3,
+  "metadata_salt": 999,
+  "replay_salt": 888,
+  "created_at": "2026-03-17T09:14:03Z"
+ },
+ {
+  "match_id": 0,
+  "cluster_id": 120,
+  "metadata_salt": 42,
+  "replay_salt": null,
+  "created_at": "2026-10-02T02:42:30Z"
+ },
+ {
+  "match_id": 0,
+  "cluster_id": 404,
+  "metadata_salt": 123,
+  "replay_salt": null,
+  "created_at": "2026-09-27T06:39:12Z"
+ },
+ {
+  "match_id": 0,
+  "cluster_id": null,
+  "metadata_salt": null,
+  "replay_salt": null,
+  "created_at": "2026-07-05T16:55:29Z"
+ },
+ {
+  "match_id": 1,
+  "cluster_id": 1,
+  "metadata_salt": 1,
+  "replay_salt": null,
+  "created_at": "2026-10-18T06:13:03Z"
+ },
+ {
+  "match_id": 1,
+  "cluster_id": 1,
+  "metadata_salt": 8,
+  "replay_salt": 9,
+  "created_at": "2026-08-01T20:04:20Z"
+ },
+ {
+  "match_id": 1,
+  "cluster_id": 4,
+  "metadata_salt": 2,
+  "replay_salt": null,
+  "created_at": "2026-09-10T06:01:10Z"
+ },
+ {
+  "match_id": 1,
+  "cluster_id": 4,
+  "metadata_salt": 22,
+  "replay_salt": null,
+  "created_at": "2026-09-10T06:01:10Z"
+ },
+ {
+  "match_id": 1,
+  "cluster_id": 42,
+  "metadata_salt": 937530290,
+  "replay_salt": null,
+  "created_at": "2026-09-29T18:39:15Z"
+ },
+ {
+  "match_id": 1,
+  "cluster_id": 121,
+  "metadata_salt": 42,
+  "replay_salt": null,
+  "created_at": "2026-10-02T02:42:41Z"
+ }
+]

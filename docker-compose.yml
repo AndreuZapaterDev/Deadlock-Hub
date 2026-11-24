@@ -1,0 +1,49 @@
+x-dev: &dev
+  build:
+    context: .
+    target: dev
+  env_file: .env
+  volumes:
+    - .:/app
+    - node_modules:/app/node_modules
+    - next_cache:/app/.next
+    - ./mock:/app/mock:ro
+
+services:
+  app:
+    <<: *dev
+    ports:
+      - "3000:3000"
+    environment:
+      WATCHPACK_POLLING: "true"
+
+  test:
+    <<: *dev
+    command: npm test
+
+  e2e:
+    image: mcr.microsoft.com/playwright:v1.49.1-jammy
+    working_dir: /app
+    depends_on:
+      - app
+    environment:
+      BASE_URL: http://app:3000
+    volumes:
+      - .:/app
+      - e2e_node_modules:/app/node_modules
+    command: sh -c "npm ci && npx playwright test"
+
+  preview:
+    build:
+      context: .
+      target: preview
+    env_file: .env
+    ports:
+      - "3001:3000"
+    volumes:
+      - ./mock:/app/mock:ro
+
+volumes:
+  node_modules:
+  next_cache:
+  e2e_node_modules:

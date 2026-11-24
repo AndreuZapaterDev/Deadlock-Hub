@@ -1,0 +1,5 @@
+{
+ "callback_secret": "string",
+ "party_code": "string",
+ "party_id": "string"
+}

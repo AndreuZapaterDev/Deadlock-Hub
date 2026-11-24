@@ -1,0 +1,11 @@
+{
+ "tier": 0,
+ "name": "Obscurus",
+ "images": {
+  "large": "https://assets-bucket.deadlock-api.com/assets-api-res/images/ranks/rank00_lg.png",
+  "large_webp": "https://assets-bucket.deadlock-api.com/assets-api-res/images/ranks/rank00_lg.webp",
+  "small": "https://assets-bucket.deadlock-api.com/assets-api-res/images/ranks/rank00_lg.png",
+  "small_webp": "https://assets-bucket.deadlock-api.com/assets-api-res/images/ranks/rank00_lg.webp"
+ },
+ "color": "#333333"
+}

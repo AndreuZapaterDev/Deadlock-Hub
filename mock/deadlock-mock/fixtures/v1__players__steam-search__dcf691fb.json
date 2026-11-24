@@ -1,0 +1,3620 @@
+[
+ {
+  "account_id": 483770846,
+  "personaname": "cosmetical",
+  "profileurl": "https://steamcommunity.com/id/heavenlydelusions/",
+  "avatar": "https://avatars.steamstatic.com/0e6456a3d046dfd35f989fdb9213982d9a36c80d.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/0e6456a3d046dfd35f989fdb9213982d9a36c80d_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/0e6456a3d046dfd35f989fdb9213982d9a36c80d_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-22T03:54:12Z",
+  "friends": [],
+  "matches_played_last_30d": 187,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 1871096785,
+  "personaname": "cosmetical",
+  "profileurl": "https://steamcommunity.com/profiles/76561199831362513/",
+  "avatar": "https://avatars.steamstatic.com/39f9e51594d39de0f514c23e348015f2a95919f5.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/39f9e51594d39de0f514c23e348015f2a95919f5_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/39f9e51594d39de0f514c23e348015f2a95919f5_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-22T05:47:57Z",
+  "friends": [],
+  "matches_played_last_30d": 94,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 1366679736,
+  "personaname": "cosmetic",
+  "profileurl": "https://steamcommunity.com/profiles/76561199326945464/",
+  "avatar": "https://avatars.steamstatic.com/da234ac007294a731f872510a89a5c763e28236f.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/da234ac007294a731f872510a89a5c763e28236f_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/da234ac007294a731f872510a89a5c763e28236f_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-16T03:38:49Z",
+  "friends": [
+   {
+    "account_id": 179348601,
+    "friend_since": "2025-02-15T22:36:28Z"
+   },
+   {
+    "account_id": 205753827,
+    "friend_since": "2026-11-01T23:48:07Z"
+   },
+   {
+    "account_id": 374226664,
+    "friend_since": "2024-06-16T05:20:30Z"
+   },
+   {
+    "account_id": 417736118,
+    "friend_since": "2025-05-19T06:00:32Z"
+   },
+   {
+    "account_id": 885598674,
+    "friend_since": "2024-09-10T03:22:13Z"
+   },
+   {
+    "account_id": 1073748292,
+    "friend_since": "2022-12-24T01:59:06Z"
+   },
+   {
+    "account_id": 1096844777,
+    "friend_since": "2024-10-15T04:34:44Z"
+   },
+   {
+    "account_id": 1123608795,
+    "friend_since": "2025-03-01T16:28:05Z"
+   },
+   {
+    "account_id": 1150839077,
+    "friend_since": "2024-11-28T03:05:21Z"
+   },
+   {
+    "account_id": 1197984180,
+    "friend_since": "2022-12-19T09:27:01Z"
+   },
+   {
+    "account_id": 1276013113,
+    "friend_since": "2024-09-10T00:39:17Z"
+   },
+   {
+    "account_id": 1293035784,
+    "friend_since": "2024-08-18T19:31:35Z"
+   },
+   {
+    "account_id": 1298515284,
+    "friend_since": "2025-02-23T06:08:32Z"
+   },
+   {
+    "account_id": 1298955602,
+    "friend_since": "2025-02-15T22:40:18Z"
+   },
+   {
+    "account_id": 1306061205,
+    "friend_since": "2026-05-22T00:29:15Z"
+   },
+   {
+    "account_id": 1397521898,
+    "friend_since": "2025-04-12T02:18:42Z"
+   },
+   {
+    "account_id": 1436370978,
+    "friend_since": "2026-10-17T09:04:21Z"
+   },
+   {
+    "account_id": 1441837323,
+    "friend_since": "2024-08-12T23:51:24Z"
+   },
+   {
+    "account_id": 1446330558,
+    "friend_since": "2025-07-13T22:42:15Z"
+   },
+   {
+    "account_id": 1507084027,
+    "friend_since": "2023-03-17T08:12:25Z"
+   },
+   {
+    "account_id": 1507738239,
+    "friend_since": "2023-08-31T19:48:43Z"
+   },
+   {
+    "account_id": 1525942224,
+    "friend_since": "2024-03-20T02:39:06Z"
+   },
+   {
+    "account_id": 1526834263,
+    "friend_since": "2024-08-29T03:01:17Z"
+   },
+   {
+    "account_id": 1536361474,
+    "friend_since": "2023-09-06T01:16:01Z"
+   },
+   {
+    "account_id": 1556298430,
+    "friend_since": "2024-03-20T02:38:57Z"
+   },
+   {
+    "account_id": 1558512677,
+    "friend_since": "2025-07-28T22:40:59Z"
+   },
+   {
+    "account_id": 1577951450,
+    "friend_since": "2023-09-02T03:01:04Z"
+   },
+   {
+    "account_id": 1586670401,
+    "friend_since": "2023-12-31T05:20:00Z"
+   },
+   {
+    "account_id": 1845204212,
+    "friend_since": "2025-01-26T23:14:49Z"
+   }
+  ],
+  "matches_played_last_30d": 70,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 1852088972,
+  "personaname": "Cosmical",
+  "profileurl": "https://steamcommunity.com/profiles/76561199812354700/",
+  "avatar": "https://avatars.steamstatic.com/142d4fd4ff9fb4036d65167d6c977cdb8b86cc4c.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/142d4fd4ff9fb4036d65167d6c977cdb8b86cc4c_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/142d4fd4ff9fb4036d65167d6c977cdb8b86cc4c_full.jpg",
+  "realname": "Brooklyn Grant",
+  "countrycode": "CA",
+  "last_updated": "2026-11-17T05:37:20Z",
+  "friends": [
+   {
+    "account_id": 63559947,
+    "friend_since": "2026-08-28T20:28:14Z"
+   },
+   {
+    "account_id": 78534037,
+    "friend_since": "2025-03-10T04:38:36Z"
+   },
+   {
+    "account_id": 135736031,
+    "friend_since": "2026-10-04T02:43:16Z"
+   },
+   {
+    "account_id": 244967040,
+    "friend_since": "2025-03-07T00:36:19Z"
+   },
+   {
+    "account_id": 355783175,
+    "friend_since": "2025-03-10T04:38:37Z"
+   },
+   {
+    "account_id": 402804132,
+    "friend_since": "2025-04-04T23:32:25Z"
+   },
+   {
+    "account_id": 404588261,
+    "friend_since": "2025-01-02T19:04:03Z"
+   },
+   {
+    "account_id": 431502695,
+    "friend_since": "2026-08-27T19:37:28Z"
+   },
+   {
+    "account_id": 441576075,
+    "friend_since": "2025-03-24T01:41:50Z"
+   },
+   {
+    "account_id": 456143507,
+    "friend_since": "2025-04-04T23:56:36Z"
+   },
+   {
+    "account_id": 466849074,
+    "friend_since": "2025-03-23T08:48:04Z"
+   },
+   {
+    "account_id": 485538329,
+    "friend_since": "2025-08-12T04:17:29Z"
+   },
+   {
+    "account_id": 793861479,
+    "friend_since": "2026-01-26T16:55:01Z"
+   },
+   {
+    "account_id": 867580512,
+    "friend_since": "2025-09-05T01:57:35Z"
+   },
+   {
+    "account_id": 878815479,
+    "friend_since": "2026-08-17T23:17:40Z"
+   },
+   {
+    "account_id": 890913158,
+    "friend_since": "2025-02-16T19:04:28Z"
+   },
+   {
+    "account_id": 970924575,
+    "friend_since": "2025-03-23T08:48:05Z"
+   },
+   {
+    "account_id": 994936264,
+    "friend_since": "2026-10-04T02:41:56Z"
+   },
+   {
+    "account_id": 1018263212,
+    "friend_since": "2025-02-16T19:04:20Z"
+   },
+   {
+    "account_id": 1023998086,
+    "friend_since": "2025-11-09T20:38:06Z"
+   },
+   {
+    "account_id": 1095031235,
+    "friend_since": "2025-03-10T17:55:54Z"
+   },
+   {
+    "account_id": 1147867523,
+    "friend_since": "2025-01-06T20:22:32Z"
+   },
+   {
+    "account_id": 1175748310,
+    "friend_since": "2025-02-23T23:53:00Z"
+   },
+   {
+    "account_id": 1196226271,
+    "friend_since": "2026-02-07T02:28:22Z"
+   },
+   {
+    "account_id": 1201226948,
+    "friend_since": "2026-02-07T02:28:21Z"
+   },
+   {
+    "account_id": 1206859589,
+    "friend_since": "2025-04-13T15:48:34Z"
+   },
+   {
+    "account_id": 1221905796,
+    "friend_since": "2025-01-10T23:46:46Z"
+   },
+   {
+    "account_id": 1230530219,
+    "friend_since": "2026-08-26T03:01:55Z"
+   },
+   {
+    "account_id": 1242446707,
+    "friend_since": "2026-11-16T21:24:58Z"
+   },
+   {
+    "account_id": 1264726189,
+    "friend_since": "2025-02-26T05:36:17Z"
+   },
+   {
+    "account_id": 1266106354,
+    "friend_since": "2025-12-15T21:39:19Z"
+   },
+   {
+    "account_id": 1274379496,
+    "friend_since": "2025-03-10T17:55:53Z"
+   },
+   {
+    "account_id": 1277931199,
+    "friend_since": "2025-11-13T00:24:56Z"
+   },
+   {
+    "account_id": 1390643664,
+    "friend_since": "2026-08-22T16:03:48Z"
+   },
+   {
+    "account_id": 1431898798,
+    "friend_since": "2025-02-24T08:30:31Z"
+   },
+   {
+    "account_id": 1456352029,
+    "friend_since": "2025-03-07T00:36:20Z"
+   },
+   {
+    "account_id": 1513473698,
+    "friend_since": "2026-08-26T03:28:18Z"
+   },
+   {
+    "account_id": 1517760683,
+    "friend_since": "2026-05-01T21:59:43Z"
+   },
+   {
+    "account_id": 1536480507,
+    "friend_since": "2026-02-02T03:54:25Z"
+   },
+   {
+    "account_id": 1551558442,
+    "friend_since": "2025-11-12T04:18:39Z"
+   },
+   {
+    "account_id": 1581796075,
+    "friend_since": "2025-11-18T23:08:06Z"
+   },
+   {
+    "account_id": 1615547594,
+    "friend_since": "2025-11-13T00:24:56Z"
+   },
+   {
+    "account_id": 1621274515,
+    "friend_since": "2025-04-04T20:56:32Z"
+   },
+   {
+    "account_id": 1749491398,
+    "friend_since": "2025-03-24T01:41:51Z"
+   },
+   {
+    "account_id": 1796873352,
+    "friend_since": "2025-12-13T00:44:05Z"
+   },
+   {
+    "account_id": 1844822296,
+    "friend_since": "2025-03-07T00:36:22Z"
+   },
+   {
+    "account_id": 1852773611,
+    "friend_since": "2024-12-30T22:38:01Z"
+   },
+   {
+    "account_id": 1853217078,
+    "friend_since": "2025-02-23T23:52:58Z"
+   },
+   {
+    "account_id": 1855966637,
+    "friend_since": "2026-11-16T21:24:55Z"
+   },
+   {
+    "account_id": 1875311236,
+    "friend_since": "2026-07-15T16:17:40Z"
+   },
+   {
+    "account_id": 1905277066,
+    "friend_since": "2026-02-07T02:28:23Z"
+   },
+   {
+    "account_id": 1910883726,
+    "friend_since": "2025-09-04T01:26:19Z"
+   }
+  ],
+  "matches_played_last_30d": 47,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 284119126,
+  "personaname": "Cosmetic",
+  "profileurl": "https://steamcommunity.com/profiles/76561198244384854/",
+  "avatar": "https://avatars.steamstatic.com/bb1788f3d247a1ad9e3028550169eeafda6b24ba.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/bb1788f3d247a1ad9e3028550169eeafda6b24ba_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/bb1788f3d247a1ad9e3028550169eeafda6b24ba_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-24T01:49:49Z",
+  "friends": [],
+  "matches_played_last_30d": 26,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 260119227,
+  "personaname": "Cosmical",
+  "profileurl": "https://steamcommunity.com/profiles/76561198220384955/",
+  "avatar": "https://avatars.steamstatic.com/98464dfaa9e7e2ce0ced69da276eb51787631e73.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/98464dfaa9e7e2ce0ced69da276eb51787631e73_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/98464dfaa9e7e2ce0ced69da276eb51787631e73_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-16T02:09:09Z",
+  "friends": [],
+  "matches_played_last_30d": 23,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 759550944,
+  "personaname": "Cosmetic Mina",
+  "profileurl": "https://steamcommunity.com/profiles/76561198719816672/",
+  "avatar": "https://avatars.steamstatic.com/7bb7a19d577e60949a96bf12b48ecdb73ffca20f.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/7bb7a19d577e60949a96bf12b48ecdb73ffca20f_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/7bb7a19d577e60949a96bf12b48ecdb73ffca20f_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-16T11:07:12Z",
+  "friends": [
+   {
+    "account_id": 122990967,
+    "friend_since": "2026-06-24T03:17:11Z"
+   },
+   {
+    "account_id": 247285816,
+    "friend_since": "2026-09-28T21:50:01Z"
+   },
+   {
+    "account_id": 285068444,
+    "friend_since": "2026-06-20T23:32:35Z"
+   },
+   {
+    "account_id": 383674354,
+    "friend_since": "2026-07-14T23:37:36Z"
+   },
+   {
+    "account_id": 409132891,
+    "friend_since": "2026-10-19T01:15:17Z"
+   },
+   {
+    "account_id": 766341221,
+    "friend_since": "2026-07-06T00:09:20Z"
+   },
+   {
+    "account_id": 879544033,
+    "friend_since": "2026-04-15T02:12:24Z"
+   },
+   {
+    "account_id": 1165819854,
+    "friend_since": "2026-10-10T09:21:03Z"
+   },
+   {
+    "account_id": 1566930447,
+    "friend_since": "2026-10-10T09:21:04Z"
+   },
+   {
+    "account_id": 1617047056,
+    "friend_since": "2026-09-20T23:06:15Z"
+   }
+  ],
+  "matches_played_last_30d": 89,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 174768740,
+  "personaname": "Cosmetic",
+  "profileurl": "https://steamcommunity.com/profiles/76561198135034468/",
+  "avatar": "https://avatars.steamstatic.com/28c86ac757249555d23a08d8b40723b5b1f487f6.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/28c86ac757249555d23a08d8b40723b5b1f487f6_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/28c86ac757249555d23a08d8b40723b5b1f487f6_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-21T14:15:32Z",
+  "friends": [],
+  "matches_played_last_30d": 19,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 1158308554,
+  "personaname": "Cosmetic Mina",
+  "profileurl": "https://steamcommunity.com/profiles/76561199118574282/",
+  "avatar": "https://avatars.steamstatic.com/f244bb35b40880070403cbbafd5ff156a68a5980.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/f244bb35b40880070403cbbafd5ff156a68a5980_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/f244bb35b40880070403cbbafd5ff156a68a5980_full.jpg",
+  "realname": "teacup",
+  "countrycode": "US",
+  "last_updated": "2026-11-19T13:22:56Z",
+  "friends": [
+   {
+    "account_id": 2392561,
+    "friend_since": "2025-01-06T09:06:20Z"
+   },
+   {
+    "account_id": 10123015,
+    "friend_since": "2021-08-09T22:32:50Z"
+   },
+   {
+    "account_id": 10688202,
+    "friend_since": "2021-02-28T08:56:52Z"
+   },
+   {
+    "account_id": 30393129,
+    "friend_since": "2026-09-17T00:04:53Z"
+   },
+   {
+    "account_id": 34262632,
+    "friend_since": "2025-03-07T01:18:01Z"
+   },
+   {
+    "account_id": 35571128,
+    "friend_since": "2021-02-16T06:07:36Z"
+   },
+   {
+    "account_id": 42449492,
+    "friend_since": "2023-10-31T03:45:20Z"
+   },
+   {
+    "account_id": 44439582,
+    "friend_since": "2021-12-27T23:20:25Z"
+   },
+   {
+    "account_id": 57444032,
+    "friend_since": "2024-10-16T03:05:40Z"
+   },
+   {
+    "account_id": 60024667,
+    "friend_since": "2026-05-12T23:06:16Z"
+   },
+   {
+    "account_id": 73113340,
+    "friend_since": "2024-09-12T00:53:26Z"
+   },
+   {
+    "account_id": 77436749,
+    "friend_since": "2023-01-19T08:19:16Z"
+   },
+   {
+    "account_id": 77617886,
+    "friend_since": "2021-02-17T22:22:04Z"
+   },
+   {
+    "account_id": 79607238,
+    "friend_since": "2024-11-20T02:45:07Z"
+   },
+   {
+    "account_id": 83750919,
+    "friend_since": "2025-06-01T08:04:24Z"
+   },
+   {
+    "account_id": 90347618,
+    "friend_since": "2021-04-10T02:39:41Z"
+   },
+   {
+    "account_id": 92803856,
+    "friend_since": "2021-08-14T08:21:42Z"
+   },
+   {
+    "account_id": 92918926,
+    "friend_since": "2021-08-14T08:22:24Z"
+   },
+   {
+    "account_id": 94950420,
+    "friend_since": "2021-02-16T06:07:25Z"
+   },
+   {
+    "account_id": 96865407,
+    "friend_since": "2023-05-15T11:30:48Z"
+   },
+   {
+    "account_id": 99262798,
+    "friend_since": "2024-10-04T06:38:40Z"
+   },
+   {
+    "account_id": 100268280,
+    "friend_since": "2025-04-15T00:26:38Z"
+   },
+   {
+    "account_id": 103222740,
+    "friend_since": "2021-08-08T02:50:54Z"
+   },
+   {
+    "account_id": 106100375,
+    "friend_since": "2025-06-15T16:20:05Z"
+   },
+   {
+    "account_id": 106152364,
+    "friend_since": "2021-06-11T07:18:09Z"
+   },
+   {
+    "account_id": 106741188,
+    "friend_since": "2025-11-03T00:10:06Z"
+   },
+   {
+    "account_id": 107315906,
+    "friend_since": "2024-12-01T04:14:41Z"
+   },
+   {
+    "account_id": 107491484,
+    "friend_since": "2021-03-21T19:03:41Z"
+   },
+   {
+    "account_id": 110634153,
+    "friend_since": "2024-09-06T00:49:34Z"
+   },
+   {
+    "account_id": 111672309,
+    "friend_since": "2026-05-26T06:48:16Z"
+   },
+   {
+    "account_id": 116817379,
+    "friend_since": "2024-09-27T22:54:43Z"
+   },
+   {
+    "account_id": 124624331,
+    "friend_since": "2026-04-21T19:32:02Z"
+   },
+   {
+    "account_id": 132791941,
+    "friend_since": "2025-03-08T07:27:49Z"
+   },
+   {
+    "account_id": 133774618,
+    "friend_since": "2024-11-20T02:41:00Z"
+   },
+   {
+    "account_id": 135663564,
+    "friend_since": "2024-11-06T10:06:25Z"
+   },
+   {
+    "account_id": 142928017,
+    "friend_since": "2025-04-29T22:31:47Z"
+   },
+   {
+    "account_id": 145152705,
+    "friend_since": "2021-02-28T09:13:51Z"
+   },
+   {
+    "account_id": 150569236,
+    "friend_since": "2025-01-06T04:02:36Z"
+   },
+   {
+    "account_id": 151083598,
+    "friend_since": "2025-01-13T00:22:40Z"
+   },
+   {
+    "account_id": 157197501,
+    "friend_since": "2024-09-18T02:59:49Z"
+   },
+   {
+    "account_id": 159457254,
+    "friend_since": "2023-03-24T04:32:33Z"
+   },
+   {
+    "account_id": 161450315,
+    "friend_since": "2025-01-22T23:37:31Z"
+   },
+   {
+    "account_id": 161634803,
+    "friend_since": "2021-05-19T06:42:53Z"
+   },
+   {
+    "account_id": 164699716,
+    "friend_since": "2024-09-08T12:40:21Z"
+   },
+   {
+    "account_id": 167812558,
+    "friend_since": "2021-02-22T22:12:46Z"
+   },
+   {
+    "account_id": 168879370,
+    "friend_since": "2021-08-14T13:13:45Z"
+   },
+   {
+    "account_id": 169709121,
+    "friend_since": "2025-05-20T16:34:48Z"
+   },
+   {
+    "account_id": 174531678,
+    "friend_since": "2024-11-30T16:31:41Z"
+   },
+   {
+    "account_id": 174544787,
+    "friend_since": "2021-08-09T14:53:32Z"
+   },
+   {
+    "account_id": 180152536,
+    "friend_since": "2025-06-02T06:54:38Z"
+   },
+   {
+    "account_id": 184386855,
+    "friend_since": "2021-11-12T02:59:50Z"
+   },
+   {
+    "account_id": 185850188,
+    "friend_since": "2026-05-10T02:25:28Z"
+   },
+   {
+    "account_id": 200022316,
+    "friend_since": "2021-11-09T15:08:54Z"
+   },
+   {
+    "account_id": 205608821,
+    "friend_since": "2024-09-12T00:53:19Z"
+   },
+   {
+    "account_id": 208235711,
+    "friend_since": "2025-02-18T01:06:11Z"
+   },
+   {
+    "account_id": 210383169,
+    "friend_since": "2024-10-02T10:12:45Z"
+   },
+   {
+    "account_id": 220227605,
+    "friend_since": "2026-05-26T05:12:33Z"
+   },
+   {
+    "account_id": 242530740,
+    "friend_since": "2025-09-28T01:23:13Z"
+   },
+   {
+    "account_id": 244412373,
+    "friend_since": "2025-11-05T02:23:42Z"
+   },
+   {
+    "account_id": 245060000,
+    "friend_since": "2024-10-03T05:54:23Z"
+   },
+   {
+    "account_id": 246454585,
+    "friend_since": "2024-12-31T09:48:00Z"
+   },
+   {
+    "account_id": 249059517,
+    "friend_since": "2025-01-08T14:37:39Z"
+   },
+   {
+    "account_id": 266884100,
+    "friend_since": "2026-05-26T06:13:04Z"
+   },
+   {
+    "account_id": 281810294,
+    "friend_since": "2021-08-09T07:25:59Z"
+   },
+   {
+    "account_id": 283028272,
+    "friend_since": "2025-09-15T01:05:44Z"
+   },
+   {
+    "account_id": 288386486,
+    "friend_since": "2024-12-24T19:04:49Z"
+   },
+   {
+    "account_id": 294477837,
+    "friend_since": "2021-08-22T05:30:49Z"
+   },
+   {
+    "account_id": 304453331,
+    "friend_since": "2021-03-10T09:37:30Z"
+   },
+   {
+    "account_id": 307933053,
+    "friend_since": "2024-12-01T04:03:29Z"
+   },
+   {
+    "account_id": 309407403,
+    "friend_since": "2026-05-10T02:34:55Z"
+   },
+   {
+    "account_id": 311783418,
+    "friend_since": "2024-10-03T00:21:57Z"
+   },
+   {
+    "account_id": 313418176,
+    "friend_since": "2025-01-21T15:53:06Z"
+   },
+   {
+    "account_id": 320878946,
+    "friend_since": "2022-01-22T21:34:01Z"
+   },
+   {
+    "account_id": 350779083,
+    "friend_since": "2024-11-19T08:34:09Z"
+   },
+   {
+    "account_id": 351149050,
+    "friend_since": "2026-06-02T09:25:55Z"
+   },
+   {
+    "account_id": 360659255,
+    "friend_since": "2021-04-07T05:46:49Z"
+   },
+   {
+    "account_id": 360709141,
+    "friend_since": "2026-04-21T19:30:46Z"
+   },
+   {
+    "account_id": 383469834,
+    "friend_since": "2024-10-08T02:25:44Z"
+   },
+   {
+    "account_id": 395582944,
+    "friend_since": "2021-05-19T06:42:52Z"
+   },
+   {
+    "account_id": 397424308,
+    "friend_since": "2022-08-28T09:29:50Z"
+   },
+   {
+    "account_id": 405979736,
+    "friend_since": "2025-01-03T05:01:57Z"
+   },
+   {
+    "account_id": 407903115,
+    "friend_since": "2026-05-17T05:51:45Z"
+   },
+   {
+    "account_id": 435220405,
+    "friend_since": "2025-01-11T02:22:43Z"
+   },
+   {
+    "account_id": 442477837,
+    "friend_since": "2024-09-28T02:49:34Z"
+   },
+   {
+    "account_id": 451212163,
+    "friend_since": "2026-05-12T23:03:49Z"
+   },
+   {
+    "account_id": 680798186,
+    "friend_since": "2026-09-15T21:30:28Z"
+   },
+   {
+    "account_id": 810956882,
+    "friend_since": "2025-12-11T00:45:26Z"
+   },
+   {
+    "account_id": 834095936,
+    "friend_since": "2026-04-21T20:04:44Z"
+   },
+   {
+    "account_id": 839799191,
+    "friend_since": "2026-05-17T05:41:03Z"
+   },
+   {
+    "account_id": 843467787,
+    "friend_since": "2024-08-31T06:18:49Z"
+   },
+   {
+    "account_id": 849156399,
+    "friend_since": "2021-05-11T01:19:31Z"
+   },
+   {
+    "account_id": 883302224,
+    "friend_since": "2021-02-16T23:25:33Z"
+   },
+   {
+    "account_id": 895620057,
+    "friend_since": "2025-03-25T01:31:49Z"
+   },
+   {
+    "account_id": 897971670,
+    "friend_since": "2021-02-22T22:17:49Z"
+   },
+   {
+    "account_id": 903228187,
+    "friend_since": "2024-11-19T16:18:45Z"
+   },
+   {
+    "account_id": 916270451,
+    "friend_since": "2025-05-31T08:43:56Z"
+   },
+   {
+    "account_id": 935850196,
+    "friend_since": "2021-06-23T15:15:13Z"
+   },
+   {
+    "account_id": 1003645410,
+    "friend_since": "2025-09-28T08:59:06Z"
+   },
+   {
+    "account_id": 1004343602,
+    "friend_since": "2022-01-12T21:34:03Z"
+   },
+   {
+    "account_id": 1015293570,
+    "friend_since": "2021-02-16T00:18:37Z"
+   },
+   {
+    "account_id": 1023623687,
+    "friend_since": "2024-09-25T02:33:22Z"
+   },
+   {
+    "account_id": 1041348447,
+    "friend_since": "2025-11-02T09:48:18Z"
+   },
+   {
+    "account_id": 1041859572,
+    "friend_since": "2025-05-29T05:32:14Z"
+   },
+   {
+    "account_id": 1044480138,
+    "friend_since": "2023-01-09T04:20:15Z"
+   },
+   {
+    "account_id": 1053040540,
+    "friend_since": "2024-09-30T22:29:58Z"
+   },
+   {
+    "account_id": 1066255581,
+    "friend_since": "2024-12-05T18:45:32Z"
+   },
+   {
+    "account_id": 1066533574,
+    "friend_since": "2021-03-15T01:17:44Z"
+   },
+   {
+    "account_id": 1076796798,
+    "friend_since": "2024-10-07T02:41:08Z"
+   },
+   {
+    "account_id": 1088774702,
+    "friend_since": "2026-05-10T01:19:25Z"
+   },
+   {
+    "account_id": 1088880044,
+    "friend_since": "2025-11-02T09:45:28Z"
+   },
+   {
+    "account_id": 1091281804,
+    "friend_since": "2025-02-20T12:02:32Z"
+   },
+   {
+    "account_id": 1092180595,
+    "friend_since": "2023-01-25T07:31:11Z"
+   },
+   {
+    "account_id": 1105450353,
+    "friend_since": "2024-10-16T07:23:43Z"
+   },
+   {
+    "account_id": 1111468449,
+    "friend_since": "2021-11-05T00:40:05Z"
+   },
+   {
+    "account_id": 1117322329,
+    "friend_since": "2024-11-19T10:14:04Z"
+   },
+   {
+    "account_id": 1118508825,
+    "friend_since": "2026-11-06T02:15:23Z"
+   },
+   {
+    "account_id": 1124557654,
+    "friend_since": "2024-11-23T21:30:48Z"
+   },
+   {
+    "account_id": 1127510662,
+    "friend_since": "2022-11-20T01:16:15Z"
+   },
+   {
+    "account_id": 1129308213,
+    "friend_since": "2022-11-20T01:19:37Z"
+   },
+   {
+    "account_id": 1132174747,
+    "friend_since": "2024-09-27T18:15:06Z"
+   },
+   {
+    "account_id": 1141131870,
+    "friend_since": "2024-12-21T02:03:22Z"
+   },
+   {
+    "account_id": 1162388358,
+    "friend_since": "2024-10-09T10:20:42Z"
+   },
+   {
+    "account_id": 1162443160,
+    "friend_since": "2024-12-30T09:22:24Z"
+   },
+   {
+    "account_id": 1163155715,
+    "friend_since": "2025-01-27T02:14:13Z"
+   },
+   {
+    "account_id": 1168871887,
+    "friend_since": "2024-10-07T03:23:37Z"
+   },
+   {
+    "account_id": 1169171133,
+    "friend_since": "2021-03-10T09:37:52Z"
+   },
+   {
+    "account_id": 1177553499,
+    "friend_since": "2023-03-24T04:32:25Z"
+   },
+   {
+    "account_id": 1190818500,
+    "friend_since": "2022-04-03T09:51:19Z"
+   },
+   {
+    "account_id": 1202735939,
+    "friend_since": "2025-03-18T20:31:09Z"
+   },
+   {
+    "account_id": 1225737969,
+    "friend_since": "2024-11-27T03:06:37Z"
+   },
+   {
+    "account_id": 1240436034,
+    "friend_since": "2025-01-08T14:37:32Z"
+   },
+   {
+    "account_id": 1253402376,
+    "friend_since": "2025-01-23T06:50:49Z"
+   },
+   {
+    "account_id": 1269628507,
+    "friend_since": "2026-05-23T09:11:44Z"
+   },
+   {
+    "account_id": 1324934205,
+    "friend_since": "2026-05-24T22:58:59Z"
+   },
+   {
+    "account_id": 1415156999,
+    "friend_since": "2025-11-02T09:45:29Z"
+   },
+   {
+    "account_id": 1421107982,
+    "friend_since": "2025-02-07T04:08:15Z"
+   },
+   {
+    "account_id": 1421526049,
+    "friend_since": "2024-12-08T10:09:47Z"
+   },
+   {
+    "account_id": 1477488815,
+    "friend_since": "2024-11-26T10:17:45Z"
+   },
+   {
+    "account_id": 1552705324,
+    "friend_since": "2025-04-29T22:32:03Z"
+   },
+   {
+    "account_id": 1610176069,
+    "friend_since": "2024-10-05T04:43:19Z"
+   },
+   {
+    "account_id": 1685231294,
+    "friend_since": "2026-03-09T12:48:54Z"
+   },
+   {
+    "account_id": 1719793849,
+    "friend_since": "2024-10-08T02:13:00Z"
+   },
+   {
+    "account_id": 1774333123,
+    "friend_since": "2024-08-06T12:40:17Z"
+   },
+   {
+    "account_id": 1892316097,
+    "friend_since": "2026-10-01T00:19:39Z"
+   }
+  ],
+  "matches_played_last_30d": 51,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 1527961214,
+  "personaname": "Cosmetic",
+  "profileurl": "https://steamcommunity.com/profiles/76561199488226942/",
+  "avatar": "https://avatars.steamstatic.com/c256270dec37f308ae98d110db5f8fa1f26b07dc.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/c256270dec37f308ae98d110db5f8fa1f26b07dc_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/c256270dec37f308ae98d110db5f8fa1f26b07dc_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-23T00:33:10Z",
+  "friends": [
+   {
+    "account_id": 83705169,
+    "friend_since": "2026-10-28T02:43:55Z"
+   },
+   {
+    "account_id": 83931978,
+    "friend_since": "2026-06-05T21:09:26Z"
+   },
+   {
+    "account_id": 187789551,
+    "friend_since": "2023-03-21T01:38:05Z"
+   },
+   {
+    "account_id": 242163904,
+    "friend_since": "2024-05-08T02:41:30Z"
+   },
+   {
+    "account_id": 734968489,
+    "friend_since": "2026-06-03T02:06:08Z"
+   },
+   {
+    "account_id": 865764922,
+    "friend_since": "2024-06-02T03:53:06Z"
+   },
+   {
+    "account_id": 1047309304,
+    "friend_since": "2026-10-26T03:12:06Z"
+   },
+   {
+    "account_id": 1110936026,
+    "friend_since": "2026-06-05T22:57:47Z"
+   },
+   {
+    "account_id": 1117814868,
+    "friend_since": "2024-05-27T01:11:54Z"
+   },
+   {
+    "account_id": 1206189473,
+    "friend_since": "2026-06-20T18:48:55Z"
+   },
+   {
+    "account_id": 1859674415,
+    "friend_since": "2026-10-01T04:10:55Z"
+   }
+  ],
+  "matches_played_last_30d": 10,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 19077826,
+  "personaname": "Cosmical",
+  "profileurl": "https://steamcommunity.com/id/benne94/",
+  "avatar": "https://avatars.steamstatic.com/d740bdfd24aa4c9a35015bf6395c1a281a996693.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/d740bdfd24aa4c9a35015bf6395c1a281a996693_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/d740bdfd24aa4c9a35015bf6395c1a281a996693_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-19T17:06:16Z",
+  "friends": [],
+  "matches_played_last_30d": 9,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 1107323708,
+  "personaname": "cosmetic GM",
+  "profileurl": "https://steamcommunity.com/profiles/76561199067589436/",
+  "avatar": "https://avatars.steamstatic.com/250dece6ac431d29d183a46467df4665977eb948.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/250dece6ac431d29d183a46467df4665977eb948_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/250dece6ac431d29d183a46467df4665977eb948_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-16T01:16:49Z",
+  "friends": [
+   {
+    "account_id": 19893552,
+    "friend_since": "2021-06-20T10:46:30Z"
+   },
+   {
+    "account_id": 83036460,
+    "friend_since": "2021-05-20T17:21:02Z"
+   },
+   {
+    "account_id": 84372101,
+    "friend_since": "2023-11-20T21:05:51Z"
+   },
+   {
+    "account_id": 95975983,
+    "friend_since": "2021-07-17T19:25:28Z"
+   },
+   {
+    "account_id": 98955280,
+    "friend_since": "2022-04-02T15:21:46Z"
+   },
+   {
+    "account_id": 101097325,
+    "friend_since": "2023-02-11T01:10:51Z"
+   },
+   {
+    "account_id": 101160171,
+    "friend_since": "2022-09-05T15:45:40Z"
+   },
+   {
+    "account_id": 104136585,
+    "friend_since": "2023-12-31T18:47:54Z"
+   },
+   {
+    "account_id": 127491191,
+    "friend_since": "2024-01-02T22:01:16Z"
+   },
+   {
+    "account_id": 138205243,
+    "friend_since": "2024-07-28T19:15:33Z"
+   },
+   {
+    "account_id": 149681360,
+    "friend_since": "2023-12-07T10:51:03Z"
+   },
+   {
+    "account_id": 168490592,
+    "friend_since": "2024-07-05T12:44:22Z"
+   },
+   {
+    "account_id": 189996755,
+    "friend_since": "2022-08-19T18:14:38Z"
+   },
+   {
+    "account_id": 202511466,
+    "friend_since": "2023-11-14T19:07:50Z"
+   },
+   {
+    "account_id": 209579131,
+    "friend_since": "2023-11-19T12:47:26Z"
+   },
+   {
+    "account_id": 215377386,
+    "friend_since": "2021-05-08T20:58:31Z"
+   },
+   {
+    "account_id": 282328304,
+    "friend_since": "2021-06-20T09:21:39Z"
+   },
+   {
+    "account_id": 286052866,
+    "friend_since": "2023-12-23T00:44:06Z"
+   },
+   {
+    "account_id": 318824521,
+    "friend_since": "2026-09-26T18:09:16Z"
+   },
+   {
+    "account_id": 318942185,
+    "friend_since": "2026-06-27T15:30:05Z"
+   },
+   {
+    "account_id": 389802288,
+    "friend_since": "2021-01-27T09:22:58Z"
+   },
+   {
+    "account_id": 392504286,
+    "friend_since": "2023-11-15T17:46:24Z"
+   },
+   {
+    "account_id": 402589538,
+    "friend_since": "2026-08-26T17:12:48Z"
+   },
+   {
+    "account_id": 407100122,
+    "friend_since": "2024-01-27T21:16:16Z"
+   },
+   {
+    "account_id": 424293159,
+    "friend_since": "2021-03-09T15:06:42Z"
+   },
+   {
+    "account_id": 445675523,
+    "friend_since": "2021-03-05T19:00:19Z"
+   },
+   {
+    "account_id": 451021364,
+    "friend_since": "2021-06-01T12:34:16Z"
+   },
+   {
+    "account_id": 451303116,
+    "friend_since": "2026-07-06T19:17:51Z"
+   },
+   {
+    "account_id": 468948140,
+    "friend_since": "2022-07-11T16:42:58Z"
+   },
+   {
+    "account_id": 475481276,
+    "friend_since": "2021-05-07T23:45:50Z"
+   },
+   {
+    "account_id": 486319447,
+    "friend_since": "2023-11-16T16:58:35Z"
+   },
+   {
+    "account_id": 711563882,
+    "friend_since": "2026-10-29T14:32:22Z"
+   },
+   {
+    "account_id": 842128213,
+    "friend_since": "2023-11-24T21:48:57Z"
+   },
+   {
+    "account_id": 902322457,
+    "friend_since": "2021-05-07T20:44:49Z"
+   },
+   {
+    "account_id": 1002802485,
+    "friend_since": "2021-08-02T20:51:44Z"
+   },
+   {
+    "account_id": 1010595414,
+    "friend_since": "2022-06-12T18:51:36Z"
+   },
+   {
+    "account_id": 1096439536,
+    "friend_since": "2021-02-14T23:17:34Z"
+   },
+   {
+    "account_id": 1105334159,
+    "friend_since": "2023-04-07T15:25:33Z"
+   },
+   {
+    "account_id": 1108520094,
+    "friend_since": "2021-10-09T20:43:14Z"
+   },
+   {
+    "account_id": 1119320536,
+    "friend_since": "2026-10-23T18:05:29Z"
+   },
+   {
+    "account_id": 1131843668,
+    "friend_since": "2022-08-22T13:10:17Z"
+   },
+   {
+    "account_id": 1154003347,
+    "friend_since": "2021-06-07T14:52:57Z"
+   },
+   {
+    "account_id": 1157792578,
+    "friend_since": "2026-10-24T09:00:34Z"
+   },
+   {
+    "account_id": 1167049119,
+    "friend_since": "2023-11-19T12:47:25Z"
+   },
+   {
+    "account_id": 1189202350,
+    "friend_since": "2024-03-03T12:21:07Z"
+   },
+   {
+    "account_id": 1192433527,
+    "friend_since": "2021-06-07T15:20:46Z"
+   },
+   {
+    "account_id": 1196760478,
+    "friend_since": "2021-10-09T20:43:25Z"
+   },
+   {
+    "account_id": 1234465846,
+    "friend_since": "2026-01-24T18:13:22Z"
+   },
+   {
+    "account_id": 1243582504,
+    "friend_since": "2026-10-30T00:23:19Z"
+   },
+   {
+    "account_id": 1245842299,
+    "friend_since": "2025-08-27T13:22:41Z"
+   },
+   {
+    "account_id": 1255301232,
+    "friend_since": "2022-08-30T13:09:50Z"
+   },
+   {
+    "account_id": 1256591089,
+    "friend_since": "2023-11-28T20:04:31Z"
+   },
+   {
+    "account_id": 1262123775,
+    "friend_since": "2026-08-24T19:55:23Z"
+   },
+   {
+    "account_id": 1262159176,
+    "friend_since": "2025-09-30T18:09:00Z"
+   },
+   {
+    "account_id": 1263859790,
+    "friend_since": "2023-05-12T19:06:31Z"
+   },
+   {
+    "account_id": 1265737383,
+    "friend_since": "2023-11-14T19:07:52Z"
+   },
+   {
+    "account_id": 1270168011,
+    "friend_since": "2026-07-06T19:17:52Z"
+   },
+   {
+    "account_id": 1273521807,
+    "friend_since": "2022-09-24T23:35:55Z"
+   },
+   {
+    "account_id": 1275487147,
+    "friend_since": "2026-06-15T13:57:21Z"
+   },
+   {
+    "account_id": 1418575995,
+    "friend_since": "2026-01-24T18:10:32Z"
+   },
+   {
+    "account_id": 1468870230,
+    "friend_since": "2025-10-02T16:39:57Z"
+   },
+   {
+    "account_id": 1528330531,
+    "friend_since": "2023-11-28T15:18:36Z"
+   },
+   {
+    "account_id": 1533949036,
+    "friend_since": "2024-05-28T15:40:10Z"
+   },
+   {
+    "account_id": 1537661949,
+    "friend_since": "2023-11-18T11:23:18Z"
+   },
+   {
+    "account_id": 1708062155,
+    "friend_since": "2025-12-13T11:11:09Z"
+   },
+   {
+    "account_id": 1728725350,
+    "friend_since": "2024-11-19T18:34:37Z"
+   },
+   {
+    "account_id": 1729619742,
+    "friend_since": "2024-11-19T18:34:38Z"
+   },
+   {
+    "account_id": 1851217483,
+    "friend_since": "2026-09-19T21:20:15Z"
+   },
+   {
+    "account_id": 1856946410,
+    "friend_since": "2025-10-10T12:46:34Z"
+   },
+   {
+    "account_id": 1894181123,
+    "friend_since": "2025-11-03T15:09:35Z"
+   }
+  ],
+  "matches_played_last_30d": 35,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 289394150,
+  "personaname": "Cosmetic Sinclair",
+  "profileurl": "https://steamcommunity.com/id/kfcsmurf/",
+  "avatar": "https://avatars.steamstatic.com/3ee9c8a212fbdef1dd0f0bdee6a144489c63f943.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/3ee9c8a212fbdef1dd0f0bdee6a144489c63f943_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/3ee9c8a212fbdef1dd0f0bdee6a144489c63f943_full.jpg",
+  "realname": "The Deep",
+  "countrycode": null,
+  "last_updated": "2026-11-21T12:10:14Z",
+  "friends": [
+   {
+    "account_id": 19237219,
+    "friend_since": "2016-12-08T16:37:24Z"
+   },
+   {
+    "account_id": 61804599,
+    "friend_since": "2023-12-10T19:16:39Z"
+   },
+   {
+    "account_id": 65224561,
+    "friend_since": "2016-02-09T17:24:45Z"
+   },
+   {
+    "account_id": 66935527,
+    "friend_since": "2016-07-13T21:19:02Z"
+   },
+   {
+    "account_id": 76477390,
+    "friend_since": "2026-05-04T17:15:07Z"
+   },
+   {
+    "account_id": 83218660,
+    "friend_since": "2021-08-16T19:49:20Z"
+   },
+   {
+    "account_id": 90110901,
+    "friend_since": "2019-12-23T21:04:50Z"
+   },
+   {
+    "account_id": 93235567,
+    "friend_since": "2024-06-12T18:39:44Z"
+   },
+   {
+    "account_id": 97720262,
+    "friend_since": "2023-10-03T19:48:25Z"
+   },
+   {
+    "account_id": 101749053,
+    "friend_since": "2017-12-30T14:37:25Z"
+   },
+   {
+    "account_id": 103344729,
+    "friend_since": "2016-05-30T14:38:59Z"
+   },
+   {
+    "account_id": 104613407,
+    "friend_since": "2016-01-29T19:10:53Z"
+   },
+   {
+    "account_id": 109936025,
+    "friend_since": "2021-07-17T15:25:10Z"
+   },
+   {
+    "account_id": 112203848,
+    "friend_since": "2024-04-30T18:12:26Z"
+   },
+   {
+    "account_id": 121511025,
+    "friend_since": "2016-04-14T19:28:32Z"
+   },
+   {
+    "account_id": 122873463,
+    "friend_since": "2016-02-09T17:24:52Z"
+   },
+   {
+    "account_id": 126271943,
+    "friend_since": "2016-04-17T08:59:39Z"
+   },
+   {
+    "account_id": 131176409,
+    "friend_since": "2016-03-20T13:44:26Z"
+   },
+   {
+    "account_id": 135321647,
+    "friend_since": "2016-04-28T19:12:11Z"
+   },
+   {
+    "account_id": 136112722,
+    "friend_since": "2021-03-02T19:28:36Z"
+   },
+   {
+    "account_id": 137373980,
+    "friend_since": "2017-12-29T18:45:30Z"
+   },
+   {
+    "account_id": 140301021,
+    "friend_since": "2017-03-28T20:04:01Z"
+   },
+   {
+    "account_id": 141979417,
+    "friend_since": "2017-02-18T20:32:13Z"
+   },
+   {
+    "account_id": 145352820,
+    "friend_since": "2026-05-17T16:52:11Z"
+   },
+   {
+    "account_id": 147171665,
+    "friend_since": "2026-04-25T20:05:18Z"
+   },
+   {
+    "account_id": 147611347,
+    "friend_since": "2018-01-15T13:55:09Z"
+   },
+   {
+    "account_id": 150768150,
+    "friend_since": "2016-02-19T17:54:26Z"
+   },
+   {
+    "account_id": 153030570,
+    "friend_since": "2025-04-07T21:52:22Z"
+   },
+   {
+    "account_id": 156508485,
+    "friend_since": "2017-06-17T15:01:33Z"
+   },
+   {
+    "account_id": 157396571,
+    "friend_since": "2016-06-20T16:05:27Z"
+   },
+   {
+    "account_id": 173141374,
+    "friend_since": "2017-02-03T22:31:28Z"
+   },
+   {
+    "account_id": 175433022,
+    "friend_since": "2022-05-05T15:06:28Z"
+   },
+   {
+    "account_id": 188636836,
+    "friend_since": "2016-01-29T20:07:55Z"
+   },
+   {
+    "account_id": 190015136,
+    "friend_since": "2026-07-05T19:54:46Z"
+   },
+   {
+    "account_id": 192518849,
+    "friend_since": "2019-01-22T20:53:47Z"
+   },
+   {
+    "account_id": 193288139,
+    "friend_since": "2016-02-18T20:29:47Z"
+   },
+   {
+    "account_id": 195515421,
+    "friend_since": "2016-02-20T22:34:32Z"
+   },
+   {
+    "account_id": 197567427,
+    "friend_since": "2016-05-25T20:34:05Z"
+   },
+   {
+    "account_id": 201280156,
+    "friend_since": "2016-01-03T16:49:43Z"
+   },
+   {
+    "account_id": 203591126,
+    "friend_since": "2021-12-20T17:12:58Z"
+   },
+   {
+    "account_id": 209732333,
+    "friend_since": "2016-06-10T21:26:10Z"
+   },
+   {
+    "account_id": 211527378,
+    "friend_since": "2015-12-29T20:24:34Z"
+   },
+   {
+    "account_id": 211709715,
+    "friend_since": "2015-12-29T21:04:25Z"
+   },
+   {
+    "account_id": 213493199,
+    "friend_since": "2026-08-25T23:55:20Z"
+   },
+   {
+    "account_id": 217155079,
+    "friend_since": "2020-04-05T18:43:29Z"
+   },
+   {
+    "account_id": 217785583,
+    "friend_since": "2026-11-14T22:59:59Z"
+   },
+   {
+    "account_id": 225144523,
+    "friend_since": "2018-11-19T16:55:35Z"
+   },
+   {
+    "account_id": 233259425,
+    "friend_since": "2017-07-14T09:47:11Z"
+   },
+   {
+    "account_id": 233592185,
+    "friend_since": "2020-05-26T16:21:57Z"
+   },
+   {
+    "account_id": 238236538,
+    "friend_since": "2018-12-24T21:41:41Z"
+   },
+   {
+    "account_id": 242915736,
+    "friend_since": "2022-07-08T20:19:59Z"
+   },
+   {
+    "account_id": 243170927,
+    "friend_since": "2016-02-20T15:14:06Z"
+   },
+   {
+    "account_id": 244879696,
+    "friend_since": "2017-01-06T13:20:12Z"
+   },
+   {
+    "account_id": 274572284,
+    "friend_since": "2016-09-30T21:35:31Z"
+   },
+   {
+    "account_id": 275032216,
+    "friend_since": "2017-12-29T22:12:24Z"
+   },
+   {
+    "account_id": 275128916,
+    "friend_since": "2016-01-23T23:47:09Z"
+   },
+   {
+    "account_id": 311084764,
+    "friend_since": "2016-03-18T12:32:49Z"
+   },
+   {
+    "account_id": 311531627,
+    "friend_since": "2016-02-09T18:23:05Z"
+   },
+   {
+    "account_id": 320044779,
+    "friend_since": "2016-04-28T18:23:14Z"
+   },
+   {
+    "account_id": 327928025,
+    "friend_since": "2018-11-19T16:56:15Z"
+   },
+   {
+    "account_id": 348484227,
+    "friend_since": "2020-09-08T19:13:43Z"
+   },
+   {
+    "account_id": 349712746,
+    "friend_since": "2017-01-21T20:47:33Z"
+   },
+   {
+    "account_id": 356299450,
+    "friend_since": "2017-03-22T19:00:30Z"
+   },
+   {
+    "account_id": 361316563,
+    "friend_since": "2017-04-18T15:44:18Z"
+   },
+   {
+    "account_id": 372673669,
+    "friend_since": "2018-07-01T14:44:48Z"
+   },
+   {
+    "account_id": 404317438,
+    "friend_since": "2019-07-29T17:51:39Z"
+   },
+   {
+    "account_id": 429021325,
+    "friend_since": "2018-02-14T21:07:33Z"
+   },
+   {
+    "account_id": 431556044,
+    "friend_since": "2023-10-06T23:42:58Z"
+   },
+   {
+    "account_id": 442122145,
+    "friend_since": "2026-07-23T22:17:20Z"
+   },
+   {
+    "account_id": 841852481,
+    "friend_since": "2018-01-15T20:15:24Z"
+   },
+   {
+    "account_id": 891320546,
+    "friend_since": "2026-08-30T17:18:37Z"
+   },
+   {
+    "account_id": 904126774,
+    "friend_since": "2026-08-30T17:18:42Z"
+   },
+   {
+    "account_id": 913148477,
+    "friend_since": "2025-04-02T17:33:37Z"
+   },
+   {
+    "account_id": 920242302,
+    "friend_since": "2021-07-16T22:07:57Z"
+   },
+   {
+    "account_id": 974671041,
+    "friend_since": "2019-03-16T21:35:12Z"
+   },
+   {
+    "account_id": 976536693,
+    "friend_since": "2024-06-20T15:20:20Z"
+   },
+   {
+    "account_id": 986234349,
+    "friend_since": "2024-01-22T00:32:26Z"
+   },
+   {
+    "account_id": 1005930948,
+    "friend_since": "2019-12-19T17:33:47Z"
+   },
+   {
+    "account_id": 1022868326,
+    "friend_since": "2020-08-20T21:19:21Z"
+   },
+   {
+    "account_id": 1048656542,
+    "friend_since": "2022-07-26T19:47:10Z"
+   },
+   {
+    "account_id": 1050705267,
+    "friend_since": "2019-12-19T17:32:45Z"
+   },
+   {
+    "account_id": 1080280224,
+    "friend_since": "2020-03-31T16:53:19Z"
+   },
+   {
+    "account_id": 1184469532,
+    "friend_since": "2021-12-19T20:32:47Z"
+   },
+   {
+    "account_id": 1278818754,
+    "friend_since": "2026-07-17T22:32:59Z"
+   },
+   {
+    "account_id": 1314651567,
+    "friend_since": "2022-07-26T17:26:56Z"
+   },
+   {
+    "account_id": 1403661449,
+    "friend_since": "2026-09-30T22:52:47Z"
+   },
+   {
+    "account_id": 1429212925,
+    "friend_since": "2023-10-02T22:00:40Z"
+   },
+   {
+    "account_id": 1449586947,
+    "friend_since": "2026-07-13T20:28:41Z"
+   },
+   {
+    "account_id": 1487338286,
+    "friend_since": "2023-03-28T23:41:30Z"
+   },
+   {
+    "account_id": 1535951485,
+    "friend_since": "2026-08-24T06:05:25Z"
+   },
+   {
+    "account_id": 1591155054,
+    "friend_since": "2025-07-26T20:13:00Z"
+   },
+   {
+    "account_id": 1848113481,
+    "friend_since": "2026-09-22T20:30:07Z"
+   }
+  ],
+  "matches_played_last_30d": 72,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 980718400,
+  "personaname": "cosmatical",
+  "profileurl": "https://steamcommunity.com/id/sNowylov3/",
+  "avatar": "https://avatars.steamstatic.com/cfab722fea2475fe024d0f12674c3c71158bd983.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/cfab722fea2475fe024d0f12674c3c71158bd983_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/cfab722fea2475fe024d0f12674c3c71158bd983_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-17T17:08:25Z",
+  "friends": [
+   {
+    "account_id": 323820372,
+    "friend_since": "2023-07-14T09:29:01Z"
+   },
+   {
+    "account_id": 353475869,
+    "friend_since": "2021-09-30T06:01:52Z"
+   },
+   {
+    "account_id": 441881928,
+    "friend_since": "2026-04-03T20:24:56Z"
+   },
+   {
+    "account_id": 719485214,
+    "friend_since": "2026-08-25T12:30:19Z"
+   },
+   {
+    "account_id": 841365478,
+    "friend_since": "2026-03-23T14:05:18Z"
+   },
+   {
+    "account_id": 872045024,
+    "friend_since": "2025-02-12T13:07:43Z"
+   },
+   {
+    "account_id": 879925507,
+    "friend_since": "2026-04-02T16:04:08Z"
+   },
+   {
+    "account_id": 880360120,
+    "friend_since": "2024-08-28T12:34:24Z"
+   },
+   {
+    "account_id": 964438510,
+    "friend_since": "2026-02-23T16:37:45Z"
+   },
+   {
+    "account_id": 1044268690,
+    "friend_since": "2026-04-02T16:03:35Z"
+   },
+   {
+    "account_id": 1088170587,
+    "friend_since": "2026-03-22T14:17:11Z"
+   },
+   {
+    "account_id": 1110678831,
+    "friend_since": "2025-10-29T13:12:47Z"
+   },
+   {
+    "account_id": 1118987577,
+    "friend_since": "2026-03-22T07:37:21Z"
+   },
+   {
+    "account_id": 1141615130,
+    "friend_since": "2025-07-27T07:32:04Z"
+   },
+   {
+    "account_id": 1148538638,
+    "friend_since": "2026-03-24T12:52:05Z"
+   },
+   {
+    "account_id": 1176475850,
+    "friend_since": "2024-10-02T07:34:16Z"
+   },
+   {
+    "account_id": 1203426597,
+    "friend_since": "2026-03-12T02:06:12Z"
+   },
+   {
+    "account_id": 1282687400,
+    "friend_since": "2026-03-27T10:58:29Z"
+   },
+   {
+    "account_id": 1302472324,
+    "friend_since": "2024-09-01T06:51:39Z"
+   },
+   {
+    "account_id": 1340083152,
+    "friend_since": "2026-08-04T12:57:25Z"
+   },
+   {
+    "account_id": 1428061579,
+    "friend_since": "2026-09-28T04:35:50Z"
+   },
+   {
+    "account_id": 1584375910,
+    "friend_since": "2026-04-27T08:09:40Z"
+   },
+   {
+    "account_id": 1715945069,
+    "friend_since": "2025-03-18T04:39:32Z"
+   },
+   {
+    "account_id": 1770178537,
+    "friend_since": "2024-12-08T07:39:19Z"
+   },
+   {
+    "account_id": 1792582124,
+    "friend_since": "2024-10-11T14:24:04Z"
+   }
+  ],
+  "matches_played_last_30d": 32,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 52985205,
+  "personaname": "cosmetic teammate",
+  "profileurl": "https://steamcommunity.com/id/mizzl/",
+  "avatar": "https://avatars.steamstatic.com/2213341d2c7724cf477dab18d20bb6f868056f80.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/2213341d2c7724cf477dab18d20bb6f868056f80_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/2213341d2c7724cf477dab18d20bb6f868056f80_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-17T09:05:33Z",
+  "friends": [],
+  "matches_played_last_30d": 98,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 1694356634,
+  "personaname": "CosmeticUK",
+  "profileurl": "https://steamcommunity.com/profiles/76561199654622362/",
+  "avatar": "https://avatars.steamstatic.com/ff2835bf30cd88fd9cc9b999e501201146731f65.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/ff2835bf30cd88fd9cc9b999e501201146731f65_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/ff2835bf30cd88fd9cc9b999e501201146731f65_full.jpg",
+  "realname": null,
+  "countrycode": "CA",
+  "last_updated": "2026-11-21T15:25:12Z",
+  "friends": [
+   {
+    "account_id": 844885994,
+    "friend_since": "2024-07-01T19:01:05Z"
+   },
+   {
+    "account_id": 1094086938,
+    "friend_since": "2026-07-03T01:26:58Z"
+   },
+   {
+    "account_id": 1103529331,
+    "friend_since": "2024-06-04T23:42:02Z"
+   },
+   {
+    "account_id": 1129705653,
+    "friend_since": "2026-07-09T09:00:26Z"
+   },
+   {
+    "account_id": 1247529059,
+    "friend_since": "2026-05-27T20:17:37Z"
+   },
+   {
+    "account_id": 1268066455,
+    "friend_since": "2025-05-24T21:54:36Z"
+   },
+   {
+    "account_id": 1274591031,
+    "friend_since": "2025-02-25T05:17:38Z"
+   },
+   {
+    "account_id": 1429269609,
+    "friend_since": "2026-06-03T23:17:02Z"
+   },
+   {
+    "account_id": 1546077047,
+    "friend_since": "2025-04-19T01:28:24Z"
+   },
+   {
+    "account_id": 1547827852,
+    "friend_since": "2026-08-12T21:17:20Z"
+   },
+   {
+    "account_id": 1563867550,
+    "friend_since": "2026-05-01T15:23:57Z"
+   },
+   {
+    "account_id": 1605877039,
+    "friend_since": "2026-06-03T23:15:28Z"
+   },
+   {
+    "account_id": 1827981548,
+    "friend_since": "2025-09-08T23:22:05Z"
+   },
+   {
+    "account_id": 1869656356,
+    "friend_since": "2025-04-19T01:49:31Z"
+   },
+   {
+    "account_id": 1871652496,
+    "friend_since": "2025-06-01T22:12:15Z"
+   },
+   {
+    "account_id": 1890197430,
+    "friend_since": "2026-05-27T00:04:36Z"
+   }
+  ],
+  "matches_played_last_30d": 22,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 316679375,
+  "personaname": "Cosmetic Teammate",
+  "profileurl": "https://steamcommunity.com/profiles/76561198276945103/",
+  "avatar": "https://avatars.steamstatic.com/8deedbf24aeba01e65f21c67eb514ba6032a1c6b.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/8deedbf24aeba01e65f21c67eb514ba6032a1c6b_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/8deedbf24aeba01e65f21c67eb514ba6032a1c6b_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-20T00:19:36Z",
+  "friends": [
+   {
+    "account_id": 10421499,
+    "friend_since": "2026-01-05T10:13:20Z"
+   },
+   {
+    "account_id": 43876308,
+    "friend_since": "2020-05-21T09:14:09Z"
+   },
+   {
+    "account_id": 44594622,
+    "friend_since": "2020-10-13T05:37:34Z"
+   },
+   {
+    "account_id": 48703427,
+    "friend_since": "2024-04-26T11:23:21Z"
+   },
+   {
+    "account_id": 49822321,
+    "friend_since": "2016-05-09T02:25:48Z"
+   },
+   {
+    "account_id": 64000658,
+    "friend_since": "2016-10-20T07:17:12Z"
+   },
+   {
+    "account_id": 65576309,
+    "friend_since": "2016-05-14T14:38:11Z"
+   },
+   {
+    "account_id": 68014922,
+    "friend_since": "2016-12-04T08:27:52Z"
+   },
+   {
+    "account_id": 79311383,
+    "friend_since": "2016-01-17T09:37:11Z"
+   },
+   {
+    "account_id": 79581538,
+    "friend_since": "2017-02-09T07:01:59Z"
+   },
+   {
+    "account_id": 80965350,
+    "friend_since": "2017-06-26T06:44:42Z"
+   },
+   {
+    "account_id": 80968884,
+    "friend_since": "2017-07-26T09:28:38Z"
+   },
+   {
+    "account_id": 81974598,
+    "friend_since": "2017-02-01T10:29:31Z"
+   },
+   {
+    "account_id": 83317846,
+    "friend_since": "2016-03-29T09:54:19Z"
+   },
+   {
+    "account_id": 85325650,
+    "friend_since": "2016-02-14T04:21:15Z"
+   },
+   {
+    "account_id": 86693987,
+    "friend_since": "2016-05-04T10:01:21Z"
+   },
+   {
+    "account_id": 88771689,
+    "friend_since": "2016-06-26T01:53:24Z"
+   },
+   {
+    "account_id": 89042285,
+    "friend_since": "2016-02-01T06:23:11Z"
+   },
+   {
+    "account_id": 90662677,
+    "friend_since": "2017-06-26T05:28:55Z"
+   },
+   {
+    "account_id": 96792468,
+    "friend_since": "2016-12-06T02:51:55Z"
+   },
+   {
+    "account_id": 99046438,
+    "friend_since": "2022-03-14T06:39:32Z"
+   },
+   {
+    "account_id": 99159476,
+    "friend_since": "2016-04-07T10:53:03Z"
+   },
+   {
+    "account_id": 104365108,
+    "friend_since": "2019-10-22T22:53:09Z"
+   },
+   {
+    "account_id": 110854181,
+    "friend_since": "2016-12-27T01:14:58Z"
+   },
+   {
+    "account_id": 112723238,
+    "friend_since": "2016-03-29T09:54:43Z"
+   },
+   {
+    "account_id": 116230963,
+    "friend_since": "2017-08-15T06:43:56Z"
+   },
+   {
+    "account_id": 124200079,
+    "friend_since": "2016-11-22T08:22:38Z"
+   },
+   {
+    "account_id": 128473742,
+    "friend_since": "2017-07-28T10:21:49Z"
+   },
+   {
+    "account_id": 131504589,
+    "friend_since": "2017-12-01T03:59:09Z"
+   },
+   {
+    "account_id": 137925640,
+    "friend_since": "2016-04-07T11:16:49Z"
+   },
+   {
+    "account_id": 139882995,
+    "friend_since": "2025-05-26T10:36:06Z"
+   },
+   {
+    "account_id": 142864172,
+    "friend_since": "2024-02-25T09:52:57Z"
+   },
+   {
+    "account_id": 144188452,
+    "friend_since": "2021-10-30T15:05:27Z"
+   },
+   {
+    "account_id": 163323710,
+    "friend_since": "2018-04-02T12:10:16Z"
+   },
+   {
+    "account_id": 168609081,
+    "friend_since": "2024-04-05T02:22:56Z"
+   },
+   {
+    "account_id": 172531869,
+    "friend_since": "2016-04-08T04:25:29Z"
+   },
+   {
+    "account_id": 173268483,
+    "friend_since": "2016-04-05T06:03:42Z"
+   },
+   {
+    "account_id": 174592345,
+    "friend_since": "2022-03-04T11:56:43Z"
+   },
+   {
+    "account_id": 179442460,
+    "friend_since": "2016-12-04T06:52:06Z"
+   },
+   {
+    "account_id": 181131342,
+    "friend_since": "2016-04-27T05:58:49Z"
+   },
+   {
+    "account_id": 182247077,
+    "friend_since": "2016-03-07T10:39:35Z"
+   },
+   {
+    "account_id": 188940514,
+    "friend_since": "2020-05-17T09:13:50Z"
+   },
+   {
+    "account_id": 202187984,
+    "friend_since": "2017-02-19T07:09:15Z"
+   },
+   {
+    "account_id": 227427345,
+    "friend_since": "2017-02-16T07:33:52Z"
+   },
+   {
+    "account_id": 229882631,
+    "friend_since": "2017-09-09T07:09:34Z"
+   },
+   {
+    "account_id": 273188348,
+    "friend_since": "2021-09-14T07:40:27Z"
+   },
+   {
+    "account_id": 274968036,
+    "friend_since": "2017-05-01T05:55:02Z"
+   },
+   {
+    "account_id": 276248482,
+    "friend_since": "2016-11-22T07:09:15Z"
+   },
+   {
+    "account_id": 311279008,
+    "friend_since": "2016-03-30T08:10:55Z"
+   },
+   {
+    "account_id": 311507399,
+    "friend_since": "2017-06-10T04:08:51Z"
+   },
+   {
+    "account_id": 317422920,
+    "friend_since": "2017-02-04T07:05:12Z"
+   },
+   {
+    "account_id": 321042555,
+    "friend_since": "2016-11-18T09:21:04Z"
+   },
+   {
+    "account_id": 355877714,
+    "friend_since": "2019-07-10T11:15:45Z"
+   },
+   {
+    "account_id": 399015898,
+    "friend_since": "2017-06-10T06:16:14Z"
+   },
+   {
+    "account_id": 408660499,
+    "friend_since": "2026-10-06T05:47:26Z"
+   },
+   {
+    "account_id": 409478542,
+    "friend_since": "2019-11-30T02:17:21Z"
+   },
+   {
+    "account_id": 416035294,
+    "friend_since": "2017-06-21T03:21:34Z"
+   },
+   {
+    "account_id": 438000699,
+    "friend_since": "2017-12-08T12:58:22Z"
+   },
+   {
+    "account_id": 444105762,
+    "friend_since": "2020-10-28T10:44:38Z"
+   },
+   {
+    "account_id": 748886615,
+    "friend_since": "2026-05-03T03:04:35Z"
+   },
+   {
+    "account_id": 870564188,
+    "friend_since": "2026-07-22T11:30:33Z"
+   },
+   {
+    "account_id": 901451102,
+    "friend_since": "2024-04-05T02:20:25Z"
+   },
+   {
+    "account_id": 908981028,
+    "friend_since": "2022-04-15T07:01:04Z"
+   },
+   {
+    "account_id": 1018243666,
+    "friend_since": "2020-01-04T12:29:51Z"
+   },
+   {
+    "account_id": 1065504358,
+    "friend_since": "2025-08-29T04:51:42Z"
+   },
+   {
+    "account_id": 1066283943,
+    "friend_since": "2026-03-12T09:01:27Z"
+   },
+   {
+    "account_id": 1086895180,
+    "friend_since": "2022-03-04T12:07:52Z"
+   },
+   {
+    "account_id": 1201202509,
+    "friend_since": "2026-05-25T07:18:15Z"
+   },
+   {
+    "account_id": 1210282297,
+    "friend_since": "2023-09-08T12:40:19Z"
+   },
+   {
+    "account_id": 1846582103,
+    "friend_since": "2024-12-06T10:34:24Z"
+   }
+  ],
+  "matches_played_last_30d": 44,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 352891002,
+  "personaname": "cosmetic avoid button",
+  "profileurl": "https://steamcommunity.com/profiles/76561198313156730/",
+  "avatar": "https://avatars.steamstatic.com/7f5968e616bdeac94654a03f0dc4a1971534c5c6.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/7f5968e616bdeac94654a03f0dc4a1971534c5c6_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/7f5968e616bdeac94654a03f0dc4a1971534c5c6_full.jpg",
+  "realname": null,
+  "countrycode": "US",
+  "last_updated": "2026-11-22T01:24:12Z",
+  "friends": [
+   {
+    "account_id": 3709216,
+    "friend_since": "2017-12-25T20:56:58Z"
+   },
+   {
+    "account_id": 5672673,
+    "friend_since": "2019-11-08T01:04:33Z"
+   },
+   {
+    "account_id": 6932885,
+    "friend_since": "2019-08-12T20:07:31Z"
+   },
+   {
+    "account_id": 7808320,
+    "friend_since": "2019-08-12T20:07:28Z"
+   },
+   {
+    "account_id": 8897652,
+    "friend_since": "2017-09-05T17:35:08Z"
+   },
+   {
+    "account_id": 18228155,
+    "friend_since": "2018-11-17T06:47:42Z"
+   },
+   {
+    "account_id": 21108278,
+    "friend_since": "2016-10-29T06:02:35Z"
+   },
+   {
+    "account_id": 33123108,
+    "friend_since": "2019-11-25T20:38:12Z"
+   },
+   {
+    "account_id": 39661560,
+    "friend_since": "2018-02-13T03:20:31Z"
+   },
+   {
+    "account_id": 40945956,
+    "friend_since": "2025-01-19T17:54:53Z"
+   },
+   {
+    "account_id": 41070648,
+    "friend_since": "2026-01-23T22:53:19Z"
+   },
+   {
+    "account_id": 41457547,
+    "friend_since": "2025-11-16T04:33:09Z"
+   },
+   {
+    "account_id": 52243849,
+    "friend_since": "2026-04-15T01:57:53Z"
+   },
+   {
+    "account_id": 53077164,
+    "friend_since": "2016-07-10T06:04:13Z"
+   },
+   {
+    "account_id": 53702501,
+    "friend_since": "2016-07-17T21:18:23Z"
+   },
+   {
+    "account_id": 59130357,
+    "friend_since": "2018-09-13T08:03:32Z"
+   },
+   {
+    "account_id": 65412217,
+    "friend_since": "2016-07-20T03:31:58Z"
+   },
+   {
+    "account_id": 68019155,
+    "friend_since": "2016-06-30T04:54:24Z"
+   },
+   {
+    "account_id": 69182142,
+    "friend_since": "2019-08-30T03:01:37Z"
+   },
+   {
+    "account_id": 76012184,
+    "friend_since": "2017-01-17T04:09:23Z"
+   },
+   {
+    "account_id": 81743533,
+    "friend_since": "2017-07-14T04:35:13Z"
+   },
+   {
+    "account_id": 82011638,
+    "friend_since": "2026-04-05T14:31:25Z"
+   },
+   {
+    "account_id": 82145445,
+    "friend_since": "2018-02-09T06:07:54Z"
+   },
+   {
+    "account_id": 82732765,
+    "friend_since": "2026-04-08T07:00:15Z"
+   },
+   {
+    "account_id": 87788301,
+    "friend_since": "2017-01-14T09:12:56Z"
+   },
+   {
+    "account_id": 89634776,
+    "friend_since": "2019-08-22T19:50:51Z"
+   },
+   {
+    "account_id": 92109130,
+    "friend_since": "2018-01-14T09:02:12Z"
+   },
+   {
+    "account_id": 95075772,
+    "friend_since": "2018-01-01T08:44:07Z"
+   },
+   {
+    "account_id": 95762835,
+    "friend_since": "2016-11-29T05:33:02Z"
+   },
+   {
+    "account_id": 96731401,
+    "friend_since": "2018-01-09T05:55:22Z"
+   },
+   {
+    "account_id": 103262752,
+    "friend_since": "2025-11-22T18:35:13Z"
+   },
+   {
+    "account_id": 104547756,
+    "friend_since": "2019-11-25T06:43:39Z"
+   },
+   {
+    "account_id": 105047909,
+    "friend_since": "2016-11-03T02:03:11Z"
+   },
+   {
+    "account_id": 105285910,
+    "friend_since": "2018-02-10T21:02:33Z"
+   },
+   {
+    "account_id": 105542420,
+    "friend_since": "2018-02-10T19:59:23Z"
+   },
+   {
+    "account_id": 105594750,
+    "friend_since": "2018-02-10T21:02:34Z"
+   },
+   {
+    "account_id": 109329496,
+    "friend_since": "2018-08-19T05:49:43Z"
+   },
+   {
+    "account_id": 110602755,
+    "friend_since": "2018-01-14T22:46:24Z"
+   },
+   {
+    "account_id": 115144325,
+    "friend_since": "2018-01-19T15:53:26Z"
+   },
+   {
+    "account_id": 115832766,
+    "friend_since": "2019-10-14T01:31:23Z"
+   },
+   {
+    "account_id": 119021575,
+    "friend_since": "2017-12-01T03:30:48Z"
+   },
+   {
+    "account_id": 119473244,
+    "friend_since": "2016-09-08T02:35:48Z"
+   },
+   {
+    "account_id": 120622239,
+    "friend_since": "2019-09-09T23:18:50Z"
+   },
+   {
+    "account_id": 121154498,
+    "friend_since": "2017-08-13T05:32:12Z"
+   },
+   {
+    "account_id": 121248491,
+    "friend_since": "2018-02-02T21:41:31Z"
+   },
+   {
+    "account_id": 123697264,
+    "friend_since": "2022-10-18T06:26:07Z"
+   },
+   {
+    "account_id": 123895743,
+    "friend_since": "2017-06-25T08:43:56Z"
+   },
+   {
+    "account_id": 126048823,
+    "friend_since": "2022-11-24T17:31:49Z"
+   },
+   {
+    "account_id": 129071015,
+    "friend_since": "2016-06-30T18:56:56Z"
+   },
+   {
+    "account_id": 131035055,
+    "friend_since": "2019-08-17T05:07:35Z"
+   },
+   {
+    "account_id": 132298415,
+    "friend_since": "2018-09-13T08:03:20Z"
+   },
+   {
+    "account_id": 133071495,
+    "friend_since": "2018-09-15T10:35:34Z"
+   },
+   {
+    "account_id": 136469321,
+    "friend_since": "2019-09-01T06:37:06Z"
+   },
+   {
+    "account_id": 140924597,
+    "friend_since": "2016-12-25T10:20:37Z"
+   },
+   {
+    "account_id": 141878039,
+    "friend_since": "2019-08-26T18:16:09Z"
+   },
+   {
+    "account_id": 143766767,
+    "friend_since": "2019-02-28T13:47:24Z"
+   },
+   {
+    "account_id": 150640491,
+    "friend_since": "2017-04-24T06:47:52Z"
+   },
+   {
+    "account_id": 153742179,
+    "friend_since": "2017-01-12T07:43:35Z"
+   },
+   {
+    "account_id": 157784642,
+    "friend_since": "2016-07-19T02:57:39Z"
+   },
+   {
+    "account_id": 159244797,
+    "friend_since": "2017-04-30T20:40:00Z"
+   },
+   {
+    "account_id": 159287840,
+    "friend_since": "2018-02-13T21:36:36Z"
+   },
+   {
+    "account_id": 159496812,
+    "friend_since": "2018-01-15T03:24:09Z"
+   },
+   {
+    "account_id": 160077403,
+    "friend_since": "2017-07-22T06:45:05Z"
+   },
+   {
+    "account_id": 161881506,
+    "friend_since": "2019-08-18T14:33:56Z"
+   },
+   {
+    "account_id": 164060204,
+    "friend_since": "2019-08-12T20:07:24Z"
+   },
+   {
+    "account_id": 166501584,
+    "friend_since": "2017-01-10T07:01:42Z"
+   },
+   {
+    "account_id": 166927246,
+    "friend_since": "2017-01-19T03:37:09Z"
+   },
+   {
+    "account_id": 170299973,
+    "friend_since": "2016-07-19T02:51:48Z"
+   },
+   {
+    "account_id": 172157870,
+    "friend_since": "2016-09-03T00:30:16Z"
+   },
+   {
+    "account_id": 172528622,
+    "friend_since": "2017-07-07T16:26:52Z"
+   },
+   {
+    "account_id": 174300868,
+    "friend_since": "2017-12-30T23:27:21Z"
+   },
+   {
+    "account_id": 176143109,
+    "friend_since": "2016-06-25T21:14:39Z"
+   },
+   {
+    "account_id": 176153552,
+    "friend_since": "2019-10-11T20:58:53Z"
+   },
+   {
+    "account_id": 177984572,
+    "friend_since": "2018-01-03T23:44:47Z"
+   },
+   {
+    "account_id": 179976399,
+    "friend_since": "2016-07-21T21:31:49Z"
+   },
+   {
+    "account_id": 180458126,
+    "friend_since": "2018-09-15T10:35:24Z"
+   },
+   {
+    "account_id": 182857802,
+    "friend_since": "2018-01-04T19:05:52Z"
+   },
+   {
+    "account_id": 185724431,
+    "friend_since": "2018-09-18T07:20:12Z"
+   },
+   {
+    "account_id": 187744239,
+    "friend_since": "2023-06-14T15:42:21Z"
+   },
+   {
+    "account_id": 189263455,
+    "friend_since": "2018-09-24T21:15:43Z"
+   },
+   {
+    "account_id": 189313597,
+    "friend_since": "2019-11-06T10:16:59Z"
+   },
+   {
+    "account_id": 189735989,
+    "friend_since": "2017-07-21T05:37:49Z"
+   },
+   {
+    "account_id": 190302196,
+    "friend_since": "2017-04-24T06:47:51Z"
+   },
+   {
+    "account_id": 190337961,
+    "friend_since": "2019-09-04T08:06:47Z"
+   },
+   {
+    "account_id": 192047366,
+    "friend_since": "2018-09-15T04:02:02Z"
+   },
+   {
+    "account_id": 193443157,
+    "friend_since": "2019-10-23T10:38:18Z"
+   },
+   {
+    "account_id": 194373690,
+    "friend_since": "2017-07-15T09:15:20Z"
+   },
+   {
+    "account_id": 197010715,
+    "friend_since": "2018-02-10T21:58:10Z"
+   },
+   {
+    "account_id": 200618691,
+    "friend_since": "2017-07-13T10:56:02Z"
+   },
+   {
+    "account_id": 205799106,
+    "friend_since": "2017-01-16T01:22:56Z"
+   },
+   {
+    "account_id": 206534842,
+    "friend_since": "2019-09-01T03:10:24Z"
+   },
+   {
+    "account_id": 206741312,
+    "friend_since": "2019-11-05T23:18:03Z"
+   },
+   {
+    "account_id": 206767855,
+    "friend_since": "2018-01-15T03:56:16Z"
+   },
+   {
+    "account_id": 211220039,
+    "friend_since": "2017-12-25T20:56:57Z"
+   },
+   {
+    "account_id": 214055829,
+    "friend_since": "2017-01-12T06:54:20Z"
+   },
+   {
+    "account_id": 219290591,
+    "friend_since": "2018-09-15T00:12:20Z"
+   },
+   {
+    "account_id": 219313355,
+    "friend_since": "2016-07-20T03:31:54Z"
+   },
+   {
+    "account_id": 220752755,
+    "friend_since": "2017-08-11T18:34:09Z"
+   },
+   {
+    "account_id": 221459979,
+    "friend_since": "2023-05-20T05:24:11Z"
+   },
+   {
+    "account_id": 222303273,
+    "friend_since": "2016-07-21T04:30:55Z"
+   },
+   {
+    "account_id": 226134022,
+    "friend_since": "2017-07-19T09:55:22Z"
+   },
+   {
+    "account_id": 232104918,
+    "friend_since": "2016-11-06T05:36:58Z"
+   },
+   {
+    "account_id": 235682399,
+    "friend_since": "2018-03-24T21:42:59Z"
+   },
+   {
+    "account_id": 240161137,
+    "friend_since": "2018-02-15T01:57:51Z"
+   },
+   {
+    "account_id": 240708434,
+    "friend_since": "2025-07-11T03:59:32Z"
+   },
+   {
+    "account_id": 240891655,
+    "friend_since": "2019-11-18T00:57:38Z"
+   },
+   {
+    "account_id": 242351513,
+    "friend_since": "2017-08-06T03:06:17Z"
+   },
+   {
+    "account_id": 248176171,
+    "friend_since": "2016-07-10T03:56:41Z"
+   },
+   {
+    "account_id": 252514041,
+    "friend_since": "2017-07-07T22:00:23Z"
+   },
+   {
+    "account_id": 254930495,
+    "friend_since": "2016-06-29T03:16:04Z"
+   },
+   {
+    "account_id": 255941389,
+    "friend_since": "2016-11-06T22:09:14Z"
+   },
+   {
+    "account_id": 258252188,
+    "friend_since": "2017-06-30T05:59:10Z"
+   },
+   {
+    "account_id": 259956004,
+    "friend_since": "2017-02-12T23:47:56Z"
+   },
+   {
+    "account_id": 259993789,
+    "friend_since": "2016-10-03T20:59:34Z"
+   },
+   {
+    "account_id": 277930996,
+    "friend_since": "2019-11-05T08:52:38Z"
+   },
+   {
+    "account_id": 279002088,
+    "friend_since": "2018-01-01T23:25:25Z"
+   },
+   {
+    "account_id": 281402580,
+    "friend_since": "2016-07-14T02:45:30Z"
+   },
+   {
+    "account_id": 285815704,
+    "friend_since": "2017-01-22T07:21:05Z"
+   },
+   {
+    "account_id": 287146358,
+    "friend_since": "2016-12-24T05:05:31Z"
+   },
+   {
+    "account_id": 288709108,
+    "friend_since": "2016-10-06T04:32:10Z"
+   },
+   {
+    "account_id": 288841526,
+    "friend_since": "2017-03-31T00:29:29Z"
+   },
+   {
+    "account_id": 293760010,
+    "friend_since": "2017-08-30T02:40:25Z"
+   },
+   {
+    "account_id": 295154748,
+    "friend_since": "2017-02-15T04:27:12Z"
+   },
+   {
+    "account_id": 295831133,
+    "friend_since": "2018-02-10T04:44:36Z"
+   },
+   {
+    "account_id": 296536943,
+    "friend_since": "2016-10-25T02:31:39Z"
+   },
+   {
+    "account_id": 298183695,
+    "friend_since": "2016-10-25T01:39:15Z"
+   },
+   {
+    "account_id": 298819304,
+    "friend_since": "2019-11-18T00:57:42Z"
+   },
+   {
+    "account_id": 302588736,
+    "friend_since": "2018-10-03T22:54:05Z"
+   },
+   {
+    "account_id": 302971893,
+    "friend_since": "2018-10-21T09:31:54Z"
+   },
+   {
+    "account_id": 304775003,
+    "friend_since": "2016-08-12T22:18:40Z"
+   },
+   {
+    "account_id": 308745053,
+    "friend_since": "2023-10-07T07:34:11Z"
+   },
+   {
+    "account_id": 311830104,
+    "friend_since": "2018-01-16T00:14:52Z"
+   },
+   {
+    "account_id": 313251850,
+    "friend_since": "2019-08-29T21:52:58Z"
+   },
+   {
+    "account_id": 317541554,
+    "friend_since": "2016-07-03T03:22:56Z"
+   },
+   {
+    "account_id": 319185890,
+    "friend_since": "2018-01-28T05:17:56Z"
+   },
+   {
+    "account_id": 322240899,
+    "friend_since": "2016-10-10T05:00:30Z"
+   },
+   {
+    "account_id": 323317147,
+    "friend_since": "2025-09-15T15:36:39Z"
+   },
+   {
+    "account_id": 327049370,
+    "friend_since": "2017-01-12T06:11:49Z"
+   },
+   {
+    "account_id": 327167749,
+    "friend_since": "2019-09-01T02:48:02Z"
+   },
+   {
+    "account_id": 329489049,
+    "friend_since": "2021-06-20T17:01:37Z"
+   },
+   {
+    "account_id": 329930594,
+    "friend_since": "2019-08-27T01:23:40Z"
+   },
+   {
+    "account_id": 333650996,
+    "friend_since": "2016-10-06T04:29:46Z"
+   },
+   {
+    "account_id": 335382617,
+    "friend_since": "2016-07-29T21:14:57Z"
+   },
+   {
+    "account_id": 336031960,
+    "friend_since": "2018-01-09T04:28:48Z"
+   },
+   {
+    "account_id": 343028631,
+    "friend_since": "2018-09-16T03:21:18Z"
+   },
+   {
+    "account_id": 343061249,
+    "friend_since": "2017-08-05T07:29:28Z"
+   },
+   {
+    "account_id": 344538908,
+    "friend_since": "2021-06-26T15:22:03Z"
+   },
+   {
+    "account_id": 348491489,
+    "friend_since": "2019-10-23T10:38:18Z"
+   },
+   {
+    "account_id": 354859600,
+    "friend_since": "2016-07-03T03:40:40Z"
+   },
+   {
+    "account_id": 355617758,
+    "friend_since": "2017-12-29T09:36:22Z"
+   },
+   {
+    "account_id": 356994113,
+    "friend_since": "2018-02-11T05:25:52Z"
+   },
+   {
+    "account_id": 361002632,
+    "friend_since": "2016-12-20T00:12:35Z"
+   },
+   {
+    "account_id": 363100193,
+    "friend_since": "2016-10-02T18:59:59Z"
+   },
+   {
+    "account_id": 367256275,
+    "friend_since": "2019-08-29T22:25:59Z"
+   },
+   {
+    "account_id": 368649206,
+    "friend_since": "2019-11-23T23:00:47Z"
+   },
+   {
+    "account_id": 376471376,
+    "friend_since": "2017-01-17T22:08:26Z"
+   },
+   {
+    "account_id": 384249539,
+    "friend_since": "2018-10-09T06:36:38Z"
+   },
+   {
+    "account_id": 387625735,
+    "friend_since": "2017-01-14T04:09:10Z"
+   },
+   {
+    "account_id": 388507226,
+    "friend_since": "2018-02-11T00:50:30Z"
+   },
+   {
+    "account_id": 393827702,
+    "friend_since": "2026-02-27T04:46:49Z"
+   },
+   {
+    "account_id": 394207456,
+    "friend_since": "2017-02-10T03:10:01Z"
+   },
+   {
+    "account_id": 396807492,
+    "friend_since": "2017-08-05T02:17:00Z"
+   },
+   {
+    "account_id": 397643044,
+    "friend_since": "2017-01-17T02:38:07Z"
+   },
+   {
+    "account_id": 404457364,
+    "friend_since": "2017-02-10T01:32:15Z"
+   },
+   {
+    "account_id": 422350546,
+    "friend_since": "2019-08-21T14:40:57Z"
+   },
+   {
+    "account_id": 434453985,
+    "friend_since": "2018-10-09T06:36:38Z"
+   },
+   {
+    "account_id": 435008018,
+    "friend_since": "2017-07-20T07:22:49Z"
+   },
+   {
+    "account_id": 445583848,
+    "friend_since": "2017-07-20T02:37:11Z"
+   },
+   {
+    "account_id": 445991494,
+    "friend_since": "2017-12-29T08:39:03Z"
+   },
+   {
+    "account_id": 446371903,
+    "friend_since": "2018-01-25T00:14:45Z"
+   },
+   {
+    "account_id": 449767191,
+    "friend_since": "2018-01-10T19:20:14Z"
+   },
+   {
+    "account_id": 451344132,
+    "friend_since": "2017-12-29T22:45:55Z"
+   },
+   {
+    "account_id": 454649896,
+    "friend_since": "2023-11-23T00:05:51Z"
+   },
+   {
+    "account_id": 836447434,
+    "friend_since": "2022-12-30T03:07:05Z"
+   },
+   {
+    "account_id": 837364726,
+    "friend_since": "2018-01-01T04:15:07Z"
+   },
+   {
+    "account_id": 839137248,
+    "friend_since": "2017-12-29T01:58:25Z"
+   },
+   {
+    "account_id": 863383550,
+    "friend_since": "2021-06-18T03:06:35Z"
+   },
+   {
+    "account_id": 863694604,
+    "friend_since": "2020-01-20T01:06:33Z"
+   },
+   {
+    "account_id": 869140546,
+    "friend_since": "2019-09-03T08:05:02Z"
+   },
+   {
+    "account_id": 870533288,
+    "friend_since": "2018-09-13T08:03:32Z"
+   },
+   {
+    "account_id": 874817710,
+    "friend_since": "2025-03-20T02:26:02Z"
+   },
+   {
+    "account_id": 883326802,
+    "friend_since": "2018-06-29T03:55:16Z"
+   },
+   {
+    "account_id": 885974867,
+    "friend_since": "2018-08-19T21:53:00Z"
+   },
+   {
+    "account_id": 889272011,
+    "friend_since": "2019-10-23T10:38:18Z"
+   },
+   {
+    "account_id": 896150833,
+    "friend_since": "2018-09-13T23:14:14Z"
+   },
+   {
+    "account_id": 897301344,
+    "friend_since": "2018-09-14T05:26:49Z"
+   },
+   {
+    "account_id": 900229192,
+    "friend_since": "2019-08-12T20:07:34Z"
+   },
+   {
+    "account_id": 904194307,
+    "friend_since": "2019-11-08T08:46:29Z"
+   },
+   {
+    "account_id": 910853044,
+    "friend_since": "2019-09-09T04:59:09Z"
+   },
+   {
+    "account_id": 956089568,
+    "friend_since": "2019-03-08T08:46:15Z"
+   },
+   {
+    "account_id": 990779511,
+    "friend_since": "2023-01-21T05:24:26Z"
+   },
+   {
+    "account_id": 1005746913,
+    "friend_since": "2019-06-06T06:53:12Z"
+   },
+   {
+    "account_id": 1023035604,
+    "friend_since": "2019-11-18T00:57:38Z"
+   },
+   {
+    "account_id": 1023599247,
+    "friend_since": "2019-11-02T05:47:58Z"
+   },
+   {
+    "account_id": 1110601766,
+    "friend_since": "2025-05-21T15:49:34Z"
+   },
+   {
+    "account_id": 1171427818,
+    "friend_since": "2023-09-29T06:16:32Z"
+   },
+   {
+    "account_id": 1248373149,
+    "friend_since": "2026-01-31T15:36:34Z"
+   },
+   {
+    "account_id": 1282262190,
+    "friend_since": "2023-10-06T23:49:54Z"
+   },
+   {
+    "account_id": 1494133937,
+    "friend_since": "2025-01-19T17:54:51Z"
+   }
+  ],
+  "matches_played_last_30d": 92,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 11440854,
+  "personaname": "Cosmetic Core",
+  "profileurl": "https://steamcommunity.com/id/tugaware/",
+  "avatar": "https://avatars.steamstatic.com/8291bf3f3f6d87d63f4c5e16a9101d130e543c1e.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/8291bf3f3f6d87d63f4c5e16a9101d130e543c1e_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/8291bf3f3f6d87d63f4c5e16a9101d130e543c1e_full.jpg",
+  "realname": null,
+  "countrycode": "HN",
+  "last_updated": "2026-11-17T05:11:20Z",
+  "friends": [
+   {
+    "account_id": 20113438,
+    "friend_since": "2019-10-21T20:17:27Z"
+   },
+   {
+    "account_id": 27659915,
+    "friend_since": "2016-11-11T23:17:48Z"
+   },
+   {
+    "account_id": 36420260,
+    "friend_since": "2016-12-14T23:29:03Z"
+   },
+   {
+    "account_id": 37664736,
+    "friend_since": "2024-05-01T15:10:00Z"
+   },
+   {
+    "account_id": 40643859,
+    "friend_since": "2014-11-20T00:32:30Z"
+   },
+   {
+    "account_id": 41015769,
+    "friend_since": "2018-12-09T22:40:55Z"
+   },
+   {
+    "account_id": 45013542,
+    "friend_since": "2016-12-12T21:35:29Z"
+   },
+   {
+    "account_id": 45128611,
+    "friend_since": "2014-12-21T15:52:56Z"
+   },
+   {
+    "account_id": 46028452,
+    "friend_since": "2023-12-23T09:50:45Z"
+   },
+   {
+    "account_id": 50935347,
+    "friend_since": "2015-06-19T22:15:56Z"
+   },
+   {
+    "account_id": 51571561,
+    "friend_since": "2016-11-14T20:56:41Z"
+   },
+   {
+    "account_id": 54756949,
+    "friend_since": "2019-11-16T10:22:23Z"
+   },
+   {
+    "account_id": 58202910,
+    "friend_since": "2015-07-02T21:17:49Z"
+   },
+   {
+    "account_id": 58315899,
+    "friend_since": "2015-09-19T10:25:35Z"
+   },
+   {
+    "account_id": 69791803,
+    "friend_since": "2019-10-16T20:43:13Z"
+   },
+   {
+    "account_id": 81151305,
+    "friend_since": "2020-01-03T18:17:53Z"
+   },
+   {
+    "account_id": 85306525,
+    "friend_since": "2019-10-23T16:34:27Z"
+   },
+   {
+    "account_id": 92553571,
+    "friend_since": "2017-09-11T20:16:53Z"
+   },
+   {
+    "account_id": 93944244,
+    "friend_since": "2019-10-18T17:26:52Z"
+   },
+   {
+    "account_id": 101743835,
+    "friend_since": "2014-11-20T00:32:54Z"
+   },
+   {
+    "account_id": 126605967,
+    "friend_since": "2014-11-20T00:33:09Z"
+   },
+   {
+    "account_id": 166628705,
+    "friend_since": "2015-06-05T22:47:33Z"
+   },
+   {
+    "account_id": 211123401,
+    "friend_since": "2019-12-19T18:24:20Z"
+   },
+   {
+    "account_id": 269181396,
+    "friend_since": "2019-10-26T18:40:34Z"
+   },
+   {
+    "account_id": 318222560,
+    "friend_since": "2019-12-12T16:48:27Z"
+   },
+   {
+    "account_id": 323524625,
+    "friend_since": "2018-03-12T23:31:03Z"
+   },
+   {
+    "account_id": 395323662,
+    "friend_since": "2019-10-26T21:01:03Z"
+   },
+   {
+    "account_id": 838520301,
+    "friend_since": "2018-01-02T18:22:00Z"
+   },
+   {
+    "account_id": 913961641,
+    "friend_since": "2019-12-07T11:18:16Z"
+   },
+   {
+    "account_id": 1180656226,
+    "friend_since": "2021-02-17T17:40:40Z"
+   }
+  ],
+  "matches_played_last_30d": 29,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 1534930845,
+  "personaname": "Cosmetic Sinclair",
+  "profileurl": "https://steamcommunity.com/profiles/76561199495196573/",
+  "avatar": "https://avatars.steamstatic.com/c4e553792064efe90b3ab5ea1ba5c3b0b39cbcc1.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/c4e553792064efe90b3ab5ea1ba5c3b0b39cbcc1_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/c4e553792064efe90b3ab5ea1ba5c3b0b39cbcc1_full.jpg",
+  "realname": "T O W E L Y E Y",
+  "countrycode": null,
+  "last_updated": "2026-11-18T00:26:45Z",
+  "friends": [
+   {
+    "account_id": 96648719,
+    "friend_since": "2023-04-17T03:55:57Z"
+   },
+   {
+    "account_id": 106461807,
+    "friend_since": "2023-06-12T10:44:34Z"
+   },
+   {
+    "account_id": 144009484,
+    "friend_since": "2026-09-05T03:43:24Z"
+   },
+   {
+    "account_id": 165270888,
+    "friend_since": "2026-11-02T07:59:38Z"
+   },
+   {
+    "account_id": 169582366,
+    "friend_since": "2023-05-01T11:36:15Z"
+   },
+   {
+    "account_id": 282299874,
+    "friend_since": "2023-04-16T02:24:14Z"
+   },
+   {
+    "account_id": 293382975,
+    "friend_since": "2026-08-06T04:45:48Z"
+   },
+   {
+    "account_id": 309809984,
+    "friend_since": "2026-08-04T10:21:26Z"
+   },
+   {
+    "account_id": 336419702,
+    "friend_since": "2023-04-21T03:26:08Z"
+   },
+   {
+    "account_id": 386518265,
+    "friend_since": "2023-04-17T03:46:19Z"
+   },
+   {
+    "account_id": 396309516,
+    "friend_since": "2026-11-02T07:59:00Z"
+   },
+   {
+    "account_id": 415424116,
+    "friend_since": "2023-04-30T02:46:19Z"
+   },
+   {
+    "account_id": 475163118,
+    "friend_since": "2023-04-17T10:43:31Z"
+   },
+   {
+    "account_id": 1016018040,
+    "friend_since": "2026-10-05T10:20:50Z"
+   },
+   {
+    "account_id": 1021132413,
+    "friend_since": "2023-04-16T02:55:56Z"
+   },
+   {
+    "account_id": 1046778149,
+    "friend_since": "2023-04-21T00:19:25Z"
+   },
+   {
+    "account_id": 1486702021,
+    "friend_since": "2026-10-14T09:28:12Z"
+   }
+  ],
+  "matches_played_last_30d": 5,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 188138206,
+  "personaname": "IM COSMETIC",
+  "profileurl": "https://steamcommunity.com/profiles/76561198148403934/",
+  "avatar": "https://avatars.steamstatic.com/fd1aa834171753ed7444756aa526f4442127e99c.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/fd1aa834171753ed7444756aa526f4442127e99c_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/fd1aa834171753ed7444756aa526f4442127e99c_full.jpg",
+  "realname": null,
+  "countrycode": "UM",
+  "last_updated": "2026-11-20T02:18:17Z",
+  "friends": [
+   {
+    "account_id": 31467508,
+    "friend_since": "2015-02-25T07:25:59Z"
+   },
+   {
+    "account_id": 127834407,
+    "friend_since": "2026-05-23T04:36:31Z"
+   },
+   {
+    "account_id": 129506551,
+    "friend_since": "2014-08-13T19:24:18Z"
+   },
+   {
+    "account_id": 171774127,
+    "friend_since": "2014-12-29T02:22:38Z"
+   },
+   {
+    "account_id": 184159279,
+    "friend_since": "2014-08-17T00:30:01Z"
+   },
+   {
+    "account_id": 205700599,
+    "friend_since": "2015-01-11T21:54:30Z"
+   },
+   {
+    "account_id": 366072643,
+    "friend_since": "2026-05-23T03:46:21Z"
+   },
+   {
+    "account_id": 970212341,
+    "friend_since": "2026-07-06T07:42:24Z"
+   },
+   {
+    "account_id": 1165267716,
+    "friend_since": "2026-06-07T09:39:39Z"
+   },
+   {
+    "account_id": 1311101006,
+    "friend_since": "2026-05-26T07:26:45Z"
+   },
+   {
+    "account_id": 1849864274,
+    "friend_since": "2026-08-29T08:08:58Z"
+   }
+  ],
+  "matches_played_last_30d": 8,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 122978514,
+  "personaname": "Toby [Cosmetic Vibes Based]",
+  "profileurl": "https://steamcommunity.com/id/wert7822/",
+  "avatar": "https://avatars.steamstatic.com/f9fead5c690bb20d4fbabd507796fd8dda77e497.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/f9fead5c690bb20d4fbabd507796fd8dda77e497_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/f9fead5c690bb20d4fbabd507796fd8dda77e497_full.jpg",
+  "realname": "Louis",
+  "countrycode": "US",
+  "last_updated": "2026-11-17T09:15:34Z",
+  "friends": [
+   {
+    "account_id": 80933919,
+    "friend_since": "2023-04-25T22:48:49Z"
+   },
+   {
+    "account_id": 93673708,
+    "friend_since": "2026-05-11T00:35:04Z"
+   },
+   {
+    "account_id": 105928026,
+    "friend_since": "2023-05-14T01:37:57Z"
+   },
+   {
+    "account_id": 106549324,
+    "friend_since": "2025-11-02T01:49:59Z"
+   },
+   {
+    "account_id": 109477835,
+    "friend_since": "2026-11-01T18:33:10Z"
+   },
+   {
+    "account_id": 129022470,
+    "friend_since": "2014-12-06T02:34:52Z"
+   },
+   {
+    "account_id": 139877799,
+    "friend_since": "2013-11-14T22:56:12Z"
+   },
+   {
+    "account_id": 152133040,
+    "friend_since": "2013-11-14T13:45:37Z"
+   },
+   {
+    "account_id": 160132121,
+    "friend_since": "2023-04-25T12:24:41Z"
+   },
+   {
+    "account_id": 186057891,
+    "friend_since": "2023-05-29T16:09:03Z"
+   },
+   {
+    "account_id": 191589384,
+    "friend_since": "2023-05-13T23:52:08Z"
+   },
+   {
+    "account_id": 201323537,
+    "friend_since": "2015-01-20T23:44:22Z"
+   },
+   {
+    "account_id": 205485163,
+    "friend_since": "2025-10-05T08:46:39Z"
+   },
+   {
+    "account_id": 249786716,
+    "friend_since": "2015-02-06T00:54:02Z"
+   },
+   {
+    "account_id": 334973105,
+    "friend_since": "2021-02-23T22:34:50Z"
+   },
+   {
+    "account_id": 336011047,
+    "friend_since": "2025-10-05T01:08:10Z"
+   },
+   {
+    "account_id": 481223028,
+    "friend_since": "2023-05-12T16:26:20Z"
+   },
+   {
+    "account_id": 896487567,
+    "friend_since": "2021-01-01T21:03:24Z"
+   },
+   {
+    "account_id": 1125093118,
+    "friend_since": "2026-01-06T03:38:10Z"
+   },
+   {
+    "account_id": 1125126017,
+    "friend_since": "2023-06-13T21:56:27Z"
+   }
+  ],
+  "matches_played_last_30d": 156,
+  "last_team_avg_badge": null
+ },
+ {
+  "account_id": 901541526,
+  "personaname": "Yoshi's Cosmetic Twink",
+  "profileurl": "https://steamcommunity.com/profiles/76561198861807254/",
+  "avatar": "https://avatars.steamstatic.com/b3a892fa74ba86dc7d6682b0b9d68ae8ce61ce81.jpg",
+  "avatarmedium": "https://avatars.steamstatic.com/b3a892fa74ba86dc7d6682b0b9d68ae8ce61ce81_medium.jpg",
+  "avatarfull": "https://avatars.steamstatic.com/b3a892fa74ba86dc7d6682b0b9d68ae8ce61ce81_full.jpg",
+  "realname": null,
+  "countrycode": null,
+  "last_updated": "2026-11-16T04:09:09Z",
+  "friends": [
+   {
+    "account_id": 108131315,
+    "friend_since": "2025-08-30T04:30:31Z"
+   },
+   {
+    "account_id": 113781982,
+    "friend_since": "2024-09-19T00:37:15Z"
+   },
+   {
+    "account_id": 124465543,
+    "friend_since": "2021-03-31T01:24:45Z"
+   },
+   {
+    "account_id": 188575322,
+    "friend_since": "2026-05-13T00:48:18Z"
+   },
+   {
+    "account_id": 217836751,
+    "friend_since": "2021-04-04T01:39:13Z"
+   },
+   {
+    "account_id": 218997826,
+    "friend_since": "2024-09-17T20:26:52Z"
+   },
+   {
+    "account_id": 283348516,
+    "friend_since": "2021-07-21T03:06:21Z"
+   },
+   {
+    "account_id": 308204757,
+    "friend_since": "2026-07-14T02:08:36Z"
+   },
+   {
+    "account_id": 355627527,
+    "friend_since": "2023-09-22T20:51:49Z"
+   },
+   {
+    "account_id": 403060128,
+    "friend_since": "2022-10-21T03:09:31Z"
+   },
+   {
+    "account_id": 455281487,
+    "friend_since": "2023-12-07T03:29:54Z"
+   },
+   {
+    "account_id": 837333348,
+    "friend_since": "2022-03-13T08:28:05Z"
+   },
+   {
+    "account_id": 838383197,
+    "friend_since": "2024-12-02T05:13:14Z"
+   },
+   {
+    "account_id": 846016858,
+    "friend_since": "2023-10-19T18:49:26Z"
+   },
+   {
+    "account_id": 860872859,
+    "friend_since": "2026-07-09T03:48:36Z"
+   },
+   {
+    "account_id": 890187479,
+    "friend_since": "2021-12-15T01:29:47Z"
+   },
+   {
+    "account_id": 1016466052,
+    "friend_since": "2023-08-14T03:46:38Z"
+   },
+   {
+    "account_id": 1096154291,
+    "friend_since": "2023-05-20T00:02:44Z"
+   },
+   {
+    "account_id": 1203173046,
+    "friend_since": "2021-08-17T07:12:31Z"
+   },
+   {
+    "account_id": 1216984927,
+    "friend_since": "2021-07-09T22:35:36Z"
+   },
+   {
+    "account_id": 1269433710,
+    "friend_since": "2022-10-09T23:46:01Z"
+   },
+   {
+    "account_id": 1354154348,
+    "friend_since": "2023-10-10T17:13:07Z"
+   },
+   {
+    "account_id": 1415828572,
+    "friend_since": "2022-12-06T22:39:43Z"
+   },
+   {
+    "account_id": 1853291829,
+    "friend_since": "2026-07-21T02:19:33Z"
+   }
+  ],
+  "matches_played_last_30d": 30,
+  "last_team_avg_badge": null
+ }
+]

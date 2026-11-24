@@ -1,0 +1,289 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Paleta tomada del arte del juego (portada y logo: verde petróleo + crema + bermellón;
+ * póster dorado: pergamino y cintas rojas; calle de noche: verde oscuro con luz de farola).
+ * Los nombres de los tokens (sage, apricot, lilac, rose, teal) se mantienen por compatibilidad
+ * con la spec: Vitality = sage (verde), Weapon = apricot (naranja), Spirit = lilac (violeta),
+ * rose = negativo/derrota (carmesí), teal = información. `accent` es el bermellón de las acciones.
+ */
+
+/* ---------- Día: pergamino de cartel ---------- */
+:root {
+  --bg: #eadcbd;
+  --surface: #f6eedb;
+  --ink: #1b1512;
+  --ink-muted: #5b4d40;
+  --brass: #96691c;
+  --sage: #6fa13a;
+  --sage-ink: #3b6516;
+  --apricot: #dd7a2c;
+  --apricot-ink: #8a3d0b;
+  --lilac: #7a52cc;
+  --lilac-ink: #4a2a9e;
+  --rose: #c8452e;
+  --rose-ink: #96281b;
+  --teal: #2e8581;
+  --teal-ink: #17504d;
+  --accent: #b93a25;
+  --on-accent: #f8efd9;
+  --poster: #173f3e;
+  --poster-ray: #276864;
+  --night: #0e2828;
+  --night-tower: #0e2828;
+  --grain-opacity: 0.08;
+  --vignette: rgb(70 45 10 / 0.22);
+  --sh-card: 0 1px 2px rgb(27 21 18 / 0.1), 0 6px 16px rgb(27 21 18 / 0.1);
+  --sh-pop: 0 10px 30px rgb(27 21 18 / 0.28);
+}
+
+/* ---------- Noche: calle de la ciudad, luz de farola y verde esmeralda ---------- */
+[data-theme="dark"] {
+  --bg: #101e1e;
+  --surface: #182b2a;
+  --ink: #f0e6ce;
+  --ink-muted: #a69d88;
+  --brass: #d6a441;
+  --sage: #8ccb55;
+  --sage-ink: #8ccb55;
+  --apricot: #f0974a;
+  --apricot-ink: #f0974a;
+  --lilac: #a47af0;
+  --lilac-ink: #b795f5;
+  --rose: #d9503a;
+  --rose-ink: #f0806c;
+  --teal: #4fb8b0;
+  --teal-ink: #4fb8b0;
+  --accent: #c23a22;
+  --on-accent: #f8efd9;
+  --poster: #11302f;
+  --poster-ray: #1d504d;
+  --night: #0a1616;
+  --night-tower: #0a1616;
+  --grain-opacity: 0;
+  --vignette: rgb(0 0 0 / 0.6);
+  --sh-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 6px 20px rgb(0 0 0 / 0.35);
+  --sh-pop: 0 10px 30px rgb(0 0 0 / 0.6);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-night: var(--night);
+  --color-poster: var(--poster);
+  --color-poster-ray: var(--poster-ray);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-brass: var(--brass);
+  --color-sage: var(--sage);
+  --color-sage-ink: var(--sage-ink);
+  --color-apricot: var(--apricot);
+  --color-apricot-ink: var(--apricot-ink);
+  --color-lilac: var(--lilac);
+  --color-lilac-ink: var(--lilac-ink);
+  --color-rose: var(--rose);
+  --color-rose-ink: var(--rose-ink);
+  --color-teal: var(--teal);
+  --color-teal-ink: var(--teal-ink);
+  /* crema fija: texto sobre paneles verde petróleo (cartel, footer) en ambos modos */
+  --color-cream: #f3e8d0;
+  --color-cream-muted: #c6bca6;
+
+  /* Display y serif comparten familia: Playfair Display (alto contraste, como el logo del juego) */
+  --font-display: var(--f-serif), "Playfair Display", serif;
+  --font-serif: var(--f-serif), "Playfair Display", serif;
+  --font-sans: var(--f-sans), "Inter", system-ui, sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-card: var(--sh-card);
+  --shadow-pop: var(--sh-pop);
+
+  --ease-deco: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --animate-rise: rise 300ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  --animate-pulse-soft: pulse-soft 1.6s ease-in-out infinite;
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes pulse-soft {
+    50% { opacity: 0.5; }
+  }
+}
+
+html { background: var(--bg); color-scheme: light; }
+html[data-theme="dark"] { color-scheme: dark; }
+
+body {
+  /* el fondo lo pinta <html>: así el grano y la viñeta (z-index -1) quedan por encima de él */
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grano de papel (solo modo Día; en Noche la opacidad es 0) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .16  0 0 0 0 .14  0 0 0 0 .12  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; border-radius: var(--radius-sm); }
+
+/* Esquinas achaflanadas déco */
+.chamfer {
+  clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+}
+
+/* Brillo de latón que recorre el borde al pasar el ratón */
+.shine { position: relative; overflow: hidden; }
+.shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, color-mix(in srgb, var(--brass) 45%, transparent) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 300ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  pointer-events: none;
+}
+.shine:hover::after { transform: translateX(120%); }
+
+/* Subrayado de latón en enlaces */
+.link-brass { background: linear-gradient(var(--brass), var(--brass)) 0 100% / 0 1px no-repeat; transition: background-size 200ms cubic-bezier(0.22, 0.61, 0.36, 1); }
+.link-brass:hover { background-size: 100% 1px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* Marco escalonado (zigurat) de los carteles */
+.stepped {
+  clip-path: polygon(0 16px, 6px 16px, 6px 10px, 12px 10px, 12px 0, calc(100% - 12px) 0, calc(100% - 12px) 10px, calc(100% - 6px) 10px, calc(100% - 6px) 16px, 100% 16px, 100% calc(100% - 16px), calc(100% - 6px) calc(100% - 16px), calc(100% - 6px) calc(100% - 10px), calc(100% - 12px) calc(100% - 10px), calc(100% - 12px) 100%, 12px 100%, 12px calc(100% - 10px), 6px calc(100% - 10px), 6px calc(100% - 16px), 0 calc(100% - 16px));
+}
+
+/* Bombillas de marquesina de teatro */
+.bulbs { position: relative; height: 10px; }
+.bulbs::before,
+.bulbs::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, var(--brass) 2.4px, transparent 3px) 0 50% / 40px 10px repeat-x;
+  animation: blink 1.8s steps(1) infinite;
+}
+/* mitad de las bombillas, desfasada: parpadean alternas como en una marquesina */
+.bulbs::after { background-position: 20px 50%; animation-direction: reverse; }
+@keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.3; } }
+[data-theme="dark"] .bulbs { filter: drop-shadow(0 0 3px color-mix(in srgb, var(--brass) 80%, transparent)); }
+
+/* Ventana en arco déco para retratos */
+.arch { border-radius: 50% 50% 4px 4px / 38% 38% 4px 4px; outline: 1px solid var(--brass); outline-offset: 3px; }
+
+/* Marco doble de latón para botones */
+.frame-double { box-shadow: inset 0 0 0 2px var(--surface), inset 0 0 0 3px var(--brass); }
+
+/* ---------- Animaciones de carga (solo si el usuario no pide menos movimiento) ---------- */
+@keyframes ray-in { from { opacity: 0; transform: scale(0.15) rotate(-8deg); } }
+@keyframes letter-in { from { opacity: 0; transform: translateY(0.45em) rotateX(-80deg); } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes bulb-on { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes flicker { 0%, 38%, 46%, 100% { opacity: 1; } 40%, 44% { opacity: 0.08; } }
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Rayos que se despliegan desde el centro, uno tras otro */
+  .ray { transform-origin: 200px 200px; animation: ray-in 900ms calc(var(--i) * 45ms) cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+  /* Título del cartel letra a letra */
+  .letter { display: inline-block; animation: letter-in 700ms calc(300ms + var(--i) * 55ms) cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+  /* Filete que se dibuja */
+  .draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 900ms 900ms ease-out forwards; }
+  /* Las bombillas se encienden de izquierda a derecha */
+  .bulbs { animation: bulb-on 1400ms steps(24) 400ms backwards; }
+  /* Ventanas del skyline que parpadean */
+  .flicker { animation: flicker 6s infinite; }
+}
+
+/* Giro de los rayos del retrato al pasar el ratón por la tarjeta */
+.rays-hover { transition: transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1); }
+.group:hover .rays-hover { transform: rotate(4deg) scale(1.12); }
+
+/* Cambio Día/Noche: círculo que se expande desde el botón (View Transitions API) */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { animation: theme-reveal 650ms cubic-bezier(0.22, 0.61, 0.36, 1); }
+@keyframes theme-reveal {
+  from { clip-path: circle(0 at var(--vt-x, 50%) var(--vt-y, 0)); }
+  to { clip-path: circle(150vmax at var(--vt-x, 50%) var(--vt-y, 0)); }
+}
+
+/* ---------- Arte del juego: cintas, trama de puntos y luz de farola ---------- */
+/* Cifras con números "lining" (Playfair usa old-style por defecto) */
+.font-display { font-variant-numeric: lining-nums tabular-nums; }
+
+/* Cinta de cartel con muescas en los extremos */
+.ribbon { clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 50%, 100% 100%, 0 100%, 12px 50%); }
+
+/* Trama de puntos (halftone) de impresión antigua */
+.halftone { background-image: radial-gradient(circle, rgb(0 0 0 / 0.35) 1px, transparent 1.5px); background-size: 6px 6px; }
+
+/* Noche: luz cálida de farola y neblina verde sobre la calle */
+html[data-theme="dark"] {
+  background:
+    radial-gradient(900px 480px at 12% -8%, rgb(214 164 65 / 0.14), transparent 62%),
+    radial-gradient(1000px 600px at 92% 6%, rgb(79 209 160 / 0.09), transparent 60%),
+    var(--bg);
+  background-repeat: no-repeat;
+}
+
+/* Grano de impresión también en Noche (el ruido se invierte para que sea claro sobre oscuro) */
+[data-theme="dark"] body::before { filter: invert(1); opacity: 0.07; }
+
+/* Viñeta: bordes oscurecidos, como la cámara del juego */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 40%, transparent 55%, var(--vignette) 100%);
+}
+
+/* Cables con símbolos colgando: balanceo suave */
+@keyframes sway { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+.sway { transform-origin: 0 0; animation: sway 4.5s ease-in-out infinite alternate; }
+
+
+/* ---------- Más movimiento (todo se apaga con prefers-reduced-motion) ---------- */
+/* Entrada de página: se repite en cada navegación porque template.tsx se vuelve a montar */
+@keyframes page-in { from { opacity: 0; transform: translateY(10px); } }
+.page-in { animation: page-in 450ms cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+
+/* Deriva lenta de los rayos del cartel */
+@keyframes drift { from { transform: rotate(-1.4deg); } to { transform: rotate(1.4deg); } }
+.rays-drift { transform-origin: 50% 100%; animation: drift 16s ease-in-out infinite alternate; }
+
+/* Las siluetas respiran */
+@keyframes breathe { from { transform: scale(1); } to { transform: scale(1.03); } }
+.breathe { transform-origin: 50% 100%; animation: breathe 4.5s ease-in-out infinite alternate; }
+
+/* El ojo del emblema parpadea de vez en cuando */
+@keyframes eye-blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.08); } }
+.eye { transform-box: fill-box; transform-origin: center; animation: eye-blink 7s infinite; }
+
+/* Halo pulsante del disco del emblema */
+@keyframes halo { from { filter: drop-shadow(0 0 0 transparent); } to { filter: drop-shadow(0 0 14px color-mix(in srgb, var(--accent) 60%, transparent)); } }
+.halo { animation: halo 3s ease-in-out infinite alternate; }
+
+/* Pulsación de botón */
+.press { transition: transform 120ms; }
+.press:active { transform: scale(0.97); }

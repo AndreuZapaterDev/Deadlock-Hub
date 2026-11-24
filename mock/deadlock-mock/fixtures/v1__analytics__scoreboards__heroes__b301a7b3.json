@@ -1,0 +1,266 @@
+[
+ {
+  "rank": 1,
+  "hero_id": 14,
+  "value": 52.0,
+  "matches": 1514061
+ },
+ {
+  "rank": 2,
+  "hero_id": 86,
+  "value": 51.0,
+  "matches": 1642783
+ },
+ {
+  "rank": 3,
+  "hero_id": 52,
+  "value": 47.0,
+  "matches": 831950
+ },
+ {
+  "rank": 4,
+  "hero_id": 77,
+  "value": 44.0,
+  "matches": 1983122
+ },
+ {
+  "rank": 5,
+  "hero_id": 10,
+  "value": 42.0,
+  "matches": 2089842
+ },
+ {
+  "rank": 6,
+  "hero_id": 16,
+  "value": 42.0,
+  "matches": 1083628
+ },
+ {
+  "rank": 7,
+  "hero_id": 58,
+  "value": 42.0,
+  "matches": 984885
+ },
+ {
+  "rank": 8,
+  "hero_id": 66,
+  "value": 41.0,
+  "matches": 2195173
+ },
+ {
+  "rank": 9,
+  "hero_id": 84,
+  "value": 41.0,
+  "matches": 3036086
+ },
+ {
+  "rank": 10,
+  "hero_id": 72,
+  "value": 40.0,
+  "matches": 2520056
+ },
+ {
+  "rank": 11,
+  "hero_id": 76,
+  "value": 40.0,
+  "matches": 2970830
+ },
+ {
+  "rank": 12,
+  "hero_id": 6,
+  "value": 40.0,
+  "matches": 2303151
+ },
+ {
+  "rank": 13,
+  "hero_id": 80,
+  "value": 40.0,
+  "matches": 2157107
+ },
+ {
+  "rank": 14,
+  "hero_id": 81,
+  "value": 40.0,
+  "matches": 2162261
+ },
+ {
+  "rank": 15,
+  "hero_id": 1,
+  "value": 39.0,
+  "matches": 2503721
+ },
+ {
+  "rank": 16,
+  "hero_id": 63,
+  "value": 39.0,
+  "matches": 2583083
+ },
+ {
+  "rank": 17,
+  "hero_id": 20,
+  "value": 39.0,
+  "matches": 1477510
+ },
+ {
+  "rank": 18,
+  "hero_id": 31,
+  "value": 39.0,
+  "matches": 2192740
+ },
+ {
+  "rank": 19,
+  "hero_id": 87,
+  "value": 39.0,
+  "matches": 2087317
+ },
+ {
+  "rank": 20,
+  "hero_id": 27,
+  "value": 38.0,
+  "matches": 1844399
+ },
+ {
+  "rank": 21,
+  "hero_id": 3,
+  "value": 38.0,
+  "matches": 2049929
+ },
+ {
+  "rank": 22,
+  "hero_id": 17,
+  "value": 38.0,
+  "matches": 1323461
+ },
+ {
+  "rank": 23,
+  "hero_id": 7,
+  "value": 38.0,
+  "matches": 2419084
+ },
+ {
+  "rank": 24,
+  "hero_id": 64,
+  "value": 37.0,
+  "matches": 2863402
+ },
+ {
+  "rank": 25,
+  "hero_id": 4,
+  "value": 37.0,
+  "matches": 2230928
+ },
+ {
+  "rank": 26,
+  "hero_id": 25,
+  "value": 36.0,
+  "matches": 1104197
+ },
+ {
+  "rank": 27,
+  "hero_id": 35,
+  "value": 36.0,
+  "matches": 962055
+ },
+ {
+  "rank": 28,
+  "hero_id": 15,
+  "value": 36.0,
+  "matches": 2713414
+ },
+ {
+  "rank": 29,
+  "hero_id": 13,
+  "value": 36.0,
+  "matches": 3019452
+ },
+ {
+  "rank": 30,
+  "hero_id": 18,
+  "value": 36.0,
+  "matches": 1153590
+ },
+ {
+  "rank": 31,
+  "hero_id": 19,
+  "value": 35.0,
+  "matches": 2020808
+ },
+ {
+  "rank": 32,
+  "hero_id": 2,
+  "value": 35.0,
+  "matches": 2351061
+ },
+ {
+  "rank": 33,
+  "hero_id": 8,
+  "value": 35.0,
+  "matches": 992198
+ },
+ {
+  "rank": 34,
+  "hero_id": 65,
+  "value": 35.0,
+  "matches": 2850433
+ },
+ {
+  "rank": 35,
+  "hero_id": 50,
+  "value": 34.0,
+  "matches": 1290703
+ },
+ {
+  "rank": 36,
+  "hero_id": 12,
+  "value": 34.0,
+  "matches": 1088686
+ },
+ {
+  "rank": 37,
+  "hero_id": 79,
+  "value": 34.0,
+  "matches": 2127518
+ },
+ {
+  "rank": 38,
+  "hero_id": 78,
+  "value": 34.0,
+  "matches": 1972722
+ },
+ {
+  "rank": 39,
+  "hero_id": 60,
+  "value": 33.0,
+  "matches": 749349
+ },
+ {
+  "rank": 40,
+  "hero_id": 69,
+  "value": 33.0,
+  "matches": 1193290
+ },
+ {
+  "rank": 41,
+  "hero_id": 11,
+  "value": 33.0,
+  "matches": 1635074
+ },
+ {
+  "rank": 42,
+  "hero_id": 88,
+  "value": 33.0,
+  "matches": 908670
+ },
+ {
+  "rank": 43,
+  "hero_id": 67,
+  "value": 31.0,
+  "matches": 1998977
+ },
+ {
+  "rank": 44,
+  "hero_id": 85,
+  "value": 30.0,
+  "matches": 895509
+ }
+]

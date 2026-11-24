@@ -1,0 +1,20 @@
+{
+ "type": "ability",
+ "id": 28521455,
+ "class_name": "ability_magician_magicbolt_trigger",
+ "name": "ability_magician_magicbolt_trigger",
+ "start_trained": true,
+ "image": "https://assets-bucket.deadlock-api.com/assets-api-res/images/upgrades/mods_weapon/ricochet.png",
+ "image_webp": "https://assets-bucket.deadlock-api.com/assets-api-res/images/upgrades/mods_weapon/ricochet.webp",
+ "heroes": [],
+ "update_time": 0,
+ "properties": {},
+ "behaviours": [
+  "CITADEL_ABILITY_BEHAVIOR_DONT_BREAK_INVISIBILITY",
+  "CITADEL_ABILITY_BEHAVIOR_CAST_EVEN_IF_BUSY_AND_EXCLUSIVE",
+  "CITADEL_ABILITY_BEHAVIOR_NO_TARGET",
+  "CITADEL_ABILITY_BEHAVIOR_TRIGGER"
+ ],
+ "description": {},
+ "ability_type": "innate"
+}

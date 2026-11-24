@@ -1,0 +1,27 @@
+{
+  "nav": {
+    "label": "Main",
+    "heroes": "Heroes",
+    "items": "Items",
+    "tierList": "Tier list",
+    "meta": "Meta",
+    "builds": "Builds",
+    "map": "Map",
+    "players": "Players",
+    "live": "Live",
+    "patches": "Patches"
+  },
+  "search": { "label": "Search player", "placeholder": "Find your account (name, Steam ID or URL)" },
+  "theme": { "day": "Day", "night": "Night" },
+  "demo": { "banner": "Demo mode: sample data" },
+  "footer": {
+    "disclaimer": "Deadlock Hub is an unofficial fan site. It is not affiliated with or endorsed by Valve. Deadlock and all its assets are property of Valve Corporation.",
+    "credits": "Data from",
+    "about": "About",
+    "wiki": "Wiki",
+    "ranks": "Ranks",
+    "npcs": "NPCs",
+    "mechanics": "Mechanics",
+    "status": "Status"
+  }
+}

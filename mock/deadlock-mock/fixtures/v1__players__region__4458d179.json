@@ -1,0 +1,3628 @@
+[
+ {
+  "account_id": 483770846,
+  "region": "dpkt-frankfurt",
+  "region_month": 1793491200,
+  "history": [
+   {
+    "month": 1793491200,
+    "cluster_id": 429,
+    "region": "dpkt-frankfurt",
+    "datacenter": "fra-dpkt",
+    "matches": 39
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 20
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 431,
+    "region": "dpkt-london",
+    "datacenter": "lhr-dpkt",
+    "matches": 14
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 13
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 433,
+    "region": "dpkt-stockholm",
+    "datacenter": "sto-dpkt",
+    "matches": 11
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 7
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 7
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 6
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 6
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 441,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 6
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 189,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 5
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 444,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 5
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 4
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 4
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 4
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 4
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 435,
+    "region": "dpkt-vienna",
+    "datacenter": "vie-dpkt",
+    "matches": 4
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 436,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 4
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 443,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 4
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 3
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 442,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 3
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 445,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 3
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 410,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 2
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 122,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 1
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 123,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 1
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 125,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 1
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 129,
+    "region": "us_north_central",
+    "datacenter": "ord1,ord2",
+    "matches": 1
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 1
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 1
+   },
+   {
+    "month": 1793491200,
+    "cluster_id": 378,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 1
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 429,
+    "region": "dpkt-frankfurt",
+    "datacenter": "fra-dpkt",
+    "matches": 73
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 40
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 433,
+    "region": "dpkt-stockholm",
+    "datacenter": "sto-dpkt",
+    "matches": 37
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 20
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 431,
+    "region": "dpkt-london",
+    "datacenter": "lhr-dpkt",
+    "matches": 16
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 14
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 12
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 11
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 436,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 11
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 9
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 435,
+    "region": "dpkt-vienna",
+    "datacenter": "vie-dpkt",
+    "matches": 9
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 8
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 8
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 8
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 7
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 6
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 6
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 4
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 441,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 4
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 189,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 3
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 3
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 2
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 378,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 1
+   },
+   {
+    "month": 1790812800,
+    "cluster_id": 444,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 1
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 35
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 429,
+    "region": "dpkt-frankfurt",
+    "datacenter": "fra-dpkt",
+    "matches": 22
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 13
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 10
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 9
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 9
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 8
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 7
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 7
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 433,
+    "region": "dpkt-stockholm",
+    "datacenter": "sto-dpkt",
+    "matches": 6
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 5
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 4
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 4
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 4
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 4
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 431,
+    "region": "dpkt-london",
+    "datacenter": "lhr-dpkt",
+    "matches": 4
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 3
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 436,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 3
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 196,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 2
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 122,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 1
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 1
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 1
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 189,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 1
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 195,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 1
+   },
+   {
+    "month": 1788220800,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 1
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 46
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 24
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 14
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 13
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 12
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 10
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 10
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 10
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 8
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 122,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 7
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 123,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 7
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 7
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 6
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 121,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 4
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 3
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 3
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 392,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 3
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 125,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 2
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 129,
+    "region": "us_north_central",
+    "datacenter": "ord1,ord2",
+    "matches": 2
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 2
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 189,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 2
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 2
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 195,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 2
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 196,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 2
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 408,
+    "region": "us_north_central",
+    "datacenter": "ord2",
+    "matches": 2
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 1
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1785542400,
+    "cluster_id": 436,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 1
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 30
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 14
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 13
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 12
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 7
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 6
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 6
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 129,
+    "region": "us_north_central",
+    "datacenter": "ord1,ord2",
+    "matches": 5
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 5
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 125,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 3
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 3
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 3
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 121,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 2
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 122,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 2
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 2
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 2
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 408,
+    "region": "us_north_central",
+    "datacenter": "ord2",
+    "matches": 2
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 2
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 123,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 1
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 1
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 1
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 392,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 1
+   },
+   {
+    "month": 1782864000,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 1
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 19
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 12
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 9
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 129,
+    "region": "us_north_central",
+    "datacenter": "ord1,ord2",
+    "matches": 6
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 6
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 5
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 4
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 4
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 392,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 4
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 4
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 121,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 3
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 125,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 3
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 3
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 408,
+    "region": "us_north_central",
+    "datacenter": "ord2",
+    "matches": 3
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 122,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 2
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 123,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 2
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 2
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 2
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 2
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 2
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 1
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 1
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 1
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 195,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 1
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1780272000,
+    "cluster_id": 404,
+    "region": "us_south_central",
+    "datacenter": "dfw2",
+    "matches": 1
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 46
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 19
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 18
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 408,
+    "region": "us_north_central",
+    "datacenter": "ord2",
+    "matches": 16
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 14
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 13
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 11
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 11
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 11
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 122,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 10
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 123,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 10
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 129,
+    "region": "us_north_central",
+    "datacenter": "ord1,ord2",
+    "matches": 9
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 9
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 9
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 121,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 7
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 6
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 6
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 5
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 5
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 5
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 4
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 195,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 3
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 392,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 3
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 410,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 3
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 125,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 2
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 2
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 196,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 2
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 2
+   },
+   {
+    "month": 1777593600,
+    "cluster_id": 404,
+    "region": "us_south_central",
+    "datacenter": "dfw2",
+    "matches": 1
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 96
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 39
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 27
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 27
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 23
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 20
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 15
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 15
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 14
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 14
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 12
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 8
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 8
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 7
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 7
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 4
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 196,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 4
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 4
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 3
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 195,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 2
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 125,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 1
+   },
+   {
+    "month": 1775001600,
+    "cluster_id": 408,
+    "region": "us_north_central",
+    "datacenter": "ord2",
+    "matches": 1
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 44
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 42
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 35
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 23
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 22
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 20
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 18
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 17
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 16
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 15
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 15
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 12
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 10
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 9
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 7
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 6
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 408,
+    "region": "us_north_central",
+    "datacenter": "ord2",
+    "matches": 6
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 121,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 5
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 195,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 5
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 4
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 123,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 3
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 129,
+    "region": "us_north_central",
+    "datacenter": "ord1,ord2",
+    "matches": 3
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 392,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 3
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 3
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 2
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 2
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 125,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 1
+   },
+   {
+    "month": 1772323200,
+    "cluster_id": 196,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 1
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 73
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 45
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 45
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 41
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 39
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 23
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 20
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 18
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 14
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 13
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 13
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 13
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 9
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 8
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 196,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 8
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 6
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 6
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 5
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 4
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 3
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 195,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 2
+   },
+   {
+    "month": 1769904000,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 1
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 48
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 40
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 35
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 34
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 33
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 26
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 19
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 17
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 16
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 14
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 13
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 11
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 8
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 7
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 5
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 4
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 3
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 392,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 3
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 122,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 2
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 121,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 1
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 123,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 1
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 125,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 1
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 129,
+    "region": "us_north_central",
+    "datacenter": "ord1,ord2",
+    "matches": 1
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 153,
+    "region": "asia",
+    "datacenter": "sgp2",
+    "matches": 1
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 195,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 1
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 196,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 1
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 410,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 1
+   },
+   {
+    "month": 1767225600,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 1
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 31
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 31
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 27
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 26
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 14
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 11
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 11
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 9
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 9
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 392,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 9
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 8
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 8
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 8
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 129,
+    "region": "us_north_central",
+    "datacenter": "ord1,ord2",
+    "matches": 4
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 3
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 3
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 3
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 408,
+    "region": "us_north_central",
+    "datacenter": "ord2",
+    "matches": 3
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 3
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 123,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 2
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 2
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 410,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 2
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 121,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 1
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 122,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 1
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 125,
+    "region": "us_southeast",
+    "datacenter": "atl3",
+    "matches": 1
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 1
+   },
+   {
+    "month": 1764547200,
+    "cluster_id": 405,
+    "region": "us_south_central",
+    "datacenter": "dfw2",
+    "matches": 1
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 63
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 60
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 50
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 48
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 43
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 24
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 18
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 18
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 13
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 10
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 10
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 8
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 7
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 6
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 5
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 4
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 2
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1761955200,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 1
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 63
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 61
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 37
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 34
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 23
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 11
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 11
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 10
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 8
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 8
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 8
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 7
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 7
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 6
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 4
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 3
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 3
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1759276800,
+    "cluster_id": 421,
+    "region": "falkenstein",
+    "datacenter": "fsn-hetz",
+    "matches": 1
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 89
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 26
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 22
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 15
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 15
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 13
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 10
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 8
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 8
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 7
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 6
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 5
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 4
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 3
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 2
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 2
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 1
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 195,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 1
+   },
+   {
+    "month": 1756684800,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1754006400,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 47
+   },
+   {
+    "month": 1754006400,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 16
+   },
+   {
+    "month": 1754006400,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 13
+   },
+   {
+    "month": 1754006400,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 7
+   },
+   {
+    "month": 1754006400,
+    "cluster_id": 182,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 2
+   },
+   {
+    "month": 1754006400,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 2
+   },
+   {
+    "month": 1754006400,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 2
+   },
+   {
+    "month": 1754006400,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 1
+   },
+   {
+    "month": 1754006400,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 1
+   },
+   {
+    "month": 1754006400,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 1
+   },
+   {
+    "month": 1754006400,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 58
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 30
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 16
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 4
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 3
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 3
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 2
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 2
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 1
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 1
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 1
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 410,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 1
+   },
+   {
+    "month": 1751328000,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 58
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 44
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 33
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 9
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 6
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 4
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 3
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 2
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 2
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 2
+   },
+   {
+    "month": 1748736000,
+    "cluster_id": 183,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 1
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 70
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 35
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 16
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 14
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 13
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 10
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 9
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 8
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 8
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 184,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 7
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 7
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 181,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 3
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 185,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 3
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 196,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 3
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 2
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1746057600,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 1
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 43
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 41
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 27
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 20
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 6
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 5
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 5
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 4
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 4
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 2
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 1
+   },
+   {
+    "month": 1743465600,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1740787200,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 53
+   },
+   {
+    "month": 1740787200,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 30
+   },
+   {
+    "month": 1740787200,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 27
+   },
+   {
+    "month": 1740787200,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 16
+   },
+   {
+    "month": 1740787200,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 6
+   },
+   {
+    "month": 1740787200,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 5
+   },
+   {
+    "month": 1740787200,
+    "cluster_id": 411,
+    "region": null,
+    "datacenter": null,
+    "matches": 5
+   },
+   {
+    "month": 1740787200,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 3
+   },
+   {
+    "month": 1740787200,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 3
+   },
+   {
+    "month": 1740787200,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 2
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 57
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 17
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 17
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 14
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 10
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 196,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 5
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 4
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 4
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 3
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 2
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 2
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 1
+   },
+   {
+    "month": 1738368000,
+    "cluster_id": 195,
+    "region": "spain",
+    "datacenter": "mad1",
+    "matches": 1
+   },
+   {
+    "month": 1735689600,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 70
+   },
+   {
+    "month": 1735689600,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 31
+   },
+   {
+    "month": 1735689600,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 12
+   },
+   {
+    "month": 1735689600,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 9
+   },
+   {
+    "month": 1735689600,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 5
+   },
+   {
+    "month": 1735689600,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 3
+   },
+   {
+    "month": 1735689600,
+    "cluster_id": 122,
+    "region": "us_east",
+    "datacenter": "iad1",
+    "matches": 1
+   },
+   {
+    "month": 1735689600,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 1
+   },
+   {
+    "month": 1735689600,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 1
+   },
+   {
+    "month": 1733011200,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 54
+   },
+   {
+    "month": 1733011200,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 28
+   },
+   {
+    "month": 1733011200,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 15
+   },
+   {
+    "month": 1733011200,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 8
+   },
+   {
+    "month": 1733011200,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 6
+   },
+   {
+    "month": 1733011200,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 5
+   },
+   {
+    "month": 1733011200,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 4
+   },
+   {
+    "month": 1733011200,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 2
+   },
+   {
+    "month": 1733011200,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 2
+   },
+   {
+    "month": 1733011200,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 1
+   },
+   {
+    "month": 1733011200,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 1
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 400,
+    "region": null,
+    "datacenter": null,
+    "matches": 54
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 45
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 45
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 33
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 30
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 29
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 19
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 15
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 9
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 5
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 3
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 3
+   },
+   {
+    "month": 1730419200,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 2
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 272,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 17
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 271,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 16
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 187,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 13
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 273,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 13
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 390,
+    "region": "london",
+    "datacenter": "lhr1",
+    "matches": 12
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 186,
+    "region": "eu_north",
+    "datacenter": "sto1",
+    "matches": 11
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 274,
+    "region": "eu_west",
+    "datacenter": "fra2",
+    "matches": 10
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 388,
+    "region": null,
+    "datacenter": null,
+    "matches": 9
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 191,
+    "region": null,
+    "datacenter": null,
+    "matches": 3
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 190,
+    "region": "poland",
+    "datacenter": "waw2",
+    "matches": 2
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 192,
+    "region": "eu_east",
+    "datacenter": "vie1",
+    "matches": 2
+   },
+   {
+    "month": 1727740800,
+    "cluster_id": 380,
+    "region": "helsinki",
+    "datacenter": "hel-hetz",
+    "matches": 1
+   }
+  ]
+ }
+]

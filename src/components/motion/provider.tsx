@@ -1,0 +1,7 @@
+"use client";
+import { MotionConfig } from "motion/react";
+
+/** Todas las animaciones de Motion respetan prefers-reduced-motion del sistema. */
+export function MotionProvider({ children }: { children: React.ReactNode }) {
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
+}

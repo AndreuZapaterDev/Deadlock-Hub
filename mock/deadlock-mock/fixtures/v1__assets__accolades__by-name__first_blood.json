@@ -1,0 +1,8 @@
+{
+ "class_name": "first_blood",
+ "id": 15,
+ "tracked_stat_name": "first_blood",
+ "flavor_name": "First of Many",
+ "description": "First Blood",
+ "threshold_type": "manual"
+}
