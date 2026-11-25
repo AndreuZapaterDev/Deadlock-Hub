@@ -69,6 +69,21 @@ export default async function PlayersPage({ searchParams }: { searchParams: Prom
         </section>
       )}
 
+      <ul aria-label="Atajos" className="grid gap-3 sm:grid-cols-3">
+        {[
+          { href: "/leaderboard", title: "Clasificación", text: "Los mejores jugadores de cada región, también por héroe." },
+          { href: "/players/compare", title: "Comparar jugadores", text: "Dos cuentas lado a lado: rango, win rate, KDA y héroes." },
+          { href: "/live", title: "Partidas en directo", text: "Mira qué se está jugando ahora mismo." },
+        ].map((t) => (
+          <li key={t.href}>
+            <Link href={t.href} className="block h-full rounded-md border border-brass/30 bg-surface p-4 shadow-card transition duration-150 hover:-translate-y-0.5 hover:border-brass hover:shadow-pop">
+              <span className="block font-display text-lg font-black">{t.title} <span aria-hidden className="text-brass">→</span></span>
+              <span className="mt-1 block text-sm text-ink-muted">{t.text}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+
       <section aria-labelledby="followed" className="space-y-4">
         <SectionTitle id="followed">Jugadores que sigues</SectionTitle>
         <FollowedPlayers />

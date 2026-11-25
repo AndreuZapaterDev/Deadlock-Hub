@@ -99,3 +99,34 @@ export const MATCH_MODE: Record<number, string> = {
 export const GAME_MODE: Record<number, string> = { 1: "Normal", 3: "Sandbox", 4: "Street Brawl", 5: "Explorar Nueva York" };
 export const matchModeLabel = (n?: number | null) => (n != null ? MATCH_MODE[n] ?? `Modo ${n}` : "—");
 export const gameModeLabel = (n?: number | null) => (n != null ? GAME_MODE[n] ?? `Modo ${n}` : "—");
+
+// ---------- Forma reciente y rachas ----------
+
+/** Últimas `n` partidas, de la más reciente a la más antigua, como victoria (true) o derrota (false). */
+export function recentForm(history: MatchHistoryRow[], n = 20): boolean[] {
+  return [...history].sort((a, b) => b.start_time - a.start_time).slice(0, n).map(isWin);
+}
+
+/** Racha actual (`current`: positiva si son victorias seguidas, negativa si derrotas) y mejor racha de victorias de todo el historial. */
+export function streaks(history: MatchHistoryRow[]): { current: number; bestWin: number } {
+  const chrono = chronological(history).map(isWin);
+  let best = 0;
+  let run = 0;
+  for (const w of chrono) {
+    run = w ? run + 1 : 0;
+    best = Math.max(best, run);
+  }
+  let current = 0;
+  for (let i = chrono.length - 1; i >= 0; i--) {
+    if (i === chrono.length - 1) current = chrono[i] ? 1 : -1;
+    else if ((current > 0) === chrono[i]) current += current > 0 ? 1 : -1;
+    else break;
+  }
+  return { current, bestWin: best };
+}
+
+export type ResultFilter = "all" | "win" | "loss";
+/** Historial filtrado por resultado y/o héroe. */
+export function filterHistory(history: MatchHistoryRow[], f: { result?: ResultFilter; heroId?: number }): MatchHistoryRow[] {
+  return history.filter((m) => (f.result === "win" ? isWin(m) : f.result === "loss" ? !isWin(m) : true) && (f.heroId === undefined || m.hero_id === f.heroId));
+}

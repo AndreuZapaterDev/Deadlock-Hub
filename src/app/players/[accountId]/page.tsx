@@ -14,14 +14,15 @@ import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { EmptyState } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
+import { RateMeter } from "@/components/ui/rate-meter";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { SectionTitle } from "@/components/ui/section-title";
 import { SortableTable } from "@/components/ui/sortable-table";
 import { Tabs } from "@/components/ui/tabs";
-import { fmtDec, fmtNum, fmtPct, timeAgo } from "@/lib/format";
+import { fmtDec, fmtDuration, fmtNum, fmtPct, timeAgo } from "@/lib/format";
 import { getHeroNames, getRanks } from "@/lib/lookup";
 import { loadNames, loadPlayer } from "@/lib/player-data";
-import { cumulativeWinRate, matchesPerDay, matchModeLabel, rankSeries } from "@/lib/player-stats";
+import { cumulativeWinRate, filterHistory, matchesPerDay, matchModeLabel, rankSeries, recentForm, streaks, type ResultFilter } from "@/lib/player-stats";
 import { parseAccountId } from "@/lib/steam-id";
 import type { Relation } from "@/lib/types";
 
@@ -44,7 +45,8 @@ function Stat({ value, label, hint }: { value: string; label: string; hint?: str
   );
 }
 
-export default async function PlayerPage({ params, searchParams }: { params: Promise<{ accountId: string }>; searchParams: Promise<{ page?: string }> }) {
+export default async function PlayerPage({ params, searchParams }: { params: Promise<{ accountId: string }>; searchParams: Promise<{ page?: string; res?: string; hero?: string }> }) {
+  const sp = await searchParams;
   const id = parseAccountId((await params).accountId);
   if (id === null) notFound();
 
@@ -63,10 +65,20 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
   const lists = { mateTop: top(mates), mateBest: best(mates), enemyTop: top(enemies), enemyWorst: worst(enemies) };
   const names = await loadNames(Object.values(lists).flat().map((r) => r.id));
 
-  // Historial paginado
-  const pages = Math.max(1, Math.ceil(history.length / PAGE_SIZE));
-  const page = Math.min(Math.max(1, Number((await searchParams).page) || 1), pages);
-  const slice = history.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  // Historial filtrado (resultado y héroe, en la URL) y paginado
+  const result: ResultFilter = sp.res === "win" || sp.res === "loss" ? sp.res : "all";
+  const heroFilter = heroes.find((h) => String(h.hero_id) === sp.hero)?.hero_id;
+  const filtered = filterHistory(history, { result, heroId: heroFilter });
+  const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const page = Math.min(Math.max(1, Number(sp.page) || 1), pages);
+  const slice = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const histHref = (extra: Record<string, string | undefined>) => {
+    const q = new URLSearchParams(Object.entries({ res: sp.res, hero: sp.hero, ...extra }).filter((e): e is [string, string] => !!e[1] && e[1] !== "all"));
+    return `/players/${id}${q.size ? `?${q}` : ""}#history`;
+  };
+  const chip = (active: boolean) => `rounded-full border px-3 py-1 text-sm font-semibold transition-colors ${active ? "border-brass bg-ink text-bg" : "border-brass/50 hover:bg-brass/15"}`;
+  const form = recentForm(history, 20);
+  const run = streaks(history);
 
   // Gráficas: solo con lo que devuelve la API
   const winCurve = cumulativeWinRate(history);
@@ -74,6 +86,7 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
   const rankCurve = rankSeries(history);
   const rankNames = Object.fromEntries(ranks.map((r) => [r.tier, r.name]));
 
+  const mostPlayed = [...heroes].sort((a, b) => b.matches_played - a.matches_played).slice(0, 8);
   const favorites = [...heroes].sort((a, b) => b.matches_played - a.matches_played).slice(0, 3);
   const heroRows = heroes.map((h) => ({
     id: h.hero_id,
@@ -112,17 +125,34 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
             <Stat value={fmtNum(Math.round(summary.soulsPerMin))} label="Almas por minuto" />
           </div>
         </div>
+        {history.length > 0 && (
+          <Card className="space-y-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <h3 className="font-semibold">Forma reciente <span className="text-sm font-normal text-ink-muted">(últimas {form.length}, la más reciente a la izquierda)</span></h3>
+              <p className="text-sm text-ink-muted">
+                Racha actual: <strong className={run.current > 0 ? "text-sage-ink" : "text-rose-ink"}>{run.current > 0 ? `${run.current} victoria${run.current === 1 ? "" : "s"}` : `${-run.current} derrota${run.current === -1 ? "" : "s"}`}</strong> · mejor racha de victorias: <strong className="text-ink">{run.bestWin}</strong> · duración media: <strong className="text-ink">{fmtDuration(summary.avgDuration)}</strong>
+              </p>
+            </div>
+            <ol aria-label="Resultados recientes" className="flex flex-wrap gap-1">
+              {form.map((w, i) => <li key={i} title={w ? "Victoria" : "Derrota"} className={`grid size-6 place-items-center rounded-sm text-[11px] font-black text-bg ${w ? "bg-sage" : "bg-rose"}`}>{w ? "V" : "D"}</li>)}
+            </ol>
+          </Card>
+        )}
         {favorites.length > 0 && (
           <div className="grid gap-3 sm:grid-cols-3">
-            {favorites.map((f) => (
-              <Link key={f.hero_id} href={`/heroes?q=${encodeURIComponent(heroNames.get(f.hero_id) ?? "")}`} className="flex items-center gap-3 rounded-md border border-brass/30 bg-surface p-2 pr-4 shadow-card transition-colors hover:bg-brass/10">
-                <HeroPortrait hero={{ id: f.hero_id, name: heroNames.get(f.hero_id) ?? "?" }} small className="h-14 w-14 shrink-0" />
-                <span>
-                  <span className="block font-semibold">{heroNames.get(f.hero_id) ?? `Héroe #${f.hero_id}`}</span>
-                  <span className="block text-xs text-ink-muted">{fmtNum(f.matches_played)} partidas · {fmtPct(f.wins / Math.max(f.matches_played, 1), 0)} victorias</span>
-                </span>
-              </Link>
-            ))}
+            {favorites.map((f) => {
+              const rate = f.wins / Math.max(f.matches_played, 1);
+              return (
+                <Link key={f.hero_id} href={`/heroes?q=${encodeURIComponent(heroNames.get(f.hero_id) ?? "")}`} className="flex items-center gap-3 rounded-md border border-brass/30 bg-surface p-2 pr-4 shadow-card transition-colors hover:bg-brass/10">
+                  <HeroPortrait hero={{ id: f.hero_id, name: heroNames.get(f.hero_id) ?? "?" }} small className="h-14 w-14 shrink-0" />
+                  <span className="min-w-0 flex-1 space-y-1">
+                    <span className="block truncate font-semibold">{heroNames.get(f.hero_id) ?? `Héroe #${f.hero_id}`}</span>
+                    <span className="block text-xs text-ink-muted">{fmtNum(f.matches_played)} partidas · {fmtPct(rate, 0)} victorias</span>
+                    <RateMeter rate={rate} />
+                  </span>
+                </Link>
+              );
+            })}
           </div>
         )}
         <p className="text-xs text-ink-muted">Calculado con las {fmtNum(history.length)} partidas que devuelve la API. El historial puede no incluir todas las partidas del jugador.</p>
@@ -153,16 +183,33 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
 
       <section aria-labelledby="history" className="space-y-4">
         <SectionTitle id="history">Historial de partidas</SectionTitle>
+        {history.length > 0 && (
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar por resultado">
+              {([["all", "Todas"], ["win", "Victorias"], ["loss", "Derrotas"]] as const).map(([v, label]) => (
+                <Link key={v} href={histHref({ res: v, page: undefined })} aria-current={result === v ? "true" : undefined} className={chip(result === v)}>{label}</Link>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar por héroe">
+              <Link href={histHref({ hero: undefined, page: undefined })} aria-current={heroFilter === undefined ? "true" : undefined} className={chip(heroFilter === undefined)}>Todos los héroes</Link>
+              {mostPlayed.map((h) => (
+                <Link key={h.hero_id} href={histHref({ hero: String(h.hero_id), page: undefined })} aria-current={heroFilter === h.hero_id ? "true" : undefined} className={chip(heroFilter === h.hero_id)}>{heroNames.get(h.hero_id) ?? `#${h.hero_id}`}</Link>
+              ))}
+            </div>
+          </div>
+        )}
         {history.length === 0 ? (
           <EmptyState title="Este jugador no tiene partidas" hint="Aún no hay partidas suyas en los datos." />
+        ) : filtered.length === 0 ? (
+          <EmptyState title="Ninguna partida con ese filtro" hint="Prueba con otro resultado u otro héroe." />
         ) : (
           <>
             <div className="space-y-2">
               {slice.map((m) => <MatchRow key={m.match_id} match={m} hero={{ id: m.hero_id, name: heroNames.get(m.hero_id) ?? `Héroe #${m.hero_id}` }} modeLabel={matchModeLabel(m.match_mode)} />)}
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-ink-muted">Partidas {fmtNum((page - 1) * PAGE_SIZE + 1)}–{fmtNum(Math.min(page * PAGE_SIZE, history.length))} de {fmtNum(history.length)}</p>
-              <Pagination page={page} pages={pages} href={(p) => `/players/${id}?page=${p}#history`} />
+              <p className="text-sm text-ink-muted">Partidas {fmtNum((page - 1) * PAGE_SIZE + 1)}–{fmtNum(Math.min(page * PAGE_SIZE, filtered.length))} de {fmtNum(filtered.length)}</p>
+              <Pagination page={page} pages={pages} href={(p) => histHref({ page: p > 1 ? String(p) : undefined })} />
             </div>
           </>
         )}

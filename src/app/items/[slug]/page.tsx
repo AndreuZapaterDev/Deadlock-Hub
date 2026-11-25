@@ -96,7 +96,7 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
         <div className="flex flex-wrap items-center justify-center gap-2">
           {cat && <CategoryChip category={cat} />}
           {item.item_tier && <Chip>Tier {item.item_tier}</Chip>}
-          <Chip>{item.is_active_item ? "Activo" : "Pasivo"}</Chip>
+          <Chip>{item.is_active_item ? "Activa" : "Pasivo"}</Chip>
           {item.cost !== undefined && <Chip tone={cat ? CATEGORY[cat].tone : "neutral"}>{fmtNum(item.cost)} almas</Chip>}
           {!item.shopable && <Chip tone="rose">No disponible en la tienda</Chip>}
         </div>

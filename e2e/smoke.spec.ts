@@ -8,6 +8,7 @@ const PAGES: [string, RegExp][] = [
   ["/items", /objetos|tienda/i],
   ["/tier-list", /tier/i],
   ["/meta", /meta/i],
+  ["/lanes", /carriles/i],
   ["/counters", /counters/i],
   ["/builds", /builds/i],
   ["/build-planner", /build/i],

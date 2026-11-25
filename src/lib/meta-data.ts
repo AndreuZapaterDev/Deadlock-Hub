@@ -85,13 +85,19 @@ export const loadHeroStatsWeekly = cache(() => {
 export const loadBigDays =cache(() => orElse<string[]>("/v1/patches/big-days", []));
 
 // ---------- Objetos y meta ----------
-export const loadItemStats = cache((f: AnalyticsFilters) => fetchData<ItemStatRow[]>("/v1/analytics/item-stats", toApiQuery(f)));
+/** `heroId`: solo las compras de ese héroe (la API lo filtra); sin él, todos los héroes. */
+export const loadItemStats = cache((f: AnalyticsFilters, heroId?: number) => fetchData<ItemStatRow[]>("/v1/analytics/item-stats", { ...toApiQuery(f), ...(heroId ? { hero_id: heroId } : {}) }));
 export const loadPermutations = (f: AnalyticsFilters) => fetchData<PermRow[]>("/v1/analytics/item-permutation-stats", toApiQuery(f));
 export const loadCombs = (f: AnalyticsFilters) => fetchData<CombRow[]>("/v1/analytics/hero-comb-stats", { comb_size: 2, ...toApiQuery(f) });
 export const loadBuffs = (f: AnalyticsFilters) => fetchData<BuffRow[]>("/v1/analytics/buff-stats", toApiQuery(f));
 export const loadGameStats = (f: AnalyticsFilters) => fetchData<GameStatRow[]>("/v1/analytics/game-stats", toApiQuery(f));
 // Sin `min_matches` la API devuelve todas las parejas de héroes (más de 150 MB): la página solo muestra las más jugadas.
 export const loadLane = (f: AnalyticsFilters) => fetchData<LaneRow[]>("/v1/analytics/lane-matchup-stats", { min_matches: 2000, ...toApiQuery(f) });
+// Carriles agrupados: récord de cada dúo contra cualquier rival, y duelos dúo contra dúo con los carriles fusionados.
+export const loadLaneDuos = cache((f: AnalyticsFilters, heroId?: number) =>
+  fetchData<LaneRow[]>("/v1/analytics/lane-matchup-stats", { group_by: "hero_ids", min_matches: 300, ...(heroId ? { hero_ids: heroId } : {}), ...toApiQuery(f) }));
+export const loadLaneDuels = cache((f: AnalyticsFilters, heroId?: number) =>
+  fetchData<LaneRow[]>("/v1/analytics/lane-matchup-stats", { group_by: "hero_ids,enemy_hero_ids", min_matches: 300, ...(heroId ? { hero_ids: heroId } : {}), ...toApiQuery(f) }));
 export const loadFlow = (heroId: number, f: AnalyticsFilters) => fetchData<FlowData>("/v1/analytics/item-flow-stats", { hero_ids: heroId, min_matches: 500, ...toApiQuery(f) });
 
 // ---------- Datos específicos de un héroe ----------

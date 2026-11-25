@@ -27,7 +27,7 @@ export const BUILD_LANGUAGES = [
   "Portugués (Portugal)", "Polaco", "Checo", "Turco", "Portugués (Brasil)", "Ucraniano", "Español (Latinoamérica)", "Vietnamita",
 ];
 
-export type BuildSort = "favorites" | "updated";
+export type BuildSort = "favorites" | "weekly" | "updated";
 export type BuildQuery = { q?: string; hero?: number; tag?: number; lang?: number; author?: number; sort: BuildSort; page: number };
 
 type Raw = Record<string, string | undefined>;
@@ -45,7 +45,7 @@ export function parseBuildQuery(sp: Raw, heroIds: Set<number>, tagIds: Set<numbe
     tag: tag !== undefined && tagIds.has(tag) ? tag : undefined,
     lang: lang !== undefined && lang < BUILD_LANGUAGES.length ? lang : undefined,
     author: int(sp.author) && int(sp.author)! <= 4294967295 ? int(sp.author) : undefined,
-    sort: sp.sort === "updated" ? "updated" : "favorites",
+    sort: sp.sort === "updated" ? "updated" : sp.sort === "weekly" ? "weekly" : "favorites",
     page: Math.max(1, int(sp.page) ?? 1),
   };
 }
@@ -55,7 +55,7 @@ export const hasBuildFilters = (q: BuildQuery) => q.q !== undefined || q.hero !=
 /** Parámetros del endpoint `/v1/builds` (nombres del OpenAPI). */
 export function toApiParams(q: BuildQuery, pageSize: number): Record<string, string | number> {
   const p: Record<string, string | number> = {
-    sort_by: q.sort === "updated" ? "updated_at" : "favorites",
+    sort_by: q.sort === "updated" ? "updated_at" : q.sort === "weekly" ? "weekly_favorites" : "favorites",
     sort_direction: "desc",
     start: (q.page - 1) * pageSize,
     limit: pageSize + 1, // uno de más para saber si hay página siguiente sin conocer el total
@@ -105,3 +105,33 @@ export function linkify(text: string): Piece[] {
 export function orderSteps(b: BuildEntry): OrderStep[] {
   return (b.hero_build.details?.ability_order?.currency_changes ?? []).filter((s) => s.delta !== 0);
 }
+
+// ---------- Análisis de una build ----------
+type ShopItem = { id: number; type?: string; cost?: number; item_slot_type?: "weapon" | "vitality" | "spirit"; item_tier?: number };
+
+/** Objetos de tienda de una build (sin habilidades), en el orden en que aparecen y sin repetidos. */
+export function shopItemsOf<T extends ShopItem>(b: BuildEntry, items: Map<number, T>): T[] {
+  const seen = new Set<number>();
+  const out: T[] = [];
+  for (const m of categoriesOf(b).flatMap((c) => c.mods)) {
+    const it = items.get(m.ability_id);
+    if (it?.type === "upgrade" && !seen.has(it.id)) {
+      seen.add(it.id);
+      out.push(it);
+    }
+  }
+  return out;
+}
+
+export const totalCost = (list: { cost?: number }[]) => list.reduce((a, i) => a + (i.cost ?? 0), 0);
+
+/** Reparto por categoría (arma / vitalidad / espíritu) de una lista de objetos, como fracción del total. */
+export function categoryMix(list: { item_slot_type?: "weapon" | "vitality" | "spirit" }[]) {
+  const n = { weapon: 0, vitality: 0, spirit: 0 };
+  for (const i of list) if (i.item_slot_type) n[i.item_slot_type]++;
+  const total = n.weapon + n.vitality + n.spirit;
+  return { counts: n, total, share: { weapon: total ? n.weapon / total : 0, vitality: total ? n.vitality / total : 0, spirit: total ? n.spirit / total : 0 } };
+}
+
+/** Una build es «nueva» si se publicó o actualizó en los últimos `days` días. */
+export const isFresh = (b: BuildEntry, days = 14, now = Date.now() / 1000) => now - b.hero_build.last_updated_timestamp < days * 86400;

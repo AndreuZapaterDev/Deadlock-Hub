@@ -34,3 +34,36 @@ describe("linkEntities", () => {
     expect(linkEntities("<p>Infernuss infernus Ace</p>", ents)).toBe("<p>Infernuss infernus Ace</p>");
   });
 });
+
+import { excerpt, groupByMonth, mentionedNames, readingMinutes } from "./patches";
+
+describe("excerpt", () => {
+  it("quita etiquetas y recorta en una palabra", () => {
+    expect(excerpt("<p>Hola <b>mundo</b></p><p>otra</p>")).toBe("Hola mundo otra");
+    const long = excerpt(`<p>${"palabra ".repeat(50)}</p>`, 40);
+    expect(long.length).toBeLessThanOrEqual(41);
+    expect(long.endsWith("…")).toBe(true);
+    expect(long).not.toMatch(/palab…$/);
+  });
+});
+
+describe("groupByMonth", () => {
+  it("agrupa por mes, el más reciente primero, usando la fecha del título", () => {
+    const g = groupByMonth([
+      { title: "10-02-2026", date: "2026-10-05T00:00:00Z" },
+      { title: "x", date: "2026-11-01T00:00:00Z" },
+      { title: "09-29-2026", date: "2026-10-01T00:00:00Z" },
+    ]);
+    expect(g.map((x) => [x.month, x.items.length])).toEqual([["2026-11", 1], ["2026-10", 1], ["2026-09", 1]]);
+  });
+});
+
+describe("mentionedNames / readingMinutes", () => {
+  it("palabras completas y mínimo de 4 letras", () => {
+    expect(mentionedNames("Infernus recibe un buff; Ivy no", ["Infernus", "Ivy", "Inferno"])).toEqual(["Infernus"]);
+  });
+  it("lectura mínima de 1 minuto", () => {
+    expect(readingMinutes("hola")).toBe(1);
+    expect(readingMinutes("a ".repeat(600))).toBe(3);
+  });
+});

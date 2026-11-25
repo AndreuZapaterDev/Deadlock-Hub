@@ -95,3 +95,23 @@ describe("modos", () => {
     expect(matchModeLabel(null)).toBe("—");
   });
 });
+
+import { filterHistory, recentForm, streaks } from "./player-stats";
+
+describe("forma reciente y rachas", () => {
+  const m = (t: number, win: boolean, hero = 1) => ({ match_id: t, hero_id: hero, start_time: t, player_kills: 0, player_deaths: 0, player_assists: 0, net_worth: 0, match_duration_s: 60, match_result: win ? 0 : 1, player_team: 0 });
+  const h = [m(1, true), m(2, true), m(3, true), m(4, false), m(5, true, 2), m(6, true, 2)];
+
+  it("recentForm: más reciente primero", () => expect(recentForm(h, 3)).toEqual([true, true, false]));
+  it("streaks: actual y mejor", () => expect(streaks(h)).toEqual({ current: 2, bestWin: 3 }));
+  it("streaks: racha de derrotas negativa y vacío", () => {
+    expect(streaks([m(1, true), m(2, false), m(3, false)]).current).toBe(-2);
+    expect(streaks([])).toEqual({ current: 0, bestWin: 0 });
+  });
+  it("filterHistory", () => {
+    expect(filterHistory(h, { result: "loss" })).toHaveLength(1);
+    expect(filterHistory(h, { heroId: 2 })).toHaveLength(2);
+    expect(filterHistory(h, { result: "win", heroId: 2 })).toHaveLength(2);
+    expect(filterHistory(h, {})).toHaveLength(6);
+  });
+});

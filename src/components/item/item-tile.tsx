@@ -64,7 +64,7 @@ export function ItemTile({ item, lang, usage }: { item: Item; lang: string; usag
           <span className="block truncate text-sm font-bold leading-tight">{item.name}</span>
           <span className="mt-1 flex items-center gap-2 text-xs text-ink-muted">
             <span className="tabular-nums"><span aria-hidden className="text-(--c)">◆</span> {fmtNum(item.cost ?? 0)}</span>
-            {item.is_active_item && <span className={cn("rounded-sm bg-(--c)/20 px-1.5 py-px text-[10px] font-bold uppercase tracking-wide", cat && CAT_COLOR[cat].ink)}>Activo</span>}
+            {item.is_active_item && <span className={cn("rounded-sm bg-(--c)/20 px-1.5 py-px text-[10px] font-bold uppercase tracking-wide", cat && CAT_COLOR[cat].ink)}>Activa</span>}
           </span>
         </span>
         {usage && (

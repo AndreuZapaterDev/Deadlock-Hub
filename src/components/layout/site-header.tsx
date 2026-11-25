@@ -8,9 +8,9 @@ import { LanguageSelect } from "./language-select";
 import { NavMenu } from "./nav-menu";
 import { ThemeToggle } from "./theme-toggle";
 
-const NAV = ["heroes", "items", "tierList", "meta", "builds", "map", "players", "live", "patches"] as const;
+const NAV = ["heroes", "items", "tierList", "meta", "lanes", "builds", "map", "players", "live", "patches"] as const;
 const HREF: Record<(typeof NAV)[number], string> = {
-  heroes: "/heroes", items: "/items", tierList: "/tier-list", meta: "/meta", builds: "/builds", map: "/map", players: "/players", live: "/live", patches: "/patches",
+  heroes: "/heroes", items: "/items", tierList: "/tier-list", meta: "/meta", lanes: "/lanes", builds: "/builds", map: "/map", players: "/players", live: "/live", patches: "/patches",
 };
 
 export async function SiteHeader() {

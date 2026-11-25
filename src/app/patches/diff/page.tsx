@@ -115,12 +115,14 @@ export default async function PatchDiffPage({ searchParams }: { searchParams: Pr
         <ErrorState title="No se han podido comparar las versiones" hint="Puede que la API no tenga los datos de esa versión o que esté ocupada." />
       ) : (
         <>
-          <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {[
               ["Héroes con cambios", res.data.heroes.changed.length],
               ["Objetos con cambios", res.data.items.changed.length],
               ["Objetos nuevos", res.data.items.added.length],
               ["Objetos eliminados", res.data.items.removed.length],
+              ["Mejoras (buffs)", [...res.data.heroes.changed, ...res.data.items.changed].filter((e) => e.direction === "buff").length],
+              ["Nerfs", [...res.data.heroes.changed, ...res.data.items.changed].filter((e) => e.direction === "nerf").length],
             ].map(([label, n]) => (
               <Card key={label as string}>
                 <dd className="font-display text-3xl font-black tabular-nums">{n}</dd>

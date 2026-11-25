@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { categoriesOf, hasBuildFilters, itemCount, linkify, orderSteps, parseBuildQuery, toApiParams, type BuildEntry } from "./builds";
+import { categoriesOf, categoryMix, hasBuildFilters, isFresh, itemCount, linkify, orderSteps, parseBuildQuery, shopItemsOf, toApiParams, totalCost, type BuildEntry } from "./builds";
 
 const b = (o: Partial<BuildEntry["hero_build"]> = {}, fav: number | null = 100): BuildEntry => ({
   hero_build: { hero_id: 1, hero_build_id: 1, author_account_id: 10, last_updated_timestamp: 1000, name: "Build", language: 0, version: 1, ...o },
@@ -82,5 +82,28 @@ describe("orderSteps", () => {
     expect(orderSteps(e)).toEqual([]);
     e.hero_build.details = { ability_order: { currency_changes: [{ ability_id: 1, currency_type: 2, delta: -1 }, { ability_id: 2, currency_type: 1, delta: 0 }] } };
     expect(orderSteps(e)).toHaveLength(1);
+  });
+});
+
+
+describe("análisis de una build", () => {
+  const items = new Map([
+    [1, { id: 1, type: "upgrade", cost: 500, item_slot_type: "weapon" as const }],
+    [2, { id: 2, type: "upgrade", cost: 1250, item_slot_type: "spirit" as const }],
+    [3, { id: 3, type: "ability" }],
+  ]);
+  const build = { hero_build: { hero_id: 1, hero_build_id: 1, author_account_id: 1, last_updated_timestamp: 1000, name: "x", language: 0, version: 1, details: { mod_categories: [{ mods: [{ ability_id: 1 }, { ability_id: 3 }] }, { mods: [{ ability_id: 2 }, { ability_id: 1 }] }] } } } as BuildEntry;
+
+  it("shopItemsOf: solo objetos de tienda, sin repetir y en orden", () => expect(shopItemsOf(build, items).map((i) => i.id)).toEqual([1, 2]));
+  it("totalCost suma costes (los que faltan cuentan 0)", () => expect(totalCost([{ cost: 500 }, {}, { cost: 1250 }])).toBe(1750));
+  it("categoryMix reparte por categoría", () => {
+    const m = categoryMix([{ item_slot_type: "weapon" }, { item_slot_type: "weapon" }, { item_slot_type: "spirit" }, {}]);
+    expect(m.counts).toEqual({ weapon: 2, vitality: 0, spirit: 1 });
+    expect(m.share.weapon).toBeCloseTo(2 / 3);
+    expect(categoryMix([]).total).toBe(0);
+  });
+  it("isFresh", () => {
+    expect(isFresh(build, 14, 1000 + 86400)).toBe(true);
+    expect(isFresh(build, 14, 1000 + 30 * 86400)).toBe(false);
   });
 });

@@ -1,17 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BuildCard } from "@/components/builds/build-card";
+import { CAT_COLOR, catVar, ItemIcon, TierPips } from "@/components/item/item-tile";
 import { CopyButton } from "@/components/tools/copy-button";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { ErrorState } from "@/components/ui/feedback";
 import { PosterHeader } from "@/components/ui/poster-header";
+import { RateMeter } from "@/components/ui/rate-meter";
 import { SectionTitle } from "@/components/ui/section-title";
-import { categoriesOf, linkify, orderSteps } from "@/lib/builds";
-import { loadBuild, loadBuildTags } from "@/lib/builds-data";
+import { adjustedWinRate } from "@/lib/analytics";
+import { categoriesOf, categoryMix, linkify, orderSteps, shopItemsOf, totalCost } from "@/lib/builds";
+import { loadBuild, loadBuildList, loadBuildTags } from "@/lib/builds-data";
+import { loadItemStats } from "@/lib/meta-data";
 import { encodeBuild } from "@/lib/build-planner";
-import { fmtNum, timeAgo } from "@/lib/format";
+import { fmtNum, fmtPct, timeAgo } from "@/lib/format";
 import { byId, getHeroNames, getItems } from "@/lib/lookup";
 import { loadNames } from "@/lib/player-data";
 import { slugify } from "@/lib/slug";
@@ -39,7 +44,10 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
 
   const build = res.data;
   const h = build.hero_build;
-  const [heroNames, items, tags, authors] = await Promise.all([getHeroNames(), getItems().then(byId), loadBuildTags(), loadNames([h.author_account_id])]);
+  const [heroNames, items, tags, authors, itemStats, similar] = await Promise.all([
+    getHeroNames(), getItems().then(byId), loadBuildTags(), loadNames([h.author_account_id]), loadItemStats({}, h.hero_id),
+    loadBuildList({ hero: h.hero_id, sort: "favorites", page: 1 }),
+  ]);
   const heroName = heroNames.get(h.hero_id) ?? `Héroe #${h.hero_id}`;
   const author = authors.get(h.author_account_id);
   const tagLabel = new Map(tags.map((t) => [t.id, t.label]));
@@ -51,6 +59,14 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
   const plannerHref = `/build-planner?${encodeBuild(slugify(heroName), shopItems)}`;
 
   const desc = (h.description ?? "").trim();
+  const shop = shopItemsOf(build, items);
+  const mix = categoryMix(shop);
+  const cost = totalCost(shop);
+  // Win rate de cada objeto entre las compras de este héroe
+  const meta = new Map(itemStats.ok ? itemStats.data.map((r) => [r.item_id, { rate: r.matches ? r.wins / r.matches : 0, adjusted: adjustedWinRate(r.wins, r.matches), matches: r.matches }]) : []);
+  const known = shop.map((i) => meta.get(i.id)).filter((m): m is NonNullable<typeof m> => !!m && m.matches >= 200);
+  const avgRate = known.length ? known.reduce((a, m) => a + m.rate, 0) / known.length : null;
+  const others = similar.ok ? similar.data.items.filter((b) => b.hero_build.hero_build_id !== h.hero_build_id).slice(0, 3) : [];
 
   return (
     <div className="space-y-12">
@@ -68,6 +84,31 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
           <Button href={`/heroes/${slugify(heroName)}`} variant="ghost"><span className="text-cream">Ver {heroName}</span></Button>
         </div>
       </PosterHeader>
+
+      <ul aria-label="Resumen" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+        {[
+          { v: String(shop.length), l: "objetos de tienda" },
+          { v: cost > 0 ? `◆ ${fmtNum(cost)}` : "—", l: "coste total en almas" },
+          { v: avgRate !== null ? fmtPct(avgRate) : "—", l: `win rate medio de sus objetos con ${heroName}` },
+          { v: fmtNum(build.num_weekly_favorites ?? 0), l: "favoritos esta semana" },
+        ].map((x) => (
+          <li key={x.l} className="rounded-md border border-brass/30 bg-surface p-3 text-center shadow-card">
+            <p className="font-display text-2xl font-black tabular-nums">{x.v}</p>
+            <p className="mt-0.5 text-xs text-ink-muted">{x.l}</p>
+          </li>
+        ))}
+        {mix.total > 0 && (
+          <li className="col-span-2 space-y-1.5 rounded-md border border-brass/30 bg-surface p-3 shadow-card lg:col-span-4">
+            <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">Reparto por categoría</p>
+            <span role="img" aria-label={`Arma ${mix.counts.weapon}, vitalidad ${mix.counts.vitality}, espíritu ${mix.counts.spirit}`} className="flex h-2.5 overflow-hidden rounded-full bg-ink-muted/20">
+              <span className="bg-apricot" style={{ width: `${mix.share.weapon * 100}%` }} />
+              <span className="bg-sage" style={{ width: `${mix.share.vitality * 100}%` }} />
+              <span className="bg-lilac" style={{ width: `${mix.share.spirit * 100}%` }} />
+            </span>
+            <p className="flex flex-wrap gap-x-4 text-xs"><span className="text-apricot-ink">Arma {mix.counts.weapon}</span><span className="text-sage-ink">Vitalidad {mix.counts.vitality}</span><span className="text-lilac-ink">Espíritu {mix.counts.spirit}</span></p>
+          </li>
+        )}
+      </ul>
 
       <section aria-labelledby="about" className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="space-y-3">
@@ -103,16 +144,35 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
           <div className="grid gap-4 md:grid-cols-2">
             {categories.filter((c) => c.mods.length > 0).map((c, i) => (
               <Card key={i} className="space-y-2">
-                <h3 className="font-display text-lg font-black">{c.name}</h3>
+                <div className="flex items-baseline justify-between gap-3">
+                  <h3 className="font-display text-lg font-black">{c.name}</h3>
+                  {totalCost(c.mods.map((m) => items.get(m.ability_id) ?? {})) > 0 && <span className="text-xs tabular-nums text-ink-muted">◆ {fmtNum(totalCost(c.mods.map((m) => items.get(m.ability_id) ?? {})))}</span>}
+                </div>
                 {c.description && <p className="text-xs text-ink-muted">{c.description}</p>}
-                <ol className="space-y-1.5">
+                <ol className="space-y-2">
                   {c.mods.map((m, n) => {
                     const it = items.get(m.ability_id);
+                    const st = it?.type === "upgrade" ? meta.get(it.id) : undefined;
+                    const cat = it?.item_slot_type;
                     return (
-                      <li key={n} className="flex flex-wrap items-baseline gap-x-2 text-sm">
-                        <span className="w-5 text-right font-bold tabular-nums text-brass">{n + 1}</span>
-                        {it?.type === "upgrade" ? <Link href={`/items/${it.class_name}`} className="link-brass font-semibold">{it.name}</Link> : <span className="font-semibold">{it?.name ?? `Objeto #${m.ability_id}`}</span>}
-                        {m.annotation && <span className="text-xs italic text-ink-muted">«{m.annotation}»</span>}
+                      <li key={n} style={catVar(cat)} className="flex items-center gap-3 rounded-md border border-(--c)/30 bg-[color-mix(in_srgb,var(--c)_8%,var(--surface))] p-1.5 pr-3">
+                        <span className="w-5 shrink-0 text-center text-sm font-bold tabular-nums text-brass">{n + 1}</span>
+                        {it && <ItemIcon item={it} size={40} />}
+                        <span className="min-w-0 flex-1">
+                          {it?.type === "upgrade" ? <Link href={`/items/${it.class_name}`} className="link-brass block truncate text-sm font-bold">{it.name}</Link> : <span className="block truncate text-sm font-bold">{it?.name ?? `Objeto #${m.ability_id}`}</span>}
+                          <span className="flex items-center gap-2 text-xs text-ink-muted">
+                            {it?.item_tier ? <TierPips tier={it.item_tier} /> : null}
+                            {it?.cost ? <span className="tabular-nums">◆ {fmtNum(it.cost)}</span> : null}
+                            {cat && <span className={CAT_COLOR[cat].ink}>{cat === "weapon" ? "Arma" : cat === "vitality" ? "Vitalidad" : "Espíritu"}</span>}
+                          </span>
+                          {m.annotation && <span className="block text-xs italic text-ink-muted">«{m.annotation}»</span>}
+                        </span>
+                        {st && st.matches >= 200 && (
+                          <span className="w-14 shrink-0 text-right" title={`Win rate con ${heroName}: ${fmtNum(st.matches)} partidas`}>
+                            <span className="block text-xs font-black tabular-nums">{fmtPct(st.rate)}</span>
+                            <RateMeter rate={st.rate} className="mt-0.5" />
+                          </span>
+                        )}
                       </li>
                     );
                   })}
@@ -130,8 +190,9 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
           <Card>
             <ol className="grid gap-x-6 gap-y-1.5 sm:grid-cols-2 lg:grid-cols-3">
               {steps.map((s, i) => (
-                <li key={i} className="flex items-baseline gap-2 text-sm">
+                <li key={i} className="flex items-center gap-2 text-sm">
                   <span className="w-6 text-right font-bold tabular-nums text-brass">{i + 1}</span>
+                  {items.get(s.ability_id) && <ItemIcon item={items.get(s.ability_id)!} size={28} />}
                   <span className="font-semibold">{items.get(s.ability_id)?.name ?? `#${s.ability_id}`}</span>
                   <span className="text-xs text-ink-muted">{s.currency_type === 2 ? "desbloquear" : "mejorar"}</span>
                 </li>
@@ -139,6 +200,18 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
             </ol>
             <p className="mt-3 text-xs text-ink-muted">«Desbloquear» y «mejorar» se deducen del tipo de punto que gasta cada paso (2 y 1 respectivamente en los datos).</p>
           </Card>
+        </section>
+      )}
+
+      {others.length > 0 && (
+        <section aria-labelledby="similar" className="space-y-4">
+          <SectionTitle id="similar">Otras builds de {heroName}</SectionTitle>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {others.map((b) => (
+              <BuildCard key={b.hero_build.hero_build_id} build={b} heroId={b.hero_build.hero_id} heroName={heroName} shop={shopItemsOf(b, items)} tags={(b.hero_build.tags ?? []).map((t) => tagLabel.get(t)).filter((t): t is string => !!t).slice(0, 3)} />
+            ))}
+          </div>
+          <Button href={`/builds?hero=${h.hero_id}`} variant="ghost">Ver todas las builds de {heroName}</Button>
         </section>
       )}
     </div>

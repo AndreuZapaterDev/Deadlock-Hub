@@ -48,7 +48,7 @@ export default async function ItemsPage({ searchParams }: { searchParams: Promis
             { name: "q", label: "Buscar", type: "search", placeholder: "Nombre del objeto" },
             { name: "cat", label: "Categoría", type: "select", options: CATS.map((c) => ({ value: c, label: CATEGORY[c].label })) },
             { name: "tier", label: "Tier", type: "select", options: [1, 2, 3, 4].map((t) => ({ value: String(t), label: `Tier ${t}` })) },
-            { name: "kind", label: "Tipo", type: "select", options: [{ value: "active", label: "Activo" }, { value: "passive", label: "Pasivo" }] },
+            { name: "kind", label: "Tipo", type: "select", options: [{ value: "active", label: "Activa" }, { value: "passive", label: "Pasivo" }] },
             { name: "comp", label: "Componentes", type: "select", options: [{ value: "yes", label: "Con componentes" }, { value: "no", label: "Sin componentes" }] },
             ...(usage.size ? [{ name: "sort", label: "Ordenar por", type: "select" as const, allLabel: "Nombre (A–Z)", options: [{ value: "winrate", label: "Win rate" }, { value: "matches", label: "Más usados" }] }] : []),
           ]}

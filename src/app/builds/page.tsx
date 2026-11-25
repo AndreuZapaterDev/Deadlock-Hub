@@ -6,16 +6,16 @@ import { FilterBar } from "@/components/filters/filter-bar";
 import { EmptyState, ErrorState } from "@/components/ui/feedback";
 import { Pagination } from "@/components/ui/pagination";
 import { PosterHeader } from "@/components/ui/poster-header";
-import { BUILD_LANGUAGES, hasBuildFilters, parseBuildQuery } from "@/lib/builds";
+import { BUILD_LANGUAGES, hasBuildFilters, parseBuildQuery, shopItemsOf } from "@/lib/builds";
 import { loadBuildList, loadBuildTags } from "@/lib/builds-data";
-import { getHeroNames } from "@/lib/lookup";
+import { byId, getHeroNames, getItems } from "@/lib/lookup";
 import { loadNames } from "@/lib/player-data";
 
 export const metadata: Metadata = { title: "Builds", description: "Busca las builds de la comunidad de Deadlock por héroe, etiqueta, idioma o autor." };
 
 export default async function BuildsPage({ searchParams }: { searchParams: Promise<Record<string, string | undefined>> }) {
   const sp = await searchParams;
-  const [heroNames, tags] = await Promise.all([getHeroNames(), loadBuildTags()]);
+  const [heroNames, tags, items] = await Promise.all([getHeroNames(), loadBuildTags(), getItems().then(byId)]);
   const q = parseBuildQuery(sp, new Set(heroNames.keys()), new Set(tags.map((t) => t.id)));
   const [res, tagLabel] = [await loadBuildList(q), new Map(tags.map((t) => [t.id, t.label]))];
   const authors = res.ok ? await loadNames(res.data.items.map((b) => b.hero_build.author_account_id)) : new Map<number, string>();
@@ -38,10 +38,18 @@ export default async function BuildsPage({ searchParams }: { searchParams: Promi
             { name: "hero", label: "Héroe", type: "select", options: heroOptions },
             { name: "tag", label: "Etiqueta", type: "select", options: tags.map((t) => ({ value: String(t.id), label: t.label })) },
             { name: "lang", label: "Idioma", type: "select", options: BUILD_LANGUAGES.map((label, i) => ({ value: String(i), label })) },
-            { name: "sort", label: "Orden", type: "select", options: [{ value: "updated", label: "Más recientes" }], allLabel: "Más populares" },
+            { name: "sort", label: "Orden", type: "select", options: [{ value: "weekly", label: "Favoritas esta semana" }, { value: "updated", label: "Más recientes" }], allLabel: "Más populares" },
           ]}
         />
       </Suspense>
+      {tags.length > 0 && (
+        <nav aria-label="Etiquetas" className="flex flex-wrap items-center gap-2">
+          <span className="text-xs font-semibold uppercase tracking-wide text-ink-muted">Etiquetas</span>
+          {tags.slice(0, 12).map((t) => (
+            <Link key={t.id} href={href(1, { tag: q.tag === t.id ? undefined : String(t.id) })} aria-current={q.tag === t.id ? "true" : undefined} className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${q.tag === t.id ? "border-brass bg-ink text-bg" : "border-brass/50 hover:bg-brass/15"}`}>{t.label}</Link>
+          ))}
+        </nav>
+      )}
       {q.author !== undefined && (
         <p className="flex items-center gap-2 text-sm">
           Builds del autor <Link href={`/players/${q.author}`} className="link-brass font-semibold">{authors.get(q.author) ?? `#${q.author}`}</Link>
@@ -57,13 +65,15 @@ export default async function BuildsPage({ searchParams }: { searchParams: Promi
         <>
           <p className="text-sm text-ink-muted" aria-live="polite">
             Página {q.page}
-            {" · "}{q.sort === "updated" ? "más recientes primero" : "más populares primero"}
+            {" · "}{q.sort === "updated" ? "más recientes primero" : q.sort === "weekly" ? "más favoritas esta semana primero" : "más populares primero"}
           </p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {res.data.items.map((b) => (
               <BuildCard
                 key={b.hero_build.hero_build_id}
                 build={b}
+                heroId={b.hero_build.hero_id}
+                shop={shopItemsOf(b, items)}
                 heroName={heroNames.get(b.hero_build.hero_id) ?? `Héroe #${b.hero_build.hero_id}`}
                 authorName={authors.get(b.hero_build.author_account_id)}
                 tags={(b.hero_build.tags ?? []).map((t) => tagLabel.get(t)).filter((t): t is string => !!t).slice(0, 3)}

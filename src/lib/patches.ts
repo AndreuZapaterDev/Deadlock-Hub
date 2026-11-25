@@ -45,3 +45,41 @@ export function linkEntities(html: string, entities: { name: string; href: strin
     })
     .join("");
 }
+
+// ---------- Listado: resumen, agrupación por mes y menciones ----------
+
+/** Texto plano de un HTML de notas, recortado a `max` caracteres (en el último espacio) con «…». */
+export function excerpt(html: string, max = 180): string {
+  const text = html
+    .replace(/<br\s*\/?>/gi, " ")
+    .replace(/<\/(p|li|h[1-6]|div)>/gi, " ")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max);
+  return `${cut.slice(0, Math.max(cut.lastIndexOf(" "), max * 0.6))}…`;
+}
+
+/** Fecha efectiva de un parche (la del título del foro si la tiene) en ISO AAAA-MM-DD. */
+export const effectiveDate = (p: Pick<Patch, "title" | "date">) => titleDate(p.title) ?? p.date.slice(0, 10);
+
+/** Agrupa por mes (AAAA-MM), del más reciente al más antiguo, conservando el orden de entrada dentro de cada mes. */
+export function groupByMonth<T extends Pick<Patch, "title" | "date">>(patches: T[]): { month: string; items: T[] }[] {
+  const groups = new Map<string, T[]>();
+  for (const p of patches) {
+    const m = effectiveDate(p).slice(0, 7);
+    groups.set(m, [...(groups.get(m) ?? []), p]);
+  }
+  return [...groups].sort((a, b) => b[0].localeCompare(a[0])).map(([month, items]) => ({ month, items }));
+}
+
+/** Nombres (de la lista) que aparecen como palabra completa en el texto; mismas reglas que `linkEntities`: distingue mayúsculas y salta nombres de menos de 4 letras. */
+export function mentionedNames(text: string, names: string[]): string[] {
+  return [...new Set(names)].filter((n) => n.length >= 4 && new RegExp(`(?<![\p{L}\p{N}])${escapeRe(n)}(?![\p{L}\p{N}])`, "u").test(text));
+}
+
+/** Minutos de lectura aproximados (200 palabras por minuto, mínimo 1). */
+export const readingMinutes = (text: string) => Math.max(1, Math.round(text.split(/\s+/).filter(Boolean).length / 200));

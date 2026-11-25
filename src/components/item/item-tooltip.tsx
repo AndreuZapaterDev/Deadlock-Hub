@@ -49,7 +49,7 @@ export function ItemTooltipView({ data }: { data: TooltipData }) {
       <div className="flex items-center gap-2 text-xs text-ink-muted">
         {data.category && <CategoryChip category={data.category} />}
         {data.tier && <span>Tier {data.tier}</span>}
-        <span>{data.active ? "Activo" : "Pasivo"}</span>
+        <span>{data.active ? "Activa" : "Pasivo"}</span>
       </div>
       {data.desc && <p className="text-xs leading-relaxed">{data.desc}</p>}
       {data.stats.length > 0 && (

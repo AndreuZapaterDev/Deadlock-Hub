@@ -7,6 +7,6 @@ export const BRAND = { night: "#101E1E", poster: "#173F3E", ray: "#276864", bras
 
 /** Rutas públicas fijas (sin las dinámicas: héroes, objetos y parches, que añade sitemap.ts). */
 export const STATIC_ROUTES = [
-  "/", "/heroes", "/heroes/compare", "/items", "/tier-list", "/meta", "/counters", "/builds", "/build-planner", "/map", "/ranks",
+  "/", "/heroes", "/heroes/compare", "/items", "/tier-list", "/meta", "/lanes", "/counters", "/builds", "/build-planner", "/map", "/ranks",
   "/leaderboard", "/players", "/live", "/patches", "/patches/diff", "/crosshair", "/mechanics", "/npcs", "/about", "/status",
 ] as const;
