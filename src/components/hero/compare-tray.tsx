@@ -42,7 +42,7 @@ export function useCompare() {
 }
 
 /** Casilla «Comparar» de una tarjeta de héroe (fuera del enlace de la tarjeta, para no anidar controles). */
-export function CompareToggle({ hero }: { hero: CompareHero }) {
+export function CompareToggle({ hero, compact }: { hero: CompareHero; compact?: boolean }) {
   const { has, full, toggle } = useCompare();
   const on = has(hero.slug);
   const disabled = !on && full;
@@ -53,9 +53,11 @@ export function CompareToggle({ hero }: { hero: CompareHero }) {
       disabled={disabled}
       onClick={() => toggle(hero)}
       title={disabled ? "Ya hay 3 héroes: quita uno para añadir otro" : on ? "Quitar de la comparación" : "Añadir a la comparación"}
-      className={`absolute right-5 top-5 z-20 inline-flex items-center gap-1 rounded-sm border px-2 py-1 text-[11px] font-bold uppercase tracking-wide shadow-card transition-colors disabled:cursor-not-allowed disabled:opacity-40 ${on ? "border-brass bg-brass text-night" : "border-brass/60 bg-night/80 text-cream hover:bg-night"}`}
+      className={`group/cmp absolute z-20 ${compact ? "right-3.5 top-3.5" : "right-5 top-5"} inline-flex h-8 items-center gap-1.5 rounded-full border px-2.5 text-xs font-semibold shadow-card transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass disabled:cursor-not-allowed disabled:opacity-40 ${on ? "border-brass bg-brass text-night" : "border-brass/60 bg-night/80 text-cream hover:bg-night"}`}
     >
-      <span aria-hidden>{on ? "✓" : "+"}</span> Comparar
+      <span aria-hidden className="text-sm leading-none">{on ? "✓" : "+"}</span>
+      {/* En escritorio la etiqueta solo aparece al pasar el ratón o al elegir; en táctil se ve siempre. */}
+      <span className={on ? "" : "[@media(hover:hover)]:sr-only [@media(hover:hover)]:group-hover/cmp:not-sr-only [@media(hover:hover)]:group-focus-visible/cmp:not-sr-only"}>{on ? "Elegido" : "Comparar"}</span>
     </button>
   );
 }

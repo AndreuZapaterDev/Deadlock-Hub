@@ -31,11 +31,11 @@ export function BuildCard({ build, heroId, heroName, authorName, tags, shop }: {
       {shop.length > 0 ? (
         <div className="space-y-1.5">
           <div className="flex flex-wrap gap-1">
-            {shop.slice(0, ICONS).map((it) => <ItemIcon key={it.id} item={it} size={32} />)}
-            {shop.length > ICONS && <span className="grid size-8 place-items-center rounded-md border border-brass/40 text-xs font-bold text-ink-muted">+{shop.length - ICONS}</span>}
+            {shop.slice(0, ICONS).map((it) => <span key={it.id} title={it.name} className="rounded-md"><ItemIcon item={it} size={34} /></span>)}
+            {shop.length > ICONS && <span className="grid size-[34px] place-items-center rounded-md border border-brass/40 text-xs font-bold text-ink-muted">+{shop.length - ICONS}</span>}
           </div>
           {mix.total > 0 && (
-            <span aria-hidden className="flex h-1.5 overflow-hidden rounded-full bg-ink-muted/20">
+            <span aria-hidden title="Reparto por categoría: arma, vitalidad, espíritu" className="flex h-1.5 overflow-hidden rounded-full bg-ink-muted/20">
               {(Object.keys(MIX_COLOR) as Category[]).map((c) => <span key={c} className={MIX_COLOR[c]} style={{ width: `${mix.share[c] * 100}%` }} />)}
             </span>
           )}

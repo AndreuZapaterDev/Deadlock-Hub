@@ -21,7 +21,16 @@ const ACCENTS: { tone: Tone; color: string }[] = [
   { tone: "lilac", color: "var(--lilac)" },
   { tone: "teal", color: "var(--brass)" },
 ];
-export const heroPastel = (id: number) => ACCENTS[id % ACCENTS.length];
+// Cada clase tiene su color: así se distingue de un vistazo quién es luchador, asesino, etc.
+const TYPE_ACCENT: Record<string, { tone: Tone; color: string }> = {
+  brawler: { tone: "apricot", color: "var(--apricot)" },
+  assassin: { tone: "lilac", color: "var(--lilac)" },
+  marksman: { tone: "rose", color: "var(--accent)" },
+  healer: { tone: "sage", color: "var(--sage)" },
+  mystic: { tone: "teal", color: "var(--brass)" },
+};
+/** Color del héroe según su clase; si no se conoce la clase (listas con solo id y nombre), uno estable según el id. */
+export const heroPastel = (hero: { id: number; hero_type?: string }) => (hero.hero_type && TYPE_ACCENT[hero.hero_type]) || ACCENTS[hero.id % ACCENTS.length];
 const initials = (name: string) => name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
 // Siluetas provisionales mientras no haya retratos reales: busto + una pieza que cambia con el id
@@ -47,8 +56,8 @@ function Silhouette({ id, color }: { id: number; color: string }) {
 }
 
 /** Retrato: la imagen real si hay imágenes remotas (API real) y existe; si no, el placeholder con rayos, trama de puntos y silueta. `arch` = ventana en arco. */
-export async function HeroPortrait({ hero, className = "h-40", small, arch, priority }: { hero: Pick<Hero, "id" | "name">; className?: string; small?: boolean; arch?: boolean; priority?: boolean }) {
-  const p = heroPastel(hero.id);
+export async function HeroPortrait({ hero, className = "h-40", small, arch, priority }: { hero: Pick<Hero, "id" | "name"> & { hero_type?: string }; className?: string; small?: boolean; arch?: boolean; priority?: boolean }) {
+  const p = heroPastel(hero);
   const imgs = (await getHeroImages()).get(hero.id);
   const src = small ? imgs?.small ?? imgs?.card : imgs?.card ?? imgs?.small;
   return (
@@ -74,31 +83,45 @@ export type HeroCardStat = { tier: Tier; winRate: number; pickRate: number };
  * `stat`: undefined = sin fila de meta (inicio, estilo); null = fila vacía (la lista, para que todas midan lo mismo);
  * objeto = tier, win rate y pick rate. `selectable` añade la casilla «Comparar».
  */
-export function HeroCard({ hero, href, stat, selectable, priority }: { hero: Hero; href?: string; stat?: HeroCardStat | null; selectable?: boolean; priority?: boolean }) {
-  const p = heroPastel(hero.id);
+export function HeroCard({ hero, href, stat, selectable, priority, compact }: { hero: Hero; href?: string; stat?: HeroCardStat | null; selectable?: boolean; priority?: boolean; compact?: boolean }) {
+  const p = heroPastel(hero);
+  const big = compact ? "text-sm" : "text-base";
   const body = (
-    <FeaturedCard fill>
-      <div className="px-3 pt-2"><HeroPortrait hero={hero} arch priority={priority} className="h-48" /></div>
-      <div className="ribbon relative z-10 -mx-3 mt-5 bg-accent px-8 py-2 text-center shadow-card">
-        <h3 title={hero.name} className="truncate font-display text-2xl font-black uppercase tracking-[0.05em] text-on-accent">{hero.name}</h3>
+    <FeaturedCard fill compact={compact}>
+      <div className={`relative pt-2 ${compact ? "px-1" : "px-3"}`}>
+        <HeroPortrait hero={hero} arch priority={priority} className={compact ? "h-36" : "h-48"} />
+        {/* El tier es lo primero que se busca: va sobre el retrato, a la vista incluso en listas largas. */}
+        {stat && <div className={`absolute z-10 drop-shadow-md ${compact ? "left-3 top-3" : "left-5 top-4"}`}><TierBadge tier={stat.tier} size={compact ? "sm" : "md"} /></div>}
+      </div>
+      <div className={`ribbon relative z-10 bg-accent text-center shadow-card ${compact ? "-mx-1.5 mt-3 px-6 py-1" : "-mx-3 mt-5 px-8 py-2"}`}>
+        <h3 title={hero.name} className={`truncate font-display font-black uppercase tracking-[0.05em] text-on-accent ${compact ? "text-lg" : "text-2xl"}`}>{hero.name}</h3>
       </div>
       {stat !== undefined && (
-        <div className="mt-3 flex h-9 items-center justify-center gap-3 text-xs tabular-nums text-ink-muted">
+        <div className={`grid grid-cols-[1fr_auto] items-center gap-x-3 tabular-nums ${compact ? "mt-2.5 h-10 px-2" : "mt-4 h-12 px-4"}`}>
           {stat && (
             <>
-              <TierBadge tier={stat.tier} size="sm" />
-              <span><strong className="text-sm text-ink">{fmtPct(stat.winRate)}</strong> victorias</span>
-              <span aria-hidden>·</span>
-              <span>{fmtPct(stat.pickRate)} pick</span>
+              <div>
+                <p className="flex items-baseline gap-1 text-xs text-ink-muted">
+                  <strong className={`${big} text-ink`}>{fmtPct(stat.winRate)}</strong> victorias
+                </p>
+                {/* Barra de 40 % a 60 %: la diferencia entre héroes se ve de un vistazo. */}
+                <div aria-hidden className="mt-1 h-1.5 overflow-hidden rounded-full bg-brass/20">
+                  <div className="h-full rounded-full bg-brass" style={{ width: `${Math.min(100, Math.max(4, ((stat.winRate - 40) / 20) * 100))}%` }} />
+                </div>
+              </div>
+              <p className="text-right text-xs leading-tight text-ink-muted">
+                <strong className={`block ${big} text-ink`}>{fmtPct(stat.pickRate)}</strong>
+                {compact ? "pick" : "en partidas"}
+              </p>
             </>
           )}
         </div>
       )}
-      {/* Altura fija (2 filas de etiquetas): todas las tarjetas miden lo mismo. */}
-      <div className="mt-3 flex max-h-14 min-h-14 flex-wrap content-start justify-center gap-1.5 overflow-hidden pb-1">
-        <Chip tone={p.tone}>{heroTypeLabel(hero.hero_type)}</Chip>
-        {hero.tags.map((t, i) => (
-          <span key={t} className={`inline-block rounded-sm bg-accent px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-on-accent ${i % 2 ? "rotate-[1.5deg]" : "-rotate-[1.5deg]"}`}>{t}</span>
+      {/* Altura fija: todas las tarjetas miden lo mismo. */}
+      <div className={`flex flex-wrap content-start justify-center gap-1.5 pb-1 ${compact ? "mt-2 min-h-[3.25rem] px-1" : "mt-3 min-h-[3.25rem] px-3"}`}>
+        <Chip tone={p.tone} className={compact ? "px-2 text-[11px] font-semibold" : "font-semibold"}>{heroTypeLabel(hero.hero_type)}</Chip>
+        {hero.tags.slice(0, compact ? 1 : 2).map((t) => (
+          <span key={t} className={`inline-flex items-center rounded-full border border-brass/50 py-0.5 font-medium capitalize text-ink-muted ${compact ? "px-2 text-[11px]" : "px-2.5 text-xs"}`}>{t.toLowerCase()}</span>
         ))}
       </div>
     </FeaturedCard>
@@ -107,7 +130,7 @@ export function HeroCard({ hero, href, stat, selectable, priority }: { hero: Her
   return (
     <div className="relative h-full">
       <Tilt className="h-full"><Link href={href} className="group block h-full">{body}</Link></Tilt>
-      {selectable && <CompareToggle hero={{ slug: slugify(hero.name), name: hero.name }} />}
+      {selectable && <CompareToggle compact={compact} hero={{ slug: slugify(hero.name), name: hero.name }} />}
     </div>
   );
 }

@@ -89,16 +89,16 @@ export default async function PlayersPage({ searchParams }: { searchParams: Prom
         <FollowedPlayers />
       </section>
 
-      <section aria-labelledby="formats" className="space-y-4">
-        <SectionTitle id="formats">Qué puedes escribir</SectionTitle>
-        <Card>
-          <dl className="grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
+      <Card>
+        <details>
+          <summary className="cursor-pointer font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass">Qué puedes escribir en el buscador</summary>
+          <dl className="mt-3 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
             {FORMATS.map(([k, v]) => (
               <div key={k} className="flex flex-col"><dt className="font-semibold">{k}</dt><dd className="break-all font-mono text-xs text-ink-muted">{v}</dd></div>
             ))}
           </dl>
-        </Card>
-      </section>
+        </details>
+      </Card>
     </div>
   );
 }

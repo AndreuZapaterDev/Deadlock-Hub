@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import { FilterBar } from "@/components/filters/filter-bar";
 import { catVar, ItemTile, TierPips } from "@/components/item/item-tile";
@@ -29,14 +30,19 @@ export default async function ItemsPage({ searchParams }: { searchParams: Promis
   };
   const shop = allItems.filter((i) => i.type === "upgrade" && i.shopable && i.item_slot_type && i.item_tier && i.item_tier <= 4);
 
-  const items = shop.filter(
+  const matches = shop.filter(
     (i) =>
-      (!cat || i.item_slot_type === cat) &&
       (!tier || String(i.item_tier) === tier) &&
       (!kind || (kind === "active" ? i.is_active_item : !i.is_active_item)) &&
       (!comp || (comp === "yes" ? !!i.component_items?.length : !i.component_items?.length)) &&
       (!term || i.name.toLowerCase().includes(term)),
   );
+  const items = matches.filter((i) => !cat || i.item_slot_type === cat);
+  // Pestañas de categoría: conservan el resto de filtros y muestran cuántos objetos hay en cada una con ellos.
+  const tabHref = (c: string) => {
+    const next = new URLSearchParams(Object.entries({ q, tier, kind, comp, sort, cat: c }).filter(([, v]) => v));
+    return next.size ? `/items?${next}` : "/items";
+  };
   const visibleCats = CATS.filter((c) => !cat || c === cat);
 
   return (
@@ -54,7 +60,27 @@ export default async function ItemsPage({ searchParams }: { searchParams: Promis
           ]}
         />
       </Suspense>
-      <p className="text-sm text-ink-muted" aria-live="polite">{items.length} {items.length === 1 ? "objeto" : "objetos"}</p>
+      <nav aria-label="Categoría" className="flex flex-wrap gap-2">
+        {[{ value: "", label: "Todas", n: matches.length }, ...CATS.map((c) => ({ value: c as string, label: CATEGORY[c].label, n: matches.filter((i) => i.item_slot_type === c).length }))].map((t) => {
+          const on = cat === t.value;
+          return (
+            <Link
+              key={t.value}
+              href={tabHref(t.value)}
+              replace
+              scroll={false}
+              aria-current={on ? "page" : undefined}
+              style={catVar((t.value || undefined) as Category | undefined)}
+              className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass ${on ? "border-(--c) bg-(--c) text-night" : "border-(--c)/50 hover:bg-(--c)/15"}`}
+            >
+              {t.value && <span aria-hidden className={`size-2 rotate-45 ${on ? "bg-night" : "bg-(--c)"}`} />}
+              {t.label}
+              <span className={`text-xs tabular-nums ${on ? "text-night/80" : "text-ink-muted"}`}>{t.n}</span>
+            </Link>
+          );
+        })}
+      </nav>
+      <p className="text-sm text-ink-muted" aria-live="polite"><strong className="text-ink">{items.length}</strong> {items.length === 1 ? "objeto" : "objetos"}{items.length !== shop.length && ` de ${shop.length}`}</p>
 
       {items.length === 0 ? (
         <EmptyState title="Ningún objeto coincide" hint="Prueba con otra búsqueda o quita algún filtro." />

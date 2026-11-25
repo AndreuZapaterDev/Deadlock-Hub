@@ -44,9 +44,9 @@ export default async function BuildsPage({ searchParams }: { searchParams: Promi
       </Suspense>
       {tags.length > 0 && (
         <nav aria-label="Etiquetas" className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-semibold uppercase tracking-wide text-ink-muted">Etiquetas</span>
+          <span className="text-sm font-semibold text-ink-muted">Etiquetas:</span>
           {tags.slice(0, 12).map((t) => (
-            <Link key={t.id} href={href(1, { tag: q.tag === t.id ? undefined : String(t.id) })} aria-current={q.tag === t.id ? "true" : undefined} className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${q.tag === t.id ? "border-brass bg-ink text-bg" : "border-brass/50 hover:bg-brass/15"}`}>{t.label}</Link>
+            <Link key={t.id} href={href(1, { tag: q.tag === t.id ? undefined : String(t.id) })} aria-current={q.tag === t.id ? "true" : undefined} className={`rounded-full border px-3 py-1 text-xs font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass ${q.tag === t.id ? "border-brass bg-ink text-bg" : "border-brass/50 hover:bg-brass/15"}`}>{t.label}</Link>
           ))}
         </nav>
       )}
@@ -64,8 +64,8 @@ export default async function BuildsPage({ searchParams }: { searchParams: Promi
       ) : (
         <>
           <p className="text-sm text-ink-muted" aria-live="polite">
-            Página {q.page}
-            {" · "}{q.sort === "updated" ? "más recientes primero" : q.sort === "weekly" ? "más favoritas esta semana primero" : "más populares primero"}
+            <strong className="text-ink">{q.sort === "updated" ? "Más recientes primero" : q.sort === "weekly" ? "Más favoritas esta semana primero" : "Más populares primero"}</strong>
+            {" · "}página {q.page}
           </p>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {res.data.items.map((b) => (

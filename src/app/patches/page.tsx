@@ -36,6 +36,10 @@ export default async function PatchesPage({ searchParams }: { searchParams: Prom
   const groups = groupByMonth(shown.map((e) => ({ ...e, title: e.p.title, date: e.p.date })));
   const bigCount = enriched.filter((e) => e.big).length;
   const latest = enriched[0];
+  const tab = (extra: Partial<Sp>) => {
+    const next = new URLSearchParams(Object.entries({ ...sp, ...extra }).filter((e): e is [string, string] => !!e[1]));
+    return `/patches${next.size ? `?${next}` : ""}`;
+  };
 
   return (
     <div className="space-y-8">
@@ -54,9 +58,24 @@ export default async function PatchesPage({ searchParams }: { searchParams: Prom
       </div>
 
       {res.ok && (
-        <p className="text-sm text-ink-muted" aria-live="polite">
-          {shown.length} de {all.length} parches · {bigCount} grandes actualizaciones{latest && <> · el último, el {longDate(latest.day)}</>}
-        </p>
+        <>
+          {/* Accesos rápidos a los filtros más usados, con cuántos parches hay en cada uno. */}
+          <nav aria-label="Atajos de filtro" className="flex flex-wrap gap-2">
+            {[
+              { label: "Todos", n: all.length, on: !sp.source && sp.big !== "1", href: tab({ source: undefined, big: undefined }) },
+              { label: "Grandes actualizaciones", n: bigCount, on: sp.big === "1", href: tab({ source: undefined, big: "1" }) },
+              { label: "Foro", n: enriched.filter((e) => e.p.source === "forum").length, on: sp.source === "forum" && sp.big !== "1", href: tab({ source: "forum", big: undefined }) },
+              { label: "Steam", n: enriched.filter((e) => e.p.source === "steam").length, on: sp.source === "steam" && sp.big !== "1", href: tab({ source: "steam", big: undefined }) },
+            ].map((t) => (
+              <Link key={t.label} href={t.href} replace scroll={false} aria-current={t.on ? "page" : undefined} className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass ${t.on ? "border-brass bg-ink text-bg" : "border-brass/50 hover:bg-brass/15"}`}>
+                {t.label}<span className={`text-xs tabular-nums ${t.on ? "text-bg/80" : "text-ink-muted"}`}>{t.n}</span>
+              </Link>
+            ))}
+          </nav>
+          <p className="text-sm text-ink-muted" aria-live="polite">
+            <strong className="text-ink">{shown.length}</strong> de {all.length} parches{latest && <> · el último, el {longDate(latest.day)}</>}
+          </p>
+        </>
       )}
 
       {!res.ok ? (

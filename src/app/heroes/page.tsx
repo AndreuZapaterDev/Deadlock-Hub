@@ -99,13 +99,16 @@ export default async function HeroesPage({ searchParams }: { searchParams: Promi
           ]}
         />
       </Suspense>
-      <p className="text-sm text-ink-muted" aria-live="polite">
-        {heroes.length} {heroes.length === 1 ? "héroe" : "héroes"}
-        {" · "}
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm text-ink-muted">
+        <p aria-live="polite" className="flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span><strong className="text-ink">{heroes.length}</strong> {heroes.length === 1 ? "héroe" : "héroes"}{heroes.length !== all.length && ` de ${all.length}`}</span>
+        </p>
         {/* Ruta que redirige (route handler): navegación completa, no del router de cliente. */}
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-        <a href="/heroes/random" className="link-brass">Héroe aleatorio 🎲</a>
-        {meta.ok ? <> · tier calculado con el win rate ajustado de <Link href="/tier-list" className="link-brass">la tier list</Link></> : " · las estadísticas de meta no están disponibles ahora mismo"}
+        <a href="/heroes/random" className="inline-flex items-center gap-1.5 rounded-full border border-brass/60 px-3 py-1 font-semibold text-ink hover:bg-brass/15">🎲 Héroe aleatorio</a>
+      </div>
+      <p className="-mt-3 text-xs text-ink-muted">
+        {meta.ok ? <>Tier calculado con el win rate ajustado de <Link href="/tier-list" className="link-brass">la tier list</Link>.</> : "Las estadísticas de meta no están disponibles ahora mismo."}
       </p>
 
       {heroes.length === 0 ? (
@@ -134,18 +137,18 @@ export default async function HeroesPage({ searchParams }: { searchParams: Promi
             return (
               <section key={t} aria-label={`Tier ${t}`} className="flex gap-4">
                 <TierBadge tier={t} size="lg" />
-                <div className="grid min-w-0 flex-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {group.map((h) => <HeroCard key={h.id} hero={h} href={`/heroes/${slugify(h.name)}`} stat={statOf(h)} selectable />)}
+                <div className="grid min-w-0 flex-1 grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  {group.map((h) => <HeroCard key={h.id} hero={h} href={`/heroes/${slugify(h.name)}`} stat={statOf(h)} selectable compact />)}
                 </div>
               </section>
             );
           })}
         </div>
       ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
           {heroes.map((h, i) => (
             <Reveal key={h.id} delay={(i % 3) * 0.08} className="h-full">
-              <HeroCard hero={h} href={`/heroes/${slugify(h.name)}`} stat={statOf(h)} selectable priority={i < 6} />
+              <HeroCard hero={h} href={`/heroes/${slugify(h.name)}`} stat={statOf(h)} selectable compact priority={i < 10} />
             </Reveal>
           ))}
         </div>

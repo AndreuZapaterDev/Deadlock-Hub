@@ -37,8 +37,8 @@ function Row({ m, now, heroes }: { m: LiveMatch; now: number; heroes: Record<num
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <Link href={`/matches/${m.id}`} className="font-semibold tabular-nums hover:text-brass">#{m.id}</Link>
         <Chip tone={m.mode === "Ranked" ? "apricot" : "neutral"}>{m.mode}</Chip>
-        <span className="text-sm tabular-nums text-ink-muted">{fmtDuration(Math.max(0, now - m.startTime))}</span>
-        <span className="text-sm text-ink-muted">· {fmtNum(m.spectators)} {m.spectators === 1 ? "espectador" : "espectadores"}</span>
+        <span className="text-sm font-semibold tabular-nums">{fmtDuration(Math.max(0, now - m.startTime))}</span>
+        <span className="text-sm text-ink-muted"><span aria-hidden>👁 </span><strong className="tabular-nums text-ink">{fmtNum(m.spectators)}</strong> {m.spectators === 1 ? "espectador" : "espectadores"}</span>
         {m.broadcast && (
           <a href={m.broadcast} target="_blank" rel="noopener noreferrer" className="ml-auto text-sm font-semibold text-teal-ink underline-offset-2 hover:underline">Retransmisión ↗</a>
         )}
@@ -50,7 +50,7 @@ function Row({ m, now, heroes }: { m: LiveMatch; now: number; heroes: Record<num
       </div>
       <div className="mt-2.5" role="img" aria-label={`Almas: equipo A ${fmtNum(a)}, equipo B ${fmtNum(b)}`}>
         <div className="flex h-1.5 overflow-hidden rounded-full bg-rose/70"><div className="bg-sage" style={{ width: `${share}%` }} /></div>
-        <div className="mt-1 flex justify-between text-[11px] tabular-nums text-ink-muted"><span>{fmtNum(a)}</span><span>{fmtNum(b)}</span></div>
+        <div className="mt-1 flex justify-between text-[11px] tabular-nums text-ink-muted"><span>Equipo A · {fmtNum(a)}</span>{total > 0 && <span className="font-semibold text-ink">{a === b ? "Igualadas" : `Ventaja del equipo ${a > b ? "A" : "B"}: ${fmtNum(Math.abs(a - b))} almas`}</span>}<span>{fmtNum(b)} · Equipo B</span></div>
       </div>
     </li>
   );
@@ -98,8 +98,10 @@ export function LiveList({ initial }: { initial: Extract<LiveData, { ok: true }>
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
-        <p className="text-sm text-ink-muted" aria-live="polite">
-          <span className="font-semibold text-ink tabular-nums">{fmtNum(data.matches.length)}</span> partidas en curso · se actualiza cada minuto
+        <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink-muted" aria-live="polite">
+          <span className="inline-flex items-center gap-2 font-semibold text-ink"><span aria-hidden className="relative flex size-2.5"><span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:animate-none" /><span className="relative inline-flex size-2.5 rounded-full bg-accent" /></span><span className="tabular-nums">{fmtNum(data.matches.length)}</span> partidas en curso</span>
+          <span><strong className="tabular-nums text-ink">{fmtNum(data.matches.reduce((n, m) => n + m.spectators, 0))}</strong> espectadores en total</span>
+          <span>se actualiza cada minuto</span>
           {stale && <span className="ml-2 rounded-sm bg-apricot/25 px-2 py-0.5 text-xs font-semibold text-apricot-ink">Sin conexión: datos de hace un momento</span>}
         </p>
         <label className="ml-auto flex items-center gap-2 text-xs font-semibold text-ink-muted">

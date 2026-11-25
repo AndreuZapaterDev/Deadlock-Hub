@@ -28,7 +28,9 @@ export default async function TierListPage({ searchParams }: { searchParams: Pro
   // La tendencia semanal no admite filtros (es del meta global), así que solo se pide sin ellos
   const [meta, heroes, ranks, bigDays, weekly] = await Promise.all([loadHeroMeta(filters), getHeroes(), getRanks(), loadBigDays(), hasFilters(filters) ? null : loadHeroStatsWeekly()]);
   const trend = (id: number) => (weekly?.ok ? recentDelta(weeklySeries(weekly.data, id)) : null);
-  const trendText = (d: number | null) => (d === null || Math.abs(d) < 0.1 ? "" : ` · ${d > 0 ? "▲ +" : "▼ −"}${fmtDec(Math.abs(d))}`);
+  const types = new Map(heroes.map((h) => [h.id, h.hero_type]));
+  // Color de cada fila: el mismo que el anillo de la insignia de tier.
+  const TIER_BAND: Record<string, string> = { S: "border-l-brass", A: "border-l-sage", B: "border-l-teal", C: "border-l-apricot", D: "border-l-rose" };
   const names = new Map(heroes.map((h) => [h.id, h.name]));
   const tierName = (t: number) => ranks.find((r) => r.tier === t)?.name ?? `Rango ${t}`;
 
@@ -80,13 +82,18 @@ export default async function TierListPage({ searchParams }: { searchParams: Pro
               {view === "tiers" ? (
                 <div className="space-y-3">
                   {TIERS.map((t) => {
-                    const list = ranked.filter((r) => r.tier === t);
+                    const list = ranked.filter((r) => r.tier === t).sort((a, b) => b.adjusted - a.adjusted);
+                    if (!list.length) return null;
+                    const avg = list.reduce((sum, r) => sum + r.winRate, 0) / list.length;
                     return (
-                      <section key={t} aria-label={`Tier ${t}`} className="flex flex-col gap-3 rounded-md border border-brass/30 bg-surface p-3 shadow-card sm:flex-row sm:items-center">
-                        <div className="flex shrink-0 items-center gap-3 sm:w-28"><TierBadge tier={t} size="lg" /><span className="text-xs text-ink-muted sm:hidden">{list.length} héroes</span></div>
-                        <ul className="grid flex-1 gap-2 sm:grid-cols-2 lg:grid-cols-4">
+                      <section key={t} aria-label={`Tier ${t}`} className={`flex flex-col gap-3 rounded-md border border-l-8 border-brass/30 bg-surface p-3 shadow-card sm:flex-row sm:items-center ${TIER_BAND[t]}`}>
+                        <div className="flex shrink-0 items-center gap-3 sm:w-32 sm:flex-col sm:items-start sm:gap-1.5">
+                          <TierBadge tier={t} size="lg" />
+                          <span className="text-xs leading-snug text-ink-muted"><strong className="text-ink">{list.length}</strong> {list.length === 1 ? "héroe" : "héroes"}<br />win rate medio <strong className="tabular-nums text-ink">{fmtPct(avg)}</strong></span>
+                        </div>
+                        <ul className="grid flex-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                           {list.map((r) => (
-                            <li key={r.id}><HeroChip id={r.id} name={names.get(r.id)!} note={`${fmtPct(r.winRate)} · ${fmtPct(r.pickRate)} pick${trendText(trend(r.id))}`} tone={r.winRate >= 0.5 ? "good" : "bad"} /></li>
+                            <li key={r.id}><HeroChip id={r.id} name={names.get(r.id)!} heroType={types.get(r.id)} note={`${fmtPct(r.winRate)} · ${fmtPct(r.pickRate)} pick`} trend={trend(r.id)} tone={r.winRate >= 0.5 ? "good" : "bad"} /></li>
                           ))}
                         </ul>
                       </section>

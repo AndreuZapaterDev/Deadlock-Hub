@@ -350,8 +350,8 @@ export default async function MetaPage({ searchParams }: { searchParams: Promise
       </Suspense>
       {hasFilters(filters) && <p className="text-sm text-ink-muted">Filtros activos: {describeFilters(filters, tierName).join(" · ")}</p>}
 
-      <nav aria-label="Secciones" className="flex flex-wrap justify-center gap-2">
-        {SECTIONS.map(([id, label]) => <a key={id} href={`#${id}`} className="rounded-full border border-brass/50 px-4 py-1.5 text-sm font-semibold transition-colors hover:bg-ink hover:text-bg">{label}</a>)}
+      <nav aria-label="Secciones" className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 lg:flex-wrap lg:justify-center">
+        {SECTIONS.map(([id, label]) => <a key={id} href={`#${id}`} className="shrink-0 rounded-full border border-brass/50 px-4 py-1.5 text-sm font-semibold transition-colors hover:bg-ink hover:text-bg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass">{label}</a>)}
       </nav>
 
       {sections.map((s, n) => (

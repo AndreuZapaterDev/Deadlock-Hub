@@ -460,9 +460,13 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
               ))}
             </ul>
             {(["Estructuras", "Movilidad", "Botín"] as const).map((g) => (
-              <div key={g} className="mt-3">
-                <h4 className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{g}</h4>
-                <ul className="mt-1 space-y-1 text-sm">
+              <details key={g} open={g === "Estructuras"} className="group/layers mt-3 border-t border-brass/20 pt-2">
+                <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-semibold text-ink-muted hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass">
+                  <span aria-hidden className="text-xs transition-transform group-open/layers:rotate-90">▶</span>
+                  {g}
+                  <span className="ml-auto text-xs font-normal tabular-nums">{ENTITY_KINDS.filter((e) => e.group === g && on(e.key)).length}/{ENTITY_KINDS.filter((e) => e.group === g && (byKind.get(e.key)?.length ?? 0) > 0).length}</span>
+                </summary>
+                <ul className="mt-1.5 space-y-1 text-sm">
                   {ENTITY_KINDS.filter((e) => e.group === g && (byKind.get(e.key)?.length ?? 0) > 0).map((e) => (
                     <li key={e.key}>
                       <label className="flex cursor-pointer items-center gap-2 py-0.5">
@@ -474,7 +478,7 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
                     </li>
                   ))}
                 </ul>
-              </div>
+              </details>
             ))}
           </section>
         </aside>

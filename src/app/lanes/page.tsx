@@ -5,6 +5,7 @@ import { FilterBar } from "@/components/filters/filter-bar";
 import { HeroChip } from "@/components/hero/hero-chip";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
+import { RateMeter } from "@/components/ui/rate-meter";
 import { ErrorState } from "@/components/ui/feedback";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { SectionTitle } from "@/components/ui/section-title";
@@ -31,6 +32,7 @@ export default async function LanesPage({ searchParams }: { searchParams: Promis
   const focus = sp.h ? heroBySlug.get(sp.h) : undefined;
   const name = new Map(heroes.map((h) => [h.id, h.name]));
   const tierName = (t: number) => ranks.find((r) => r.tier === t)?.name ?? `Rango ${t}`;
+  const types = new Map(heroes.map((h) => [h.id, h.hero_type]));
   const duoName = (ids: number[]) => ids.map((i) => name.get(i) ?? `#${i}`).join(" + ");
 
   const [duoData, duelData] = await Promise.all([loadLaneDuos(filters, focus?.id), loadLaneDuels(filters, focus?.id)]);
@@ -41,17 +43,17 @@ export default async function LanesPage({ searchParams }: { searchParams: Promis
   const worst = rankDuos(duos, "weak", TOP);
   const lopsided = lopsidedDuels(duels, 8);
 
+  const chips = (ids: number[]) => ids.map((id) => <HeroChip key={id} id={id} name={name.get(id)!} heroType={types.get(id)} />);
   const duoRow = (d: DuoStat, rank: number) => (
-    <li key={d.ids.join("-")} className="space-y-1.5 rounded-md border border-brass/30 bg-surface p-2 shadow-card">
-      <div className="flex items-center gap-2">
-        <span className="w-6 shrink-0 text-center font-display text-sm font-black text-ink-muted">{rank}</span>
-        <div className="grid min-w-0 flex-1 gap-1.5 sm:grid-cols-2">
-          {d.ids.map((id) => <HeroChip key={id} id={id} name={name.get(id)!} />)}
-        </div>
+    <li key={d.ids.join("-")} className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-md border border-brass/30 bg-surface p-2 shadow-card">
+      <span className="w-6 shrink-0 text-center font-display text-base font-black text-ink-muted">{rank}</span>
+      <div className="grid min-w-0 flex-1 basis-56 gap-1.5 sm:grid-cols-2">{chips(d.ids)}</div>
+      {/* Resultado a la derecha: el win rate se lee primero y la barra permite comparar filas de un vistazo. */}
+      <div className="w-full shrink-0 pl-9 sm:w-36 sm:pl-0 sm:text-right">
+        <p className={`text-lg font-black leading-none tabular-nums ${d.adjusted >= 0.5 ? "text-sage-ink" : "text-rose-ink"}`}>{fmtPct(d.rate)}</p>
+        <RateMeter rate={d.rate} className="my-1.5" />
+        <p className="text-xs tabular-nums text-ink-muted">{fmtNum(d.matches)} carriles · {soulsLabel(d.soulDiff)}</p>
       </div>
-      <p className={`pl-8 text-xs tabular-nums ${d.adjusted >= 0.5 ? "text-sage-ink" : "text-rose-ink"}`}>
-        <strong>{fmtPct(d.rate)}</strong> win rate · {fmtNum(d.matches)} carriles · {soulsLabel(d.soulDiff)} a los 15 min
-      </p>
     </li>
   );
 
@@ -74,12 +76,14 @@ export default async function LanesPage({ searchParams }: { searchParams: Promis
       ) : (
         <>
           <div className="grid gap-8 lg:grid-cols-2">
-            <section aria-labelledby="best" className="space-y-3">
+            <section aria-labelledby="best" className="space-y-3 rounded-xl border border-sage/30 border-t-4 border-t-sage bg-panel/60 p-3 sm:p-4">
               <SectionTitle id="best">Parejas más fuertes</SectionTitle>
+              <p className="text-sm text-ink-muted">Las que más ganan cuando juegan juntas en el carril.</p>
               <ol className="space-y-2">{best.map((d, i) => duoRow(d, i + 1))}</ol>
             </section>
-            <section aria-labelledby="worst" className="space-y-3">
+            <section aria-labelledby="worst" className="space-y-3 rounded-xl border border-rose/30 border-t-4 border-t-rose bg-panel/60 p-3 sm:p-4">
               <SectionTitle id="worst">Parejas más débiles</SectionTitle>
+              <p className="text-sm text-ink-muted">Las que más pierden: mejor evitarlas.</p>
               <ol className="space-y-2">{worst.map((d, i) => duoRow(d, i + 1))}</ol>
             </section>
           </div>
@@ -91,10 +95,11 @@ export default async function LanesPage({ searchParams }: { searchParams: Promis
               <ul className="grid gap-2 md:grid-cols-2">
                 {lopsided.map((d) => (
                   <li key={`${d.winner}-${d.loser}`}>
-                    <Card className="space-y-1 py-3 text-sm">
-                      <p><strong className="text-sage-ink">{duoName(d.winner)}</strong></p>
-                      <p className="text-ink-muted">gana a <strong className="text-rose-ink">{duoName(d.loser)}</strong></p>
-                      <p className="text-xs tabular-nums text-ink-muted"><strong className="text-ink">{fmtPct(d.rate)}</strong> win rate · {fmtNum(d.matches)} carriles · {soulsLabel(d.soulDiff)} a los 15 min</p>
+                    <Card className="space-y-2 py-3 text-sm">
+                      <div className="grid gap-1.5 sm:grid-cols-2">{chips(d.winner)}</div>
+                      <p className="text-center text-xs font-semibold text-ink-muted"><span aria-hidden className="text-sage-ink">▲ </span>gana a<span className="sr-only"> el dúo</span><span aria-hidden className="text-rose-ink"> ▼</span></p>
+                      <div className="grid gap-1.5 opacity-80 sm:grid-cols-2">{chips(d.loser)}</div>
+                      <p className="border-t border-brass/20 pt-2 text-xs tabular-nums text-ink-muted"><strong className="text-base text-sage-ink">{fmtPct(d.rate)}</strong> win rate · {fmtNum(d.matches)} carriles · {soulsLabel(d.soulDiff)} a los 15 min</p>
                     </Card>
                   </li>
                 ))}

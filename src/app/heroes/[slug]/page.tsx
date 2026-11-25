@@ -63,7 +63,7 @@ export default async function HeroPage({ params }: { params: Promise<{ slug: str
   const sorted = [...all].sort((a, b) => a.name.localeCompare(b.name));
   const i = sorted.findIndex((h) => h.id === hero.id);
   const [prev, next] = [sorted[(i - 1 + sorted.length) % sorted.length], sorted[(i + 1) % sorted.length]];
-  const tone = heroPastel(hero.id).tone;
+  const tone = heroPastel(hero).tone;
   const accent = heroAccent(hero);
 
   // ---------- Posición frente a los demás héroes ----------
