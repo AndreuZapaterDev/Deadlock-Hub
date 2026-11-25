@@ -5,6 +5,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { BuildCard } from "@/components/builds/build-card";
 import { CAT_COLOR, catVar, ItemIcon, TierPips } from "@/components/item/item-tile";
 import { CopyButton } from "@/components/tools/copy-button";
+import { FavoriteButton, ShareButton } from "@/components/ui/favorites";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
@@ -83,6 +84,8 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
           {(h.tags ?? []).map((t) => tagLabel.get(t)).filter((t): t is string => !!t).map((t) => <Chip key={t}>{t}</Chip>)}
         </div>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+          <FavoriteButton kind="build" id={`${hid}-${bid}`} name={h.name} href={`/builds/${hid}/${bid}`} />
+          <ShareButton title={h.name} />
           {shopItems.length > 0 && <Button href={plannerHref} variant="secondary">{t("openPlanner")}</Button>}
           <Button href={`/heroes/${slugify(heroName)}`} variant="ghost"><span className="text-cream">{t("viewHero", { hero: heroName })}</span></Button>
         </div>

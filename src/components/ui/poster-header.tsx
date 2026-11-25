@@ -14,7 +14,7 @@ import { SpinEmblem } from "@/components/motion/spin-emblem";
 export function PosterHeader({ title, subtitle, color = "var(--poster-ray)", compact, children }: { title: string; subtitle?: string; color?: string; compact?: boolean; children?: React.ReactNode }) {
   return (
     <header className="cv-auto stepped bg-brass p-px shadow-card [--cv-h:340px]">
-      <div className={`poster-surface stepped relative isolate overflow-hidden bg-poster px-6 text-center text-cream ${compact ? "pb-5 pt-5" : "pb-8 pt-4"}`}>
+      <div className={`poster-surface stepped relative isolate overflow-hidden bg-poster px-6 text-center text-cream ${compact ? "pb-3 pt-3 sm:pb-5 sm:pt-5" : "pb-8 pt-4"}`}>
         <Sunburst animate color={color} strength={1} className="rays-drift" />
         {/* trama de puntos que se desvanece hacia arriba */}
         <div aria-hidden className="halftone absolute inset-0 opacity-40 [mask-image:linear-gradient(to_top,black,transparent_75%)]" />
@@ -43,10 +43,10 @@ export function PosterHeader({ title, subtitle, color = "var(--poster-ray)", com
             })}
           </h1>
           {subtitle && <p className={`mx-auto max-w-xl font-serif italic text-cream-muted ${compact ? "mt-1 text-base sm:text-lg" : "mt-3 text-lg sm:text-xl"}`}>{subtitle}</p>}
-          <Divider className={`mx-auto max-w-xs ${compact ? "mt-3" : "mt-5"}`} />
+          <Divider className={`mx-auto max-w-xs ${compact ? "mt-3 max-sm:hidden" : "mt-5"}`} />
           {children && <div className="mt-5">{children}</div>}
         </div>
-        <div className={`bulbs relative mx-auto max-w-[calc(100%-2rem)] ${compact ? "mt-4" : "mt-8"}`} aria-hidden />
+        <div className={`bulbs relative mx-auto max-w-[calc(100%-2rem)] ${compact ? "mt-3 max-sm:hidden sm:mt-4" : "mt-8"}`} aria-hidden />
       </div>
     </header>
   );

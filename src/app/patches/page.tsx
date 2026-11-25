@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { FilterBar } from "@/components/filters/filter-bar";
 import { HeroPortrait } from "@/components/hero/hero-card";
+import { MarkPatchSeen } from "@/components/patch/new-patch";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
 import { EmptyState, ErrorState } from "@/components/ui/feedback";
@@ -49,6 +50,7 @@ export default async function PatchesPage({ searchParams }: { searchParams: Prom
   return (
     <div className="space-y-8">
       <PosterHeader compact title={t("title")} subtitle={t("subtitle")} />
+      {latest && <MarkPatchSeen id={latest.p.id} />}
       <div className="flex flex-wrap items-end gap-3">
         <Suspense>
           <FilterBar

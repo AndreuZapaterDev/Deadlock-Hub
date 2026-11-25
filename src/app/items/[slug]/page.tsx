@@ -16,6 +16,7 @@ import { loadItemStats } from "@/lib/meta-data";
 import { itemSections, plainStats } from "@/lib/item-sections";
 import { sectionLabel } from "@/lib/labels";
 import { getItemIndex, getItems } from "@/lib/lookup";
+import { FavoriteButton, ShareButton } from "@/components/ui/favorites";
 import type { Item } from "@/lib/types";
 
 export const revalidate = 1800; // la ficha incluye estadísticas de uso (30 min)
@@ -100,6 +101,10 @@ export default async function ItemPage({ params }: { params: Promise<{ slug: str
           <Chip>{item.is_active_item ? t("active") : t("passive")}</Chip>
           {item.cost !== undefined && <Chip tone={cat ? CATEGORY[cat].tone : "neutral"}>{t("souls", { count: fmtNum(item.cost) })}</Chip>}
           {!item.shopable && <Chip tone="rose">{t("notInShop")}</Chip>}
+        </div>
+        <div className="mt-4 flex flex-wrap justify-center gap-3">
+          <FavoriteButton kind="item" id={item.class_name} name={item.name} href={`/items/${item.class_name}`} />
+          <ShareButton title={item.name} />
         </div>
       </PosterHeader>
 

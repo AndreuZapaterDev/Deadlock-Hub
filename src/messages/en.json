@@ -10,11 +10,24 @@
     "map": "Map",
     "players": "Players",
     "live": "Live",
-    "patches": "Patches"
+    "patches": "Patches",
+    "home": "Home",
+    "more": "More",
+    "menu": "Menu",
+    "close": "Close",
+    "groupWiki": "Wiki",
+    "groupMeta": "Meta & stats",
+    "groupPlay": "Players & matches",
+    "groupTools": "Tools",
+    "settings": "Settings",
+    "bar": "Quick navigation",
+    "skip": "Skip to content",
+    "compareHeroes": "Compare heroes"
   },
   "search": {
     "label": "Search player",
-    "placeholder": "Name, Steam ID or URL"
+    "placeholder": "Name, Steam ID or URL",
+    "open": "Open search"
   },
   "theme": {
     "day": "Day",
@@ -57,7 +70,9 @@
     "rankOf": "No. {rank} of {of} ·",
     "rankTitle": "Rank {rank} of {of} heroes",
     "onAverage": "on average",
-    "vsAverage": "{sign}{delta}% vs average"
+    "vsAverage": "{sign}{delta}% vs average",
+    "filters": "Filters",
+    "updating": "Updating…"
   },
   "home": {
     "subtitle": "Everything about Deadlock in one place: heroes, items, stats and your profile",
@@ -77,7 +92,10 @@
     "tierListText": "Who wins the most right now, by rank and patch.",
     "plannerText": "Put your build together and work out its soul cost.",
     "followedTitle": "Your players",
-    "followedLabel": "Followed players"
+    "followedLabel": "Followed players",
+    "latestPatch": "Latest patch",
+    "readPatch": "Read the notes →",
+    "newBadge": "New"
   },
   "notFound": {
     "subtitle": "This street leads nowhere",
@@ -748,7 +766,11 @@
     "fx_abilityDuration": "ability duration",
     "fx_cdr": "cooldown reduction",
     "fx_spiritLifesteal": "lifesteal (spirit)",
-    "fx_debuffResist": "debuff resist."
+    "fx_debuffResist": "debuff resist.",
+    "export": "Export JSON",
+    "import": "Import JSON",
+    "importOk": "{count, plural, one {Imported # build} other {Imported # builds}}",
+    "importError": "Could not import: the file is not a valid builds backup."
   },
   "leaderboard": {
     "title": "Leaderboard",
@@ -1390,5 +1412,27 @@
     "chipSince": "Since {date}",
     "chipHeroFallback": "Hero #{id}",
     "chipRankFallback": "Rank {tier}"
+  },
+  "palette": {
+    "open": "Quick search (Ctrl K)",
+    "title": "Quick search",
+    "placeholder": "Search a hero, item, section or player…",
+    "hero": "Hero",
+    "item": "Item",
+    "page": "Section",
+    "player": "Search as player",
+    "none": "No results",
+    "hintKeys": "↑↓ choose · Enter open · Esc close"
+  },
+  "fav": {
+    "add": "Favorite",
+    "remove": "Favorited",
+    "share": "Share",
+    "copied": "Link copied ✓",
+    "title": "Your favorites",
+    "heroes": "Heroes",
+    "items": "Items",
+    "builds": "Builds",
+    "removeNamed": "Remove {name} from favorites"
   }
 }

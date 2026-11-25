@@ -10,11 +10,24 @@
     "map": "Карта",
     "players": "Игроки",
     "live": "В эфире",
-    "patches": "Патчи"
+    "patches": "Патчи",
+    "home": "Главная",
+    "more": "Ещё",
+    "menu": "Меню",
+    "close": "Закрыть",
+    "groupWiki": "Вики",
+    "groupMeta": "Мета и статистика",
+    "groupPlay": "Игроки и матчи",
+    "groupTools": "Инструменты",
+    "settings": "Настройки",
+    "bar": "Быстрая навигация",
+    "skip": "Перейти к содержимому",
+    "compareHeroes": "Сравнить героев"
   },
   "search": {
     "label": "Поиск игрока",
-    "placeholder": "Имя, Steam ID или ссылка"
+    "placeholder": "Имя, Steam ID или ссылка",
+    "open": "Открыть поиск"
   },
   "theme": {
     "day": "День",
@@ -57,7 +70,9 @@
     "rankOf": "№ {rank} из {of} ·",
     "rankTitle": "Место {rank} из {of} героев",
     "onAverage": "на уровне среднего",
-    "vsAverage": "{sign}{delta} % к среднему"
+    "vsAverage": "{sign}{delta} % к среднему",
+    "filters": "Фильтры",
+    "updating": "Обновление…"
   },
   "home": {
     "subtitle": "Всё о Deadlock в одном месте: герои, предметы, статистика и ваш профиль",
@@ -77,7 +92,10 @@
     "tierListText": "Кто побеждает чаще всего сейчас — по рангу и патчу.",
     "plannerText": "Соберите билд и рассчитайте его стоимость в душах.",
     "followedTitle": "Ваши игроки",
-    "followedLabel": "Отслеживаемые игроки"
+    "followedLabel": "Отслеживаемые игроки",
+    "latestPatch": "Последний патч",
+    "readPatch": "Читать заметки →",
+    "newBadge": "Новое"
   },
   "notFound": {
     "subtitle": "Эта улица никуда не ведёт",
@@ -748,7 +766,11 @@
     "fx_abilityDuration": "длительность способностей",
     "fx_cdr": "сокращение перезарядки",
     "fx_spiritLifesteal": "вампиризм (дух)",
-    "fx_debuffResist": "сопр. ослаблениям"
+    "fx_debuffResist": "сопр. ослаблениям",
+    "export": "Экспорт в JSON",
+    "import": "Импорт из JSON",
+    "importOk": "{count, plural, one {Импортирована # сборка} few {Импортировано # сборки} other {Импортировано # сборок}}",
+    "importError": "Не удалось импортировать: файл не является корректной копией сборок."
   },
   "leaderboard": {
     "title": "Таблица лидеров",
@@ -1390,5 +1412,27 @@
     "chipSince": "С {date}",
     "chipHeroFallback": "Герой #{id}",
     "chipRankFallback": "Ранг {tier}"
+  },
+  "palette": {
+    "open": "Быстрый поиск (Ctrl K)",
+    "title": "Быстрый поиск",
+    "placeholder": "Герой, предмет, раздел или игрок…",
+    "hero": "Герой",
+    "item": "Предмет",
+    "page": "Раздел",
+    "player": "Искать как игрока",
+    "none": "Ничего не найдено",
+    "hintKeys": "↑↓ выбрать · Enter открыть · Esc закрыть"
+  },
+  "fav": {
+    "add": "В избранное",
+    "remove": "В избранном",
+    "share": "Поделиться",
+    "copied": "Ссылка скопирована ✓",
+    "title": "Ваше избранное",
+    "heroes": "Герои",
+    "items": "Предметы",
+    "builds": "Сборки",
+    "removeNamed": "Убрать {name} из избранного"
   }
 }

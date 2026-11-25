@@ -3,13 +3,18 @@ import { getTranslations } from "next-intl/server";
 import { Sigil } from "@/components/deco";
 import { HeroCard } from "@/components/hero/hero-card";
 import { FollowedStrip } from "@/components/player/follows";
+import { FavoritesStrip } from "@/components/ui/favorites";
 import { Button } from "@/components/ui/button";
 import { CountUp } from "@/components/motion/count-up";
 import { Reveal } from "@/components/motion/reveal";
+import { NewPatchBadge } from "@/components/patch/new-patch";
 import { PosterHeader } from "@/components/ui/poster-header";
+import { SearchBox } from "@/components/ui/search-box";
 import { SectionTitle } from "@/components/ui/section-title";
 import { getSource } from "@/lib/api";
 import { fmtPct } from "@/lib/format";
+import { loadPatches } from "@/lib/patch-data";
+import { effectiveDate, excerpt } from "@/lib/patches";
 import { slugify } from "@/lib/slug";
 import { byId, getHeroes } from "@/lib/lookup";
 import type { HeroStat } from "@/lib/types";
@@ -28,12 +33,14 @@ const TILES = [
 export default async function Home() {
   const t = await getTranslations();
   const api = getSource();
-  const [heroes, stats, game, live] = await Promise.all([
+  const [heroes, stats, game, live, patches] = await Promise.all([
     getHeroes(),
     api.get<HeroStat[]>("/v1/analytics/hero-stats").then((r) => r.data),
     api.get<GameStats[]>("/v1/analytics/game-stats").then((r) => r.data[0]),
     api.get<{ match_id: number; spectators: number }[]>("/v1/matches/active").then((r) => r.data),
+    loadPatches(),
   ]);
+  const latest = patches.ok ? patches.data[0] : undefined;
   const heroById = byId(heroes);
   const top = stats
     .filter((s) => s.matches > 0 && heroById.has(s.hero_id))
@@ -51,6 +58,7 @@ export default async function Home() {
   return (
     <div className="space-y-14">
       <PosterHeader title="Deadlock Hub" subtitle={t("home.subtitle")}>
+        <SearchBox id="home-search" className="mx-auto mb-4 max-w-md text-left" label={t("search.label")} placeholder={t("search.placeholder")} />
         <div className="flex flex-wrap justify-center gap-3">
           <Button href="/players">{t("home.findAccount")}</Button>
           <Button href="/heroes" variant="secondary">{t("home.seeHeroes")}</Button>
@@ -83,6 +91,20 @@ export default async function Home() {
           ))}
         </div>
       </section>
+
+      {latest && (
+        <section aria-labelledby="latest-patch" className="space-y-3">
+          <SectionTitle id="latest-patch">{t("home.latestPatch")}</SectionTitle>
+          <Link href={`/patches/${latest.id}`} className="block space-y-2 rounded-md border border-brass/40 bg-surface p-4 shadow-card transition duration-150 hover:-translate-y-0.5 hover:border-brass">
+            <p className="text-xs font-semibold uppercase tracking-wider text-ink-muted">{effectiveDate(latest)}</p>
+            <h3 className="font-display text-xl font-black">{latest.title}<NewPatchBadge id={latest.id} /></h3>
+            <p className="line-clamp-3 text-sm text-ink-muted">{excerpt(latest.html, 220)}</p>
+            <span className="link-brass text-sm font-semibold">{t("home.readPatch")}</span>
+          </Link>
+        </section>
+      )}
+
+      <FavoritesStrip />
 
       <FollowedStrip />
 

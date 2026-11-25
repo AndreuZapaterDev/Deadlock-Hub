@@ -77,6 +77,35 @@ export function BuildPlanner({ heroes, items, initial }: { heroes: PlannerHero[]
     writeSaved([...saved, { id: `${Date.now()}`, name: n.slice(0, 60), hero: heroSlug, items: picked }].slice(-30));
     setName("");
   };
+  const [ioMsg, setIoMsg] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  // Copia de seguridad en JSON: las builds solo viven en este navegador, así se pueden pasar a otro dispositivo.
+  const exportBuilds = () => {
+    const blob = new Blob([JSON.stringify({ app: "deadlock-hub", version: 1, builds: saved }, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "deadlock-hub-builds.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  };
+  const importBuilds = async (file: File | undefined) => {
+    if (!file) return;
+    try {
+      if (file.size > 1_000_000) throw new Error("size");
+      const data = JSON.parse(await file.text());
+      const list: unknown = Array.isArray(data) ? data : data?.builds;
+      if (!Array.isArray(list)) throw new Error("format");
+      const valid = list
+        .filter((b): b is { name: string; hero: string; items: string[] } => !!b && typeof b.name === "string" && typeof b.hero === "string" && Array.isArray(b.items) && b.items.every((c: unknown) => typeof c === "string"))
+        .map((b, i) => ({ id: `${Date.now()}-${i}`, name: b.name.slice(0, 60), hero: b.hero.slice(0, 60), items: b.items.slice(0, 40) }));
+      if (!valid.length) throw new Error("empty");
+      writeSaved([...saved, ...valid].slice(-30));
+      setIoMsg(t("importOk", { count: valid.length }));
+    } catch {
+      setIoMsg(t("importError"));
+    }
+    if (fileRef.current) fileRef.current.value = "";
+  };
   const load = (s: Saved) => { setHeroSlug(heroes.some((h) => h.slug === s.hero) ? s.hero : heroes[0].slug); setPicked(s.items.filter((c) => byClass.has(c))); };
 
   return (
@@ -199,6 +228,12 @@ export function BuildPlanner({ heroes, items, initial }: { heroes: PlannerHero[]
             <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("namePlaceholder")} maxLength={60} aria-label={t("buildName")} />
             <Button onClick={save} disabled={!picked.length}>{t("save")}</Button>
           </div>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="secondary" onClick={exportBuilds} disabled={!saved.length} className="px-3 py-1.5 text-xs">{t("export")}</Button>
+            <Button variant="secondary" onClick={() => fileRef.current?.click()} className="px-3 py-1.5 text-xs">{t("import")}</Button>
+            <input ref={fileRef} type="file" accept="application/json,.json" className="sr-only" tabIndex={-1} aria-label={t("import")} onChange={(e) => importBuilds(e.target.files?.[0])} />
+          </div>
+          {ioMsg && <p role="status" className="text-xs text-ink-muted">{ioMsg}</p>}
           {saved.length === 0 ? (
             <p className="text-xs text-ink-muted">{t("savedHint")}</p>
           ) : (

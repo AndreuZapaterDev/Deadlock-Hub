@@ -167,6 +167,11 @@ body::before {
 /* Subrayado de latón en enlaces */
 .link-brass { background: linear-gradient(var(--brass), var(--brass)) 0 100% / 0 1px no-repeat; transition: background-size 200ms cubic-bezier(0.22, 0.61, 0.36, 1); }
 .link-brass:hover { background-size: 100% 1px; }
+/* Pantallas táctiles: los enlaces de texto tienen una zona de toque de al menos ~40 px sin cambiar el diseño (pseudo-elemento invisible). */
+@media (pointer: coarse) {
+  .link-brass { position: relative; }
+  .link-brass::after { content: ""; position: absolute; inset: -0.6rem -0.3rem; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -370,6 +375,8 @@ body::after {
   transform: translate3d(50vw, 30vh, 0); will-change: transform;
 }
 @media (prefers-reduced-motion: reduce) { .embers, .lamp { display: none !important; } }
+/* Móvil y pantallas táctiles: sin brasas ni farola (ahorran batería y GPU y casi no se ven). */
+@media (pointer: coarse), (max-width: 1023px) { .embers, .lamp { display: none !important; } }
 
 /* ---------- Desplegables: la lista que abre el navegador usa los colores del tema ---------- */
 select option, select optgroup { background-color: var(--panel); color: var(--ink); font-weight: 500; }

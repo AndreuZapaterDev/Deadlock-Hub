@@ -15,16 +15,16 @@ type Row = Record<string, string | number> & { id: string | number };
  */
 export function SortableTable({ columns, rows, initialSort, format }: { columns: Column[]; rows: Row[]; initialSort?: { key: string; dir: "asc" | "desc" }; format?: Record<string, "pct" | "num" | "dec" | "ago"> }) {
   const [sort, setSort] = useState(initialSort ?? { key: columns[0].key, dir: "asc" as const });
+  const locale = useLocale();
   const sorted = useMemo(() => {
     const k = sort.key;
     return [...rows].sort((a, b) => {
       const [x, y] = [a[k], b[k]];
-      const c = typeof x === "number" && typeof y === "number" ? x - y : String(x).localeCompare(String(y), "es");
+      const c = typeof x === "number" && typeof y === "number" ? x - y : String(x).localeCompare(String(y), locale);
       return sort.dir === "asc" ? c : -c;
     });
-  }, [rows, sort]);
+  }, [rows, sort, locale]);
 
-  const locale = useLocale();
   const show = (key: string, v: string | number) =>
     typeof v === "number" && format?.[key] === "pct" ? new Intl.NumberFormat(locale, { style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v)
     : typeof v === "number" && format?.[key] === "dec" ? new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v)

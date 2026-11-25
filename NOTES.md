@@ -388,3 +388,13 @@ Se **podaron los fixtures que la web nunca usa**: 76 ficheros (~44 MB) de 129, y
 - Ficha: banner con el icono grande y color de categoría, camino de construcción (componentes → objeto → mejoras), tarjetas de uso con acento, posición por win rate en su grupo y objetos parecidos. Cálculo en `lib/item-meta.ts`.
 - 7 objetos de tienda no traen `image_webp`: se usa `shop_image_webp` (lo traen los 156).
 - La rejilla interior usa `grid-cols-[minmax(0,1fr)]`: sin eso, los nombres largos ensanchan la columna y la tarjeta se sale del panel.
+
+## Mejora UI/UX (móvil, navegación, favoritos)
+
+- **Navegación móvil** (< `lg`): cabecera de una fila (logo + lupa), barra inferior (`mobile-nav.tsx`) y panel «Más» con las secciones agrupadas (`nav-config.ts` es la fuente única, también para el menú «Más» de escritorio). `MobileNav` va **fuera** del `<header>`: `backdrop-blur` crea un contexto que rompe los `position: fixed` de sus hijos.
+- **Paleta de búsqueda** (`Ctrl+K` o `/`): índice de héroes y objetos en `/api/search-index` (cacheado 1 h).
+- **Filtros plegables en móvil** en `FilterBar` (lo usan 10 páginas) y en el panel del mapa. Sin JS se ven siempre (`<noscript>`).
+- **Favoritos** de héroes/objetos/builds y «Nuevo parche» viven en `localStorage`: no hay cuentas ni servidor propio. Las builds del planner se pueden exportar/importar en JSON para pasarlas entre dispositivos.
+- Brasas y farola (`Ambient`) desactivadas en táctil y por debajo de `lg`.
+- Pendiente a propósito: guardar cuentas/builds en servidor (descartado); gráfica de evolución del perfil (depende de que la API real dé series por jugador).
+- Los tests e2e nuevos (`e2e/mobile-nav.spec.ts`, `e2e/ux.spec.ts`) esperan a `networkidle` antes de pulsar: antes de hidratar, los clics no hacen nada.

@@ -102,11 +102,11 @@ export function HeroCard({ hero, href, stat, selectable, priority, compact }: { 
         <h3 title={hero.name} className={`truncate font-display font-black uppercase tracking-[0.05em] text-on-accent ${compact ? "text-lg" : "text-2xl"}`}>{hero.name}</h3>
       </div>
       {stat !== undefined && (
-        <div className={`grid grid-cols-[1fr_auto] items-center gap-x-3 tabular-nums ${compact ? "mt-2.5 h-10 px-2" : "mt-4 h-12 px-4"}`}>
+        <div className={`grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 tabular-nums ${compact ? "mt-2.5 h-10 px-2" : "mt-4 h-12 px-4"}`}>
           {stat && (
             <>
               <div>
-                <p className="flex items-baseline gap-1 text-xs text-ink-muted">
+                <p className="flex flex-wrap items-baseline gap-x-1 text-xs text-ink-muted">
                   <strong className={`${big} text-ink`}>{fmtPct(stat.winRate)}</strong> {t("wins")}
                 </p>
                 {/* Barra de 40 % a 60 %: la diferencia entre héroes se ve de un vistazo. */}

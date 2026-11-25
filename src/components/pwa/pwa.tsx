@@ -98,7 +98,7 @@ export function Pwa() {
           {t("offlineBanner")}
         </div>
       )}
-      <div className="fixed bottom-4 left-4 right-4 z-50 flex flex-col items-start gap-2 sm:right-auto">
+      <div className="fixed bottom-[calc(4.5rem+env(safe-area-inset-bottom))] left-4 right-4 z-50 lg:bottom-4 flex flex-col items-start gap-2 sm:right-auto">
         {waiting && (
           <div role="status" className="flex items-center gap-3 rounded-md border border-brass bg-surface p-3 shadow-card">
             <span className="text-sm">{t("update")}</span>

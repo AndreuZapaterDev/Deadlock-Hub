@@ -10,11 +10,24 @@
     "map": "Mapa",
     "players": "Jogadores",
     "live": "Ao vivo",
-    "patches": "Patches"
+    "patches": "Patches",
+    "home": "Início",
+    "more": "Mais",
+    "menu": "Menu",
+    "close": "Fechar",
+    "groupWiki": "Wiki",
+    "groupMeta": "Meta e estatísticas",
+    "groupPlay": "Jogadores e partidas",
+    "groupTools": "Ferramentas",
+    "settings": "Definições",
+    "bar": "Navegação rápida",
+    "skip": "Saltar para o conteúdo",
+    "compareHeroes": "Comparar heróis"
   },
   "search": {
     "label": "Procurar jogador",
-    "placeholder": "Nome, Steam ID ou URL"
+    "placeholder": "Nome, Steam ID ou URL",
+    "open": "Abrir pesquisa"
   },
   "theme": {
     "day": "Dia",
@@ -57,7 +70,9 @@
     "rankOf": "N.º {rank} de {of} ·",
     "rankTitle": "Posição {rank} de {of} heróis",
     "onAverage": "na média",
-    "vsAverage": "{sign}{delta} % vs média"
+    "vsAverage": "{sign}{delta} % vs média",
+    "filters": "Filtros",
+    "updating": "A atualizar…"
   },
   "home": {
     "subtitle": "Tudo sobre Deadlock num só sítio: heróis, objetos, estatísticas e o teu perfil",
@@ -77,7 +92,10 @@
     "tierListText": "Quem ganha mais neste momento, por rank e patch.",
     "plannerText": "Monta a tua build e calcula o custo em almas.",
     "followedTitle": "Os teus jogadores",
-    "followedLabel": "Jogadores seguidos"
+    "followedLabel": "Jogadores seguidos",
+    "latestPatch": "Último patch",
+    "readPatch": "Ler as notas →",
+    "newBadge": "Novo"
   },
   "notFound": {
     "subtitle": "Esta rua não leva a lado nenhum",
@@ -748,7 +766,11 @@
     "fx_abilityDuration": "duração de habilidades",
     "fx_cdr": "redução de recarga",
     "fx_spiritLifesteal": "roubo de vida (espiritual)",
-    "fx_debuffResist": "resist. a debilitadores"
+    "fx_debuffResist": "resist. a debilitadores",
+    "export": "Exportar JSON",
+    "import": "Importar JSON",
+    "importOk": "{count, plural, one {Importada # build} other {Importadas # builds}}",
+    "importError": "Não foi possível importar: o ficheiro não é uma cópia de builds válida."
   },
   "leaderboard": {
     "title": "Leaderboard",
@@ -1390,5 +1412,27 @@
     "chipSince": "Desde {date}",
     "chipHeroFallback": "Herói #{id}",
     "chipRankFallback": "Rank {tier}"
+  },
+  "palette": {
+    "open": "Pesquisa rápida (Ctrl K)",
+    "title": "Pesquisa rápida",
+    "placeholder": "Procura um herói, item, secção ou jogador…",
+    "hero": "Herói",
+    "item": "Item",
+    "page": "Secção",
+    "player": "Procurar como jogador",
+    "none": "Sem resultados",
+    "hintKeys": "↑↓ escolher · Enter abrir · Esc fechar"
+  },
+  "fav": {
+    "add": "Favorito",
+    "remove": "Nos favoritos",
+    "share": "Partilhar",
+    "copied": "Ligação copiada ✓",
+    "title": "Os teus favoritos",
+    "heroes": "Heróis",
+    "items": "Itens",
+    "builds": "Builds",
+    "removeNamed": "Remover {name} dos favoritos"
   }
 }

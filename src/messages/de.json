@@ -10,11 +10,24 @@
     "map": "Karte",
     "players": "Spieler",
     "live": "Live",
-    "patches": "Patches"
+    "patches": "Patches",
+    "home": "Start",
+    "more": "Mehr",
+    "menu": "Menü",
+    "close": "Schließen",
+    "groupWiki": "Wiki",
+    "groupMeta": "Meta & Statistiken",
+    "groupPlay": "Spieler & Matches",
+    "groupTools": "Werkzeuge",
+    "settings": "Einstellungen",
+    "bar": "Schnellnavigation",
+    "skip": "Zum Inhalt springen",
+    "compareHeroes": "Helden vergleichen"
   },
   "search": {
     "label": "Spieler suchen",
-    "placeholder": "Name, Steam-ID oder URL"
+    "placeholder": "Name, Steam-ID oder URL",
+    "open": "Suche öffnen"
   },
   "theme": {
     "day": "Tag",
@@ -57,7 +70,9 @@
     "rankOf": "Nr. {rank} von {of} ·",
     "rankTitle": "Platz {rank} von {of} Helden",
     "onAverage": "im Durchschnitt",
-    "vsAverage": "{sign}{delta} % ggü. Durchschnitt"
+    "vsAverage": "{sign}{delta} % ggü. Durchschnitt",
+    "filters": "Filter",
+    "updating": "Wird aktualisiert…"
   },
   "home": {
     "subtitle": "Alles zu Deadlock an einem Ort: Helden, Gegenstände, Statistiken und dein Profil",
@@ -77,7 +92,10 @@
     "tierListText": "Wer gerade am meisten gewinnt – nach Rang und Patch.",
     "plannerText": "Stelle dein Build zusammen und berechne die Seelenkosten.",
     "followedTitle": "Deine Spieler",
-    "followedLabel": "Gefolgte Spieler"
+    "followedLabel": "Gefolgte Spieler",
+    "latestPatch": "Neuester Patch",
+    "readPatch": "Patchnotes lesen →",
+    "newBadge": "Neu"
   },
   "notFound": {
     "subtitle": "Diese Straße führt ins Nichts",
@@ -748,7 +766,11 @@
     "fx_abilityDuration": "Fähigkeitsdauer",
     "fx_cdr": "Abklingzeitreduktion",
     "fx_spiritLifesteal": "Lebensraub (Geist)",
-    "fx_debuffResist": "Debuff-Resist."
+    "fx_debuffResist": "Debuff-Resist.",
+    "export": "JSON exportieren",
+    "import": "JSON importieren",
+    "importOk": "{count, plural, one {# Build importiert} other {# Builds importiert}}",
+    "importError": "Import fehlgeschlagen: Die Datei ist keine gültige Build-Sicherung."
   },
   "leaderboard": {
     "title": "Bestenliste",
@@ -1390,5 +1412,27 @@
     "chipSince": "Seit {date}",
     "chipHeroFallback": "Held #{id}",
     "chipRankFallback": "Rang {tier}"
+  },
+  "palette": {
+    "open": "Schnellsuche (Strg K)",
+    "title": "Schnellsuche",
+    "placeholder": "Held, Gegenstand, Bereich oder Spieler suchen…",
+    "hero": "Held",
+    "item": "Gegenstand",
+    "page": "Bereich",
+    "player": "Als Spieler suchen",
+    "none": "Keine Ergebnisse",
+    "hintKeys": "↑↓ wählen · Enter öffnen · Esc schließen"
+  },
+  "fav": {
+    "add": "Favorit",
+    "remove": "Favorisiert",
+    "share": "Teilen",
+    "copied": "Link kopiert ✓",
+    "title": "Deine Favoriten",
+    "heroes": "Helden",
+    "items": "Gegenstände",
+    "builds": "Builds",
+    "removeNamed": "{name} aus den Favoriten entfernen"
   }
 }

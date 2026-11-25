@@ -1,5 +1,6 @@
 "use client";
 import { useTranslations } from "next-intl";
+import { useEffect, useRef } from "react";
 import { DURATIONS } from "@/lib/analytics-filters";
 import { EMPTY_FILTERS, FROM_MINUTES, TO_MINUTES, type FilterState } from "@/lib/map-filters";
 import { Select } from "@/components/ui/select";
@@ -34,9 +35,12 @@ export function MapFilterPanel({ state, onChange, heroes, ranks, patches, chips,
   const ta = useTranslations("analytics");
   const set = (k: keyof FilterState) => (e: React.ChangeEvent<HTMLSelectElement>) => onChange({ ...state, [k]: e.target.value });
   const active = chips.length > 0;
+  const details = useRef<HTMLDetailsElement>(null);
+  // En móvil el panel empieza plegado: si no, los filtros ocupan toda la pantalla antes de ver el mapa.
+  useEffect(() => { if (window.matchMedia("(max-width: 639px)").matches && details.current) details.current.open = false; }, []);
 
   return (
-    <details open className="group rounded-md border border-brass/30 bg-panel shadow-card">
+    <details ref={details} open className="group rounded-md border border-brass/30 bg-panel shadow-card">
       <summary className="flex cursor-pointer list-none flex-wrap items-center gap-2 px-4 py-3 text-sm font-semibold marker:content-none">
         <span aria-hidden className="text-brass transition-transform group-open:rotate-90">▸</span>
         <span className="font-display text-base font-black uppercase">{t("filtersTitle")}</span>

@@ -27,6 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [messages, language] = await Promise.all([getMessages(), getLanguage()]);
   const locale = await getLocale();
+  const tNav = await getTranslations("nav");
   return (
     <html lang={htmlLang(language)} data-theme="dark" suppressHydrationWarning className={`${serif.variable} ${sans.variable}`}>
       <head>
@@ -38,10 +39,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body className="flex min-h-screen flex-col">
         <NextIntlClientProvider locale={locale} messages={messages}>
+          <a href="#contenido" className="sr-only z-[60] rounded-sm bg-accent px-4 py-2 font-semibold text-on-accent focus:not-sr-only focus:fixed focus:left-4 focus:top-4">{tNav("skip")}</a>
           <MotionProvider>
             <Ambient />
             <SiteHeader />
-            <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
+            <main id="contenido" tabIndex={-1} className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
             <SiteFooter />
             <Pwa />
           </MotionProvider>

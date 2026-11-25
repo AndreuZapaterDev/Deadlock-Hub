@@ -26,6 +26,7 @@ import { fmtDec, fmtNum, stripHtml } from "@/lib/format";
 import { falloffCurve, heroAccent, levelCount, splitLore, statPosition, statsAtLevel } from "@/lib/hero-stats";
 import { difficultyLabel, HERO_STATS, heroTypeLabel, unitsToMeters } from "@/lib/labels";
 import { getHeroAbilities, getHeroBySlug, getHeroes, getItemIndex } from "@/lib/lookup";
+import { FavoriteButton, ShareButton } from "@/components/ui/favorites";
 import { slugify } from "@/lib/slug";
 import { Suspense } from "react";
 
@@ -112,6 +113,8 @@ export default async function HeroPage({ params }: { params: Promise<{ slug: str
           {hero.gun_tag && <Chip>{hero.gun_tag}</Chip>}
         </div>
         <div className="mt-4 flex flex-wrap justify-center gap-3">
+          <FavoriteButton kind="hero" id={String(hero.id)} name={hero.name} href={`/heroes/${slugify(hero.name)}`} />
+          <ShareButton title={hero.name} />
           <Button href={`/heroes/compare?h=${slugify(hero.name)}`} variant="secondary">{t("compareWith")}</Button>
           <Button href={`/counters?a=${slugify(hero.name)}`} variant="ghost"><span className="text-cream">{t("seeCounters")}</span></Button>
         </div>

@@ -1,6 +1,7 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
+import { useOptimistic, useTransition } from "react";
 import { Select } from "@/components/ui/select";
 
 type Option = { value: string; label: string };
@@ -9,22 +10,28 @@ type Option = { value: string; label: string };
 export function CompareSelector({ options, selected }: { options: Option[]; selected: string[] }) {
   const t = useTranslations("compare");
   const router = useRouter();
+  const [pending, start] = useTransition();
+  const [shown, setShown] = useOptimistic(selected);
 
   const change = (index: number, value: string) => {
-    const next = [...selected];
+    const next = [...shown];
     next[index] = value;
     const slugs = [...new Set(next.filter(Boolean))];
-    router.replace(slugs.length ? `/heroes/compare?h=${slugs.join(",")}` : "/heroes/compare", { scroll: false });
+    start(() => {
+      setShown(next);
+      router.replace(slugs.length ? `/heroes/compare?h=${slugs.join(",")}` : "/heroes/compare", { scroll: false });
+    });
   };
 
   return (
-    <form role="search" aria-label={t("selectorLabel")} className="grid gap-3 rounded-md border border-brass/30 bg-panel p-3 sm:grid-cols-3">
+    <form role="search" aria-label={t("selectorLabel")} aria-busy={pending} className="grid gap-3 rounded-md border border-brass/30 bg-panel p-3 sm:grid-cols-3">
       {[0, 1, 2].map((i) => (
         <label key={i} className="flex flex-col gap-1 text-xs font-semibold text-ink-muted">
           {t("heroN", { n: i + 1 })}{i === 2 ? t("optional") : ""}
-          <Select value={selected[i] ?? ""} onChange={(e) => change(i, e.target.value)}>
+          <Select value={shown[i] ?? ""} onChange={(e) => change(i, e.target.value)}>
             <option value="">{t("pickHero")}</option>
-            {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+            {/* un héroe ya elegido en otro hueco no se puede repetir: se desactiva en vez de deshacer el cambio en silencio */}
+            {options.map((o) => <option key={o.value} value={o.value} disabled={shown.some((v, j) => j !== i && v === o.value)}>{o.label}</option>)}
           </Select>
         </label>
       ))}

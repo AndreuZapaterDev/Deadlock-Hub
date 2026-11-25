@@ -10,11 +10,24 @@
     "map": "Carte",
     "players": "Joueurs",
     "live": "En direct",
-    "patches": "Correctifs"
+    "patches": "Correctifs",
+    "home": "Accueil",
+    "more": "Plus",
+    "menu": "Menu",
+    "close": "Fermer",
+    "groupWiki": "Wiki",
+    "groupMeta": "Méta et stats",
+    "groupPlay": "Joueurs et parties",
+    "groupTools": "Outils",
+    "settings": "Réglages",
+    "bar": "Navigation rapide",
+    "skip": "Aller au contenu",
+    "compareHeroes": "Comparer les héros"
   },
   "search": {
     "label": "Rechercher un joueur",
-    "placeholder": "Nom, Steam ID ou URL"
+    "placeholder": "Nom, Steam ID ou URL",
+    "open": "Ouvrir la recherche"
   },
   "theme": {
     "day": "Jour",
@@ -57,7 +70,9 @@
     "rankOf": "N° {rank} sur {of} ·",
     "rankTitle": "Rang {rank} sur {of} héros",
     "onAverage": "dans la moyenne",
-    "vsAverage": "{sign}{delta} % par rapport à la moyenne"
+    "vsAverage": "{sign}{delta} % par rapport à la moyenne",
+    "filters": "Filtres",
+    "updating": "Mise à jour…"
   },
   "home": {
     "subtitle": "Tout sur Deadlock au même endroit : héros, objets, statistiques et votre profil",
@@ -77,7 +92,10 @@
     "tierListText": "Qui gagne le plus en ce moment, par rang et par patch.",
     "plannerText": "Composez votre build et calculez son coût en âmes.",
     "followedTitle": "Vos joueurs",
-    "followedLabel": "Joueurs suivis"
+    "followedLabel": "Joueurs suivis",
+    "latestPatch": "Dernier patch",
+    "readPatch": "Lire les notes →",
+    "newBadge": "Nouveau"
   },
   "notFound": {
     "subtitle": "Cette rue ne mène nulle part",
@@ -748,7 +766,11 @@
     "fx_abilityDuration": "durée des capacités",
     "fx_cdr": "réduction de récupération",
     "fx_spiritLifesteal": "vol de vie (spirituel)",
-    "fx_debuffResist": "résist. aux affaiblissements"
+    "fx_debuffResist": "résist. aux affaiblissements",
+    "export": "Exporter en JSON",
+    "import": "Importer du JSON",
+    "importOk": "{count, plural, one {# build importé} other {# builds importés}}",
+    "importError": "Import impossible : le fichier n'est pas une sauvegarde de builds valide."
   },
   "leaderboard": {
     "title": "Classement",
@@ -1390,5 +1412,27 @@
     "chipSince": "Depuis le {date}",
     "chipHeroFallback": "Héros #{id}",
     "chipRankFallback": "Rang {tier}"
+  },
+  "palette": {
+    "open": "Recherche rapide (Ctrl K)",
+    "title": "Recherche rapide",
+    "placeholder": "Chercher un héros, objet, section ou joueur…",
+    "hero": "Héros",
+    "item": "Objet",
+    "page": "Section",
+    "player": "Chercher un joueur",
+    "none": "Aucun résultat",
+    "hintKeys": "↑↓ choisir · Entrée ouvrir · Échap fermer"
+  },
+  "fav": {
+    "add": "Favori",
+    "remove": "En favoris",
+    "share": "Partager",
+    "copied": "Lien copié ✓",
+    "title": "Vos favoris",
+    "heroes": "Héros",
+    "items": "Objets",
+    "builds": "Builds",
+    "removeNamed": "Retirer {name} des favoris"
   }
 }

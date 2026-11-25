@@ -84,7 +84,7 @@ function Section({ title, diff, hrefs, filter }: { title: string; diff: AssetDif
         <>
           {diff.added.length > 0 && <p className="text-sm"><Chip tone="sage">{t("added")}</Chip> <span className="ml-1">{names(diff.added)}</span></p>}
           {diff.removed.length > 0 && <p className="text-sm"><Chip tone="rose">{t("removed")}</Chip> <span className="ml-1">{names(diff.removed)}</span></p>}
-          <div className="grid gap-4 lg:grid-cols-2">{changed.map((e) => <EntityCard key={e.id} e={e} href={hrefs.get(e.id)} />)}</div>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">{changed.map((e) => <EntityCard key={e.id} e={e} href={hrefs.get(e.id)} />)}</div>
         </>
       )}
     </section>

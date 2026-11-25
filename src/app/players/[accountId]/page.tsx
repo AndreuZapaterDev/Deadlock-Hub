@@ -7,6 +7,7 @@ import { BarChartBase, LineChartBase } from "@/components/charts/lazy-charts";
 import { HeroPortrait } from "@/components/hero/hero-card";
 import { MatchRow } from "@/components/match/match-row";
 import { FollowButton } from "@/components/player/follows";
+import { ShareButton } from "@/components/ui/favorites";
 import { PlayerList } from "@/components/player/player-list";
 import { ProfileProblem } from "@/components/player/profile-problem";
 import { RankBadge } from "@/components/player/rank-badge";
@@ -100,6 +101,7 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
         <div className="flex flex-wrap items-start justify-center gap-3">
           <FollowButton id={id} name={name} />
           <RefreshButton accountId={id} />
+          <ShareButton title={name} />
           <Button href={`/players/compare?a=${id}`} variant="secondary">{t("compareWith")}</Button>
           {profile?.profileurl && <a href={profile.profileurl} target="_blank" rel="noopener noreferrer" className="link-brass self-center text-sm font-semibold text-cream">{t("viewOnSteam")}</a>}
         </div>

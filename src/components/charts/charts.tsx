@@ -13,8 +13,19 @@ const tip = {
 
 type Point = Record<string, string | number>;
 
+/** Alternativa para lectores de pantalla: los mismos datos como tabla, fuera de la vista (el gráfico SVG no se lee bien). */
+function SrTable({ data, xKey, cols }: { data: Point[]; xKey: string; cols: { key: string; label: string }[] }) {
+  return (
+    <table className="sr-only">
+      <thead><tr><th scope="col">{xKey}</th>{cols.map((c) => <th key={c.key} scope="col">{c.label}</th>)}</tr></thead>
+      <tbody>{data.map((d, i) => <tr key={i}><th scope="row">{String(d[xKey] ?? "")}</th>{cols.map((c) => <td key={c.key}>{String(d[c.key] ?? "")}</td>)}</tr>)}</tbody>
+    </table>
+  );
+}
+
 export function BarChartBase({ data, xKey = "name", yKey = "value", height = 260, percent }: { data: Point[]; xKey?: string; yKey?: string; height?: number; percent?: boolean }) {
   return (
+    <>
     <ResponsiveContainer width="100%" height={height}>
       <BarChart data={data} margin={{ left: 0, right: 8 }}>
         <CartesianGrid stroke="var(--brass)" strokeOpacity={0.2} vertical={false} />
@@ -24,11 +35,14 @@ export function BarChartBase({ data, xKey = "name", yKey = "value", height = 260
         <Bar dataKey={yKey} fill={SERIES[0].fill} stroke={SERIES[0].stroke} radius={[4, 4, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
+    <SrTable data={data} xKey={xKey} cols={[{ key: yKey, label: yKey }]} />
+    </>
   );
 }
 
 export function LineChartBase({ data, xKey, series, height = 260, yDomain, yLabels, step, suffix }: { data: Point[]; xKey: string; series: { key: string; label: string }[]; height?: number; yDomain?: [number | string, number | string]; yLabels?: Record<number, string>; step?: boolean; suffix?: string }) {
   return (
+    <>
     <ResponsiveContainer width="100%" height={height}>
       <LineChart data={data} margin={{ left: 0, right: 8 }}>
         <CartesianGrid stroke="var(--brass)" strokeOpacity={0.2} vertical={false} />
@@ -41,6 +55,8 @@ export function LineChartBase({ data, xKey, series, height = 260, yDomain, yLabe
         ))}
       </LineChart>
     </ResponsiveContainer>
+    <SrTable data={data} xKey={xKey} cols={series} />
+    </>
   );
 }
 
