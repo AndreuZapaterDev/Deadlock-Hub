@@ -1,6 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useState } from "react";
 import { Chip } from "@/components/ui/chip";
 import { EmptyState } from "@/components/ui/feedback";
@@ -8,17 +9,18 @@ import { fmtDuration, fmtNum } from "@/lib/format";
 import type { LiveData, LiveHero, LiveMatch } from "@/lib/live-data";
 import { slugify } from "@/lib/slug";
 import { Select } from "@/components/ui/select";
+import { initials } from "@/lib/format";
 
 const REFRESH_MS = 60_000;
 const PAGE = 30; // partidas que se pintan de golpe: cada una lleva 12 retratos, y 100 filas eran ~4.000 nodos y 100 imágenes
 type Sort = "spectators" | "duration" | "networth";
-const SORTS: { value: Sort; label: string }[] = [
-  { value: "spectators", label: "Más espectadores" },
-  { value: "duration", label: "Más avanzadas" },
-  { value: "networth", label: "Más almas" },
+const SORTS: { value: Sort; key: string }[] = [
+  { value: "spectators", key: "sortSpectators" },
+  { value: "duration", key: "sortDuration" },
+  { value: "networth", key: "sortNetworth" },
 ];
+const KNOWN_MODES = ["Normal", "Ranked", "Private", "Casual", "StreetBrawl"];
 
-const initials = (n: string) => n.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
 function Hero({ h }: { h: LiveHero }) {
   return (
@@ -29,6 +31,7 @@ function Hero({ h }: { h: LiveHero }) {
 }
 
 function Row({ m, now, heroes }: { m: LiveMatch; now: number; heroes: Record<number, LiveHero> }) {
+  const t = useTranslations("live");
   const [a, b] = m.netWorth;
   const total = a + b;
   const share = total > 0 ? (a / total) * 100 : 50;
@@ -36,21 +39,21 @@ function Row({ m, now, heroes }: { m: LiveMatch; now: number; heroes: Record<num
     <li className="cv-auto rounded-md border border-brass/30 bg-surface p-3 shadow-card [--cv-h:150px]">
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
         <Link href={`/matches/${m.id}`} className="font-semibold tabular-nums hover:text-brass">#{m.id}</Link>
-        <Chip tone={m.mode === "Ranked" ? "apricot" : "neutral"}>{m.mode}</Chip>
+        <Chip tone={m.mode === "Ranked" ? "apricot" : "neutral"}>{KNOWN_MODES.includes(m.mode) ? t(`mode${m.mode}`) : m.mode}</Chip>
         <span className="text-sm font-semibold tabular-nums">{fmtDuration(Math.max(0, now - m.startTime))}</span>
-        <span className="text-sm text-ink-muted"><span aria-hidden>👁 </span><strong className="tabular-nums text-ink">{fmtNum(m.spectators)}</strong> {m.spectators === 1 ? "espectador" : "espectadores"}</span>
+        <span className="text-sm text-ink-muted"><span aria-hidden>👁 </span><strong className="tabular-nums text-ink">{t("spectatorCount", { count: m.spectators })}</strong></span>
         {m.broadcast && (
-          <a href={m.broadcast} target="_blank" rel="noopener noreferrer" className="ml-auto text-sm font-semibold text-teal-ink underline-offset-2 hover:underline">Retransmisión ↗</a>
+          <a href={m.broadcast} target="_blank" rel="noopener noreferrer" className="ml-auto text-sm font-semibold text-teal-ink underline-offset-2 hover:underline">{t("broadcast")}</a>
         )}
       </div>
       <div className="mt-2 flex flex-wrap items-center gap-3">
-        <div className="flex gap-1" aria-label="Equipo A">{m.teams[0].map((id, i) => <Hero key={i} h={heroes[id]} />)}</div>
+        <div className="flex gap-1" aria-label={t("teamA")}>{m.teams[0].map((id, i) => <Hero key={i} h={heroes[id]} />)}</div>
         <span aria-hidden className="font-display text-xs font-black text-ink-muted">VS</span>
-        <div className="flex gap-1" aria-label="Equipo B">{m.teams[1].map((id, i) => <Hero key={i} h={heroes[id]} />)}</div>
+        <div className="flex gap-1" aria-label={t("teamB")}>{m.teams[1].map((id, i) => <Hero key={i} h={heroes[id]} />)}</div>
       </div>
-      <div className="mt-2.5" role="img" aria-label={`Almas: equipo A ${fmtNum(a)}, equipo B ${fmtNum(b)}`}>
+      <div className="mt-2.5" role="img" aria-label={t("soulsAria", { a: fmtNum(a), b: fmtNum(b) })}>
         <div className="flex h-1.5 overflow-hidden rounded-full bg-rose/70"><div className="bg-sage" style={{ width: `${share}%` }} /></div>
-        <div className="mt-1 flex justify-between text-[11px] tabular-nums text-ink-muted"><span>Equipo A · {fmtNum(a)}</span>{total > 0 && <span className="font-semibold text-ink">{a === b ? "Igualadas" : `Ventaja del equipo ${a > b ? "A" : "B"}: ${fmtNum(Math.abs(a - b))} almas`}</span>}<span>{fmtNum(b)} · Equipo B</span></div>
+        <div className="mt-1 flex justify-between text-[11px] tabular-nums text-ink-muted"><span>{t("teamALine", { n: fmtNum(a) })}</span>{total > 0 && <span className="font-semibold text-ink">{a === b ? t("even") : t("lead", { team: a > b ? "A" : "B", n: fmtNum(Math.abs(a - b)) })}</span>}<span>{t("teamBLine", { n: fmtNum(b) })}</span></div>
       </div>
     </li>
   );
@@ -61,6 +64,7 @@ function Row({ m, now, heroes }: { m: LiveMatch; now: number; heroes: Record<num
  * (nuestro propio route handler, con caché) y solo mientras la pestaña está visible.
  */
 export function LiveList({ initial }: { initial: Extract<LiveData, { ok: true }> }) {
+  const t = useTranslations("live");
   const [data, setData] = useState(initial);
   const [now, setNow] = useState(initial.now);
   const [sort, setSort] = useState<Sort>("spectators");
@@ -99,27 +103,27 @@ export function LiveList({ initial }: { initial: Extract<LiveData, { ok: true }>
     <div className="space-y-4">
       <div className="flex flex-wrap items-center gap-3">
         <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-ink-muted" aria-live="polite">
-          <span className="inline-flex items-center gap-2 font-semibold text-ink"><span aria-hidden className="relative flex size-2.5"><span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:animate-none" /><span className="relative inline-flex size-2.5 rounded-full bg-accent" /></span><span className="tabular-nums">{fmtNum(data.matches.length)}</span> partidas en curso</span>
-          <span><strong className="tabular-nums text-ink">{fmtNum(data.matches.reduce((n, m) => n + m.spectators, 0))}</strong> espectadores en total</span>
-          <span>se actualiza cada minuto</span>
-          {stale && <span className="ml-2 rounded-sm bg-apricot/25 px-2 py-0.5 text-xs font-semibold text-apricot-ink">Sin conexión: datos de hace un momento</span>}
+          <span className="inline-flex items-center gap-2 font-semibold text-ink"><span aria-hidden className="relative flex size-2.5"><span className="absolute inline-flex size-full animate-ping rounded-full bg-accent opacity-60 motion-reduce:animate-none" /><span className="relative inline-flex size-2.5 rounded-full bg-accent" /></span><span className="tabular-nums">{fmtNum(data.matches.length)}</span> {t("inProgress")}</span>
+          <span><strong className="tabular-nums text-ink">{fmtNum(data.matches.reduce((n, m) => n + m.spectators, 0))}</strong> {t("spectatorsTotal")}</span>
+          <span>{t("updatesEvery")}</span>
+          {stale && <span className="ml-2 rounded-sm bg-apricot/25 px-2 py-0.5 text-xs font-semibold text-apricot-ink">{t("offline")}</span>}
         </p>
         <label className="ml-auto flex items-center gap-2 text-xs font-semibold text-ink-muted">
-          Ordenar por
+          {t("sortBy")}
           <Select value={sort} onChange={(e) => setSort(e.target.value as Sort)}>
-            {SORTS.map((s) => <option key={s.value} value={s.value}>{s.label}</option>)}
+            {SORTS.map((s) => <option key={s.value} value={s.value}>{t(s.key)}</option>)}
           </Select>
         </label>
       </div>
       {sorted.length === 0 ? (
-        <EmptyState title="No hay partidas en curso" hint="Vuelve a mirar en un minuto." />
+        <EmptyState title={t("none")} hint={t("noneHint")} />
       ) : (
         <>
           <ul className="grid gap-3 lg:grid-cols-2">{sorted.slice(0, shown).map((m) => <Row key={m.id} m={m} now={now} heroes={data.heroes} />)}</ul>
           {sorted.length > shown && (
             <div className="flex justify-center">
               <button type="button" onClick={() => setShown((n) => n + PAGE)} className="rounded-sm border border-brass/60 px-5 py-2 text-sm font-semibold hover:bg-brass/15">
-                Mostrar más ({Math.min(PAGE, sorted.length - shown)} de {sorted.length - shown} restantes)
+                {t("showMore", { count: Math.min(PAGE, sorted.length - shown), remaining: sorted.length - shown })}
               </button>
             </div>
           )}

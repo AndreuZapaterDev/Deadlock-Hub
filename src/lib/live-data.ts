@@ -27,9 +27,10 @@ type RawActive = {
   players: { team: number; hero_id: number }[];
 };
 
-const MODE: Record<string, string> = { Unranked: "Normal", Ranked: "Ranked", PrivateLobby: "Privada", Casual: "Casual" };
+/** Clave del modo (la interfaz la traduce con «live.mode<Clave>»); si la API trae uno desconocido, se devuelve tal cual. */
+const MODE: Record<string, string> = { Unranked: "Normal", Ranked: "Ranked", PrivateLobby: "Private", Casual: "Casual" };
 export function modeLabel(r: Pick<RawActive, "match_mode_parsed" | "game_mode_parsed">) {
-  if (r.game_mode_parsed?.includes("StreetBrawl")) return "Street Brawl";
+  if (r.game_mode_parsed?.includes("StreetBrawl")) return "StreetBrawl";
   return MODE[r.match_mode_parsed ?? ""] ?? r.match_mode_parsed ?? "Normal";
 }
 
@@ -46,7 +47,7 @@ export async function loadLive(): Promise<LiveData> {
   // Un diccionario con cada héroe una sola vez: 150 partidas × 12 héroes con su URL de imagen repetida pesaban ~900 kB de HTML.
   const heroes: Record<number, LiveHero> = {};
   const hero = (id: number): number => {
-    heroes[id] ??= { id, name: names.get(id) ?? `Héroe #${id}`, img: images.get(id)?.small };
+    heroes[id] ??= { id, name: names.get(id) ?? `#${id}`, img: images.get(id)?.small };
     return id;
   };
 

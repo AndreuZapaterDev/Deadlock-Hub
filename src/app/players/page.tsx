@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { getTranslations } from "next-intl/server";
 import { FollowedPlayers } from "@/components/player/follows";
 import { SearchAutocomplete } from "@/components/player/search-autocomplete";
 import { Card } from "@/components/ui/card";
@@ -11,18 +12,22 @@ import { resolveVanity, searchPlayers } from "@/lib/player-data";
 import { parseSteamQuery } from "@/lib/steam-id";
 import type { SearchResult } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Jugadores", description: "Busca cualquier jugador de Deadlock por nombre, SteamID o URL de perfil." };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("players");
+  return { title: t("title"), description: t("metaDesc") };
+}
 
-const FORMATS = [
-  ["SteamID32", "483770846"],
-  ["SteamID64", "76561198444036574"],
-  ["URL de perfil", "steamcommunity.com/profiles/76561198444036574"],
-  ["Nombre de perfil", "steamcommunity.com/id/heavenlydelusions"],
-  ["SteamID3", "[U:1:483770846]"],
-  ["Nombre", "cosmetical"],
-];
 
 export default async function PlayersPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  const t = await getTranslations("players");
+  const FORMATS = [
+    ["SteamID32", "483770846"],
+    ["SteamID64", "76561198444036574"],
+    [t("fmtProfileUrl"), "steamcommunity.com/profiles/76561198444036574"],
+    [t("fmtVanity"), "steamcommunity.com/id/heavenlydelusions"],
+    ["SteamID3", "[U:1:483770846]"],
+    [t("fmtName"), "cosmetical"],
+  ];
   const q = ((await searchParams).q ?? "").trim();
   const parsed = parseSteamQuery(q);
 
@@ -35,22 +40,22 @@ export default async function PlayersPage({ searchParams }: { searchParams: Prom
     const { id, candidates } = await resolveVanity(parsed.vanity);
     if (id !== null) redirect(`/players/${id}`);
     results = candidates;
-    note = `No hay ningún perfil exacto con el nombre «${parsed.vanity}». Estas son las coincidencias más cercanas.`;
+    note = t("vanityNote", { name: parsed.vanity });
   } else if (parsed.kind === "name") {
     results = await searchPlayers(parsed.query);
   }
 
   return (
     <div className="space-y-10">
-      <PosterHeader title="Jugadores" subtitle="Encuentra una cuenta y mira su perfil, historial y héroes" />
+      <PosterHeader title={t("title")} subtitle={t("subtitle")} />
       <SearchAutocomplete initial={q} />
 
       {q && (
         <section aria-labelledby="results" className="space-y-4">
-          <SectionTitle id="results">Resultados para «{q}»</SectionTitle>
+          <SectionTitle id="results">{t("resultsFor", { q })}</SectionTitle>
           {note && <p className="text-sm text-ink-muted">{note}</p>}
           {results.length === 0 ? (
-            <EmptyState title="No hemos encontrado ningún jugador" hint="Comprueba el nombre o prueba con el SteamID o la URL de su perfil de Steam." />
+            <EmptyState title={t("noneFound")} hint={t("noneHint")} />
           ) : (
             <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {results.map((r) => (
@@ -59,7 +64,7 @@ export default async function PlayersPage({ searchParams }: { searchParams: Prom
                     <span aria-hidden className="grid size-11 shrink-0 place-items-center rounded-full border-2 border-brass bg-poster font-display font-black text-cream">{r.name.slice(0, 1).toUpperCase()}</span>
                     <span className="min-w-0">
                       <span className="block truncate font-semibold">{r.name}</span>
-                      <span className="block text-xs text-ink-muted">{r.matches30d} partidas en 30 días · #{r.id}</span>
+                      <span className="block text-xs text-ink-muted">{t("matches30d", { count: r.matches30d, id: r.id })}</span>
                     </span>
                   </Link>
                 </li>
@@ -69,29 +74,29 @@ export default async function PlayersPage({ searchParams }: { searchParams: Prom
         </section>
       )}
 
-      <ul aria-label="Atajos" className="grid gap-3 sm:grid-cols-3">
+      <ul aria-label={t("shortcuts")} className="grid gap-3 sm:grid-cols-3">
         {[
-          { href: "/leaderboard", title: "Clasificación", text: "Los mejores jugadores de cada región, también por héroe." },
-          { href: "/players/compare", title: "Comparar jugadores", text: "Dos cuentas lado a lado: rango, win rate, KDA y héroes." },
-          { href: "/live", title: "Partidas en directo", text: "Mira qué se está jugando ahora mismo." },
-        ].map((t) => (
-          <li key={t.href}>
-            <Link href={t.href} className="block h-full rounded-md border border-brass/30 bg-surface p-4 shadow-card transition duration-150 hover:-translate-y-0.5 hover:border-brass hover:shadow-pop">
-              <span className="block font-display text-lg font-black">{t.title} <span aria-hidden className="text-brass">→</span></span>
-              <span className="mt-1 block text-sm text-ink-muted">{t.text}</span>
+          { href: "/leaderboard", title: t("scLeaderboard"), text: t("scLeaderboardText") },
+          { href: "/players/compare", title: t("scCompare"), text: t("scCompareText") },
+          { href: "/live", title: t("scLive"), text: t("scLiveText") },
+        ].map((s) => (
+          <li key={s.href}>
+            <Link href={s.href} className="block h-full rounded-md border border-brass/30 bg-surface p-4 shadow-card transition duration-150 hover:-translate-y-0.5 hover:border-brass hover:shadow-pop">
+              <span className="block font-display text-lg font-black">{s.title} <span aria-hidden className="text-brass">→</span></span>
+              <span className="mt-1 block text-sm text-ink-muted">{s.text}</span>
             </Link>
           </li>
         ))}
       </ul>
 
       <section aria-labelledby="followed" className="space-y-4">
-        <SectionTitle id="followed">Jugadores que sigues</SectionTitle>
+        <SectionTitle id="followed">{t("followed")}</SectionTitle>
         <FollowedPlayers />
       </section>
 
       <Card>
         <details>
-          <summary className="cursor-pointer font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass">Qué puedes escribir en el buscador</summary>
+          <summary className="cursor-pointer font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass">{t("whatToType")}</summary>
           <dl className="mt-3 grid gap-x-8 gap-y-2 text-sm sm:grid-cols-2">
             {FORMATS.map(([k, v]) => (
               <div key={k} className="flex flex-col"><dt className="font-semibold">{k}</dt><dd className="break-all font-mono text-xs text-ink-muted">{v}</dd></div>

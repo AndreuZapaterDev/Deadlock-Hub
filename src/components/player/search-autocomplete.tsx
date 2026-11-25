@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { parseSteamQuery } from "@/lib/steam-id";
@@ -11,6 +12,7 @@ type Option = { key: string; label: string; hint?: string; href: string };
  * vanity y nombres. Espera 300 ms tras la última tecla y consulta nuestra ruta `/api/players/search` (nunca la API externa).
  */
 export function SearchAutocomplete({ initial = "" }: { initial?: string }) {
+  const t = useTranslations("players");
   const router = useRouter();
   const uid = useId();
   const listId = `${uid}-list`;
@@ -28,7 +30,7 @@ export function SearchAutocomplete({ initial = "" }: { initial?: string }) {
   useEffect(() => {
     if (parsed.kind !== "name" || q.length < 2) return;
     const ctl = new AbortController();
-    const t = setTimeout(async () => {
+    const timer = setTimeout(async () => {
       setStatus("loading");
       try {
         const res = await fetch(`/api/players/search?q=${encodeURIComponent(q)}`, { signal: ctl.signal });
@@ -39,7 +41,7 @@ export function SearchAutocomplete({ initial = "" }: { initial?: string }) {
         if ((e as Error).name !== "AbortError") setStatus("error");
       }
     }, 300);
-    return () => { clearTimeout(t); ctl.abort(); };
+    return () => { clearTimeout(timer); ctl.abort(); };
     // `parsed` se deriva de `q`
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q]);
@@ -51,11 +53,11 @@ export function SearchAutocomplete({ initial = "" }: { initial?: string }) {
   }, []);
 
   const options: Option[] = [];
-  if (parsed.kind === "account") options.push({ key: "go", label: `Ir al perfil #${parsed.accountId}`, hint: "Cuenta reconocida", href: `/players/${parsed.accountId}` });
-  else if (parsed.kind === "vanity") options.push({ key: "vanity", label: `Buscar el perfil «${parsed.vanity}»`, hint: "Nombre de perfil de Steam", href: `/players?q=${encodeURIComponent(q)}` });
+  if (parsed.kind === "account") options.push({ key: "go", label: t("goToProfile", { id: parsed.accountId }), hint: t("accountRecognized"), href: `/players/${parsed.accountId}` });
+  else if (parsed.kind === "vanity") options.push({ key: "vanity", label: t("searchVanity", { name: parsed.vanity }), hint: t("steamProfileName"), href: `/players?q=${encodeURIComponent(q)}` });
   else if (parsed.kind === "name" && q.length >= 2) {
-    for (const r of results) options.push({ key: String(r.id), label: r.name, hint: `${r.matches30d} partidas en 30 días · #${r.id}`, href: `/players/${r.id}` });
-    if (results.length) options.push({ key: "all", label: `Ver todos los resultados de «${q}»`, href: `/players?q=${encodeURIComponent(q)}` });
+    for (const r of results) options.push({ key: String(r.id), label: r.name, hint: t("matches30d", { count: r.matches30d, id: r.id }), href: `/players/${r.id}` });
+    if (results.length) options.push({ key: "all", label: t("seeAllResults", { q }), href: `/players?q=${encodeURIComponent(q)}` });
   }
 
   const go = (href: string) => { setOpen(false); router.push(href); };
@@ -71,7 +73,7 @@ export function SearchAutocomplete({ initial = "" }: { initial?: string }) {
   return (
     <div ref={box} className="relative">
       <form role="search" onSubmit={(e) => { e.preventDefault(); submit(); }} className="flex gap-2">
-        <label htmlFor={`${uid}-in`} className="sr-only">Buscar jugador</label>
+        <label htmlFor={`${uid}-in`} className="sr-only">{t("searchLabel")}</label>
         <input
           id={`${uid}-in`}
           role="combobox"
@@ -83,18 +85,18 @@ export function SearchAutocomplete({ initial = "" }: { initial?: string }) {
           onChange={(e) => { setValue(e.target.value); setOpen(true); setActive(-1); setResults([]); setStatus("idle"); }}
           onFocus={() => setOpen(true)}
           onKeyDown={onKey}
-          placeholder="Nombre, SteamID32, SteamID64 o URL de perfil"
+          placeholder={t("searchPlaceholder")}
           autoComplete="off"
           className="w-full rounded-sm border border-brass/50 bg-surface px-4 py-3 text-base text-ink placeholder:text-ink-muted focus-visible:border-brass"
         />
-        <button type="submit" className="press shine frame-double rounded-sm border border-brass bg-accent px-6 text-sm font-semibold text-on-accent hover:bg-accent/85">Buscar</button>
+        <button type="submit" className="press shine frame-double rounded-sm border border-brass bg-accent px-6 text-sm font-semibold text-on-accent hover:bg-accent/85">{t("searchButton")}</button>
       </form>
 
       {showList && (
-        <ul id={listId} role="listbox" aria-label="Sugerencias" className="absolute inset-x-0 top-full z-30 mt-2 max-h-80 overflow-auto rounded-md border border-brass bg-surface shadow-pop">
-          {status === "loading" && <li role="presentation" className="px-4 py-3 text-sm text-ink-muted">Buscando…</li>}
-          {status === "error" && <li role="presentation" className="px-4 py-3 text-sm text-rose-ink">No se pudo buscar ahora mismo. Pulsa Enter para intentarlo.</li>}
-          {status === "idle" && parsed.kind === "name" && !options.length && <li role="presentation" className="px-4 py-3 text-sm text-ink-muted">Sin sugerencias para «{q}».</li>}
+        <ul id={listId} role="listbox" aria-label={t("suggestions")} className="absolute inset-x-0 top-full z-30 mt-2 max-h-80 overflow-auto rounded-md border border-brass bg-surface shadow-pop">
+          {status === "loading" && <li role="presentation" className="px-4 py-3 text-sm text-ink-muted">{t("searching")}</li>}
+          {status === "error" && <li role="presentation" className="px-4 py-3 text-sm text-rose-ink">{t("searchError")}</li>}
+          {status === "idle" && parsed.kind === "name" && !options.length && <li role="presentation" className="px-4 py-3 text-sm text-ink-muted">{t("noSuggestions", { q })}</li>}
           {options.map((o, i) => (
             <li
               key={o.key}

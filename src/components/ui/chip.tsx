@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/cn";
 import type { Category } from "@/lib/types";
 
@@ -16,13 +17,18 @@ export function Chip({ tone = "neutral", className, children }: { tone?: Tone; c
 }
 
 // Categorías de objetos con la asociación del juego: Weapon naranja, Vitality verde, Spirit violeta.
-export const CATEGORY: Record<Category, { tone: Tone; label: string }> = {
-  weapon: { tone: "apricot", label: "Arma" },
-  vitality: { tone: "sage", label: "Vitalidad" },
-  spirit: { tone: "lilac", label: "Espíritu" },
+// El nombre visible sale de los mensajes: `common.weapon`, `common.vitality` y `common.spirit`.
+export const CATEGORY: Record<Category, { tone: Tone }> = {
+  weapon: { tone: "apricot" },
+  vitality: { tone: "sage" },
+  spirit: { tone: "lilac" },
 };
 
+/** Las tres categorías de objeto, en el orden en que se muestran. */
+export const CATEGORIES = Object.keys(CATEGORY) as Category[];
+
 export function CategoryChip({ category }: { category: Category }) {
+  const t = useTranslations("common");
   const c = CATEGORY[category];
-  return <Chip tone={c.tone}>{c.label}</Chip>;
+  return <Chip tone={c.tone}>{t(category)}</Chip>;
 }

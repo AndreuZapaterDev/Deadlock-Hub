@@ -97,8 +97,10 @@ export const MATCH_MODE: Record<number, string> = {
   1: "Partida normal", 2: "Sala privada", 3: "Contra bots", 4: "Ranked", 5: "Prueba de servidor", 6: "Tutorial", 7: "Laboratorio de héroes", 8: "Colocación",
 };
 export const GAME_MODE: Record<number, string> = { 1: "Normal", 3: "Sandbox", 4: "Street Brawl", 5: "Explorar Nueva York" };
-export const matchModeLabel = (n?: number | null) => (n != null ? MATCH_MODE[n] ?? `Modo ${n}` : "—");
-export const gameModeLabel = (n?: number | null) => (n != null ? GAME_MODE[n] ?? `Modo ${n}` : "—");
+/** `t` = traductor del namespace «modes»; sin él, el texto en español de arriba. */
+type ModeTr = (key: string, values?: Record<string, string | number>) => string;
+export const matchModeLabel = (n?: number | null, t?: ModeTr) => (n != null ? (t ? (n in MATCH_MODE ? t(`m${n}`) : t("unknown", { n })) : MATCH_MODE[n] ?? `Modo ${n}`) : "—");
+export const gameModeLabel = (n?: number | null, t?: ModeTr) => (n != null ? (t ? (n in GAME_MODE ? t(`g${n}`) : t("unknown", { n })) : GAME_MODE[n] ?? `Modo ${n}`) : "—");
 
 // ---------- Forma reciente y rachas ----------
 

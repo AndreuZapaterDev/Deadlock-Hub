@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useSyncExternalStore } from "react";
+import { useTranslations } from "next-intl";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Button } from "@/components/ui/button";
 
 export type CompareHero = { slug: string; name: string };
@@ -43,6 +44,7 @@ export function useCompare() {
 
 /** Casilla «Comparar» de una tarjeta de héroe (fuera del enlace de la tarjeta, para no anidar controles). */
 export function CompareToggle({ hero, compact }: { hero: CompareHero; compact?: boolean }) {
+  const t = useTranslations("heroUi");
   const { has, full, toggle } = useCompare();
   const on = has(hero.slug);
   const disabled = !on && full;
@@ -52,44 +54,57 @@ export function CompareToggle({ hero, compact }: { hero: CompareHero; compact?: 
       aria-pressed={on}
       disabled={disabled}
       onClick={() => toggle(hero)}
-      title={disabled ? "Ya hay 3 héroes: quita uno para añadir otro" : on ? "Quitar de la comparación" : "Añadir a la comparación"}
+      title={disabled ? t("compareFull") : on ? t("removeFromCompare") : t("addToCompare")}
       className={`group/cmp absolute z-20 ${compact ? "right-3.5 top-3.5" : "right-5 top-5"} inline-flex h-8 items-center gap-1.5 rounded-full border px-2.5 text-xs font-semibold shadow-card transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass disabled:cursor-not-allowed disabled:opacity-40 ${on ? "border-brass bg-brass text-night" : "border-brass/60 bg-night/80 text-cream hover:bg-night"}`}
     >
       <span aria-hidden className="text-sm leading-none">{on ? "✓" : "+"}</span>
       {/* En escritorio la etiqueta solo aparece al pasar el ratón o al elegir; en táctil se ve siempre. */}
-      <span className={on ? "" : "[@media(hover:hover)]:sr-only [@media(hover:hover)]:group-hover/cmp:not-sr-only [@media(hover:hover)]:group-focus-visible/cmp:not-sr-only"}>{on ? "Elegido" : "Comparar"}</span>
+      <span className={on ? "" : "[@media(hover:hover)]:sr-only [@media(hover:hover)]:group-hover/cmp:not-sr-only [@media(hover:hover)]:group-focus-visible/cmp:not-sr-only"}>{on ? t("chosen") : t("compare")}</span>
     </button>
   );
 }
 
-/** Barra fija inferior con los héroes elegidos y el enlace al comparador. */
+/** Barra con los héroes elegidos y el enlace al comparador: arriba de la página y pegada justo debajo de la cabecera al hacer scroll. */
 export function CompareTray() {
+  const t = useTranslations("heroUi");
   const { list, clear, toggle } = useCompare();
-  if (list.length === 0) return null;
+  const [top, setTop] = useState(0);
+  const visible = list.length > 0;
+  useEffect(() => {
+    // la cabecera cambia de alto (la navegación se parte en varias líneas en móvil): se mide y se sigue
+    const header = document.querySelector("header");
+    if (!header) return;
+    const measure = () => setTop(header.getBoundingClientRect().height);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(header);
+    return () => ro.disconnect();
+  }, [visible]);
+  if (!visible) return null;
   const ready = list.length >= 2;
   return (
-    <div role="region" aria-label="Héroes a comparar" className="fixed inset-x-0 bottom-0 z-40 border-t border-brass bg-bg/95 px-4 py-3 shadow-[0_-8px_24px_rgb(0_0_0/0.35)] backdrop-blur">
+    <div role="region" aria-label={t("compareRegion")} style={{ top }} className="sticky z-30 -mx-4 border-y border-brass bg-bg/95 px-4 py-3 shadow-[0_8px_24px_rgb(0_0_0/0.25)] backdrop-blur">
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3">
-        <p className="text-sm font-semibold">Comparar ({list.length}/{MAX})</p>
+        <p className="text-sm font-semibold">{t("compareCount", { count: list.length, max: MAX })}</p>
         <ul className="flex flex-wrap gap-2">
           {list.map((h) => (
             <li key={h.slug}>
-              <button type="button" onClick={() => toggle(h)} aria-label={`Quitar a ${h.name}`} className="inline-flex items-center gap-1.5 rounded-full border border-brass/50 bg-surface px-3 py-1 text-sm hover:bg-brass/15">
+              <button type="button" onClick={() => toggle(h)} aria-label={t("removeHero", { name: h.name })} className="inline-flex items-center gap-1.5 rounded-full border border-brass/50 bg-surface px-3 py-1 text-sm hover:bg-brass/15">
                 {h.name} <span aria-hidden className="text-ink-muted">✕</span>
               </button>
             </li>
           ))}
         </ul>
         <div className="ml-auto flex items-center gap-2">
-          <button type="button" onClick={clear} className="text-sm text-ink-muted hover:text-ink">Vaciar</button>
+          <button type="button" onClick={clear} className="text-sm text-ink-muted hover:text-ink">{t("clear")}</button>
           {ready ? (
-            <Button href={`/heroes/compare?h=${list.map((h) => h.slug).join(",")}`}>Comparar</Button>
+            <Button href={`/heroes/compare?h=${list.map((h) => h.slug).join(",")}`}>{t("compare")}</Button>
           ) : (
-            <span className="text-xs text-ink-muted">Elige al menos 2 héroes</span>
+            <span className="text-xs text-ink-muted">{t("pickTwo")}</span>
           )}
         </div>
       </div>
-      <Link href="/heroes/compare" className="sr-only">Ir al comparador</Link>
+      <Link href="/heroes/compare" className="sr-only">{t("goCompare")}</Link>
     </div>
   );
 }

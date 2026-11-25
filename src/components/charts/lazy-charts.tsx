@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState, type ComponentType } from "react";
 
@@ -6,7 +7,8 @@ import { useEffect, useRef, useState, type ComponentType } from "react";
 // la gráfica solo cuando está cerca de verse, y mientras tanto se reserva su altura (sin saltos de diseño).
 
 function Placeholder({ height }: { height: number }) {
-  return <div role="img" aria-label="Cargando gráfica…" style={{ height }} className="animate-pulse-soft rounded-md border border-brass/20 bg-ink/5" />;
+  const t = useTranslations("common");
+  return <div role="img" aria-label={t("loadingChart")} style={{ height }} className="animate-pulse-soft rounded-md border border-brass/20 bg-ink/5" />;
 }
 
 /** Monta `children` cuando el contenedor se acerca al área visible (una sola vez). */

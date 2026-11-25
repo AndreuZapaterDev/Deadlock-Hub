@@ -28,20 +28,22 @@ function useFollows() {
 }
 
 export function FollowButton({ id, name }: { id: number; name: string }) {
+  const t = useTranslations("players");
   const list = useFollows();
   const following = list.some((f) => f.id === id);
   return (
     <Button variant={following ? "secondary" : "primary"} aria-pressed={following} onClick={() => write(following ? list.filter((f) => f.id !== id) : [...list, { id, name }])}>
-      {following ? "Siguiendo ✓" : "Seguir jugador"}
+      {following ? t("following") : t("follow")}
     </Button>
   );
 }
 
 /** Lista de jugadores seguidos (visible en /players). */
 export function FollowedPlayers() {
+  const t = useTranslations("players");
   const list = useFollows();
   if (!list.length) {
-    return <p className="text-sm text-ink-muted">Aún no sigues a nadie. Entra en un perfil y pulsa «Seguir jugador» para tenerlo aquí.</p>;
+    return <p className="text-sm text-ink-muted">{t("noFollowed")}</p>;
   }
   return (
     <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -51,7 +53,7 @@ export function FollowedPlayers() {
             <span className="block truncate font-semibold">{f.name}</span>
             <span className="text-xs text-ink-muted">#{f.id}</span>
           </Link>
-          <button type="button" aria-label={`Dejar de seguir a ${f.name}`} onClick={() => write(list.filter((x) => x.id !== f.id))} className="rounded-sm px-2 py-1 text-sm text-ink-muted hover:bg-brass/15 hover:text-ink">✕</button>
+          <button type="button" aria-label={t("unfollow", { name: f.name })} onClick={() => write(list.filter((x) => x.id !== f.id))} className="rounded-sm px-2 py-1 text-sm text-ink-muted hover:bg-brass/15 hover:text-ink">✕</button>
         </li>
       ))}
     </ul>

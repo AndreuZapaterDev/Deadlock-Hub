@@ -1,9 +1,10 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Chip } from "@/components/ui/chip";
 import { fmtNum } from "@/lib/format";
 import {
-  BASE_LAYERS, CAMP_LABEL, DEFAULT_LAYERS, ENTITY_KINDS, heatRange, heatStats, intensity, layersToParam, OBJECTIVE_LABEL, teamName,
+  BASE_LAYERS, DEFAULT_LAYERS, ENTITY_KINDS, heatRange, heatStats, intensity, layersToParam,
   type HeatCell, type MapCamp, type MapObjective, type MapScene, type SceneEntity, type Shape,
 } from "@/lib/map";
 import { describeMapFilters, FILTER_KEYS, stateToFilters, toHeatSearch, type FilterState } from "@/lib/map-filters";
@@ -52,7 +53,7 @@ const Icon = ({ d }: { d: string }) => (
   <svg aria-hidden viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d={d} /></svg>
 );
 const btn = "inline-flex size-9 items-center justify-center rounded-sm border border-brass/50 bg-surface text-ink hover:bg-brass/15 focus-visible:border-brass";
-const shopLabel = (e: SceneEntity) => (e.team !== undefined ? `Tienda · ${teamName(e.team)}` : "Tienda");
+const CAMP_KINDS = ["vault", "strong", "medium", "weak"];
 
 /**
  * Mapa interactivo (SVG propio, sin librerías): minimapa real con zoom (rueda, botones, pellizco, teclado), arrastre y minivista;
@@ -69,6 +70,13 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
   initialFilters: FilterState;
   initialView?: { k: number; cx: number; cy: number };
 }) {
+  const t = useTranslations("mapUi");
+  const ta = useTranslations("analytics");
+  const tu = useTranslations("heroUi");
+  const teamName = (n: number) => t(n === 0 ? "teamA" : "teamB");
+  const objLabel = (k: string) => t(`obj_${k}`);
+  const campLabel = (k: string) => (CAMP_KINDS.includes(k) ? t(`camp_${k}`) : k);
+  const shopLabel = (e: SceneEntity) => (e.team !== undefined ? t("shopTeam", { team: teamName(e.team) }) : t("shop"));
   const svgRef = useRef<SVGSVGElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -92,8 +100,8 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
   const heroById = useMemo(() => new Map(heroes.map((h) => [h.slug, h])), [heroes]);
   const parsed = useMemo(() => stateToFilters(filters, (slug) => heroById.get(slug)?.id), [filters, heroById]);
   const key = toHeatSearch(parsed);
-  const tierName = (t: number) => ranks.find((r) => r.tier === t)?.name ?? `Rango ${t}`;
-  const chips = describeMapFilters(parsed, { hero: heroes.find((h) => h.id === parsed.hero)?.name, tier: tierName });
+  const tierName = (n: number) => ranks.find((r) => r.tier === n)?.name ?? tu("rankFallback", { tier: n });
+  const chips = describeMapFilters(parsed, { hero: heroes.find((h) => h.id === parsed.hero)?.name, tier: tierName }, t, ta);
 
   useEffect(() => {
     // Ya pedido antes con estos filtros: se reutiliza (el estado se aplica en el siguiente fotograma, no dentro del efecto).
@@ -158,7 +166,7 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
 
   // ---------- URL: capas, filtros y vista (sin recargar la página ni volver a pedir datos al servidor) ----------
   useEffect(() => {
-    const t = setTimeout(() => {
+    const timer = setTimeout(() => {
       const url = new URL(window.location.href);
       const set = (k: string, v: string | null) => (v ? url.searchParams.set(k, v) : url.searchParams.delete(k));
       set("capas", layersToParam([...layers]));
@@ -169,7 +177,7 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
       set("cy", zoomed ? ((S / 2 - view.y) / (view.k * S)).toFixed(3) : null);
       window.history.replaceState(null, "", url);
     }, 250);
-    return () => clearTimeout(t);
+    return () => clearTimeout(timer);
   }, [layers, filters, view]);
 
   useEffect(() => {
@@ -196,12 +204,12 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
 
   const searchItems = useMemo<SearchItem[]>(() => {
     const out: SearchItem[] = [];
-    for (const o of scene.objectives) out.push({ id: o.key, label: `${o.npcName ?? OBJECTIVE_LABEL[o.kind]} · ${teamName(o.team)}`, sub: `${OBJECTIVE_LABEL[o.kind]}${o.lane ? ` · carril ${o.lane}` : ""}`, left: o.left, top: o.top, pick: () => { enable("objectives"); setSel({ type: "objective", o }); focus(o.left, o.top, 5); } });
-    for (const c of scene.camps) out.push({ id: c.name, label: c.name.replaceAll("_", " "), sub: CAMP_LABEL[c.kind] ?? c.kind, left: c.left, top: c.top, pick: () => { enable("camps"); setSel({ type: "camp", c }); focus(c.left, c.top, 5); } });
+    for (const o of scene.objectives) out.push({ id: o.key, label: `${o.npcName ?? objLabel(o.kind)} · ${teamName(o.team)}`, sub: `${objLabel(o.kind)}${o.lane ? ` · ${t("lane", { n: o.lane })}` : ""}`, left: o.left, top: o.top, pick: () => { enable("objectives"); setSel({ type: "objective", o }); focus(o.left, o.top, 5); } });
+    for (const c of scene.camps) out.push({ id: c.name, label: c.name.replaceAll("_", " "), sub: campLabel(c.kind), left: c.left, top: c.top, pick: () => { enable("camps"); setSel({ type: "camp", c }); focus(c.left, c.top, 5); } });
     for (const def of ENTITY_KINDS) {
       const list = byKind.get(def.key) ?? [];
       if (list.length > 20) continue; // lo abundante (cajas, estatuas…) llenaría los resultados
-      for (const e of list) out.push({ id: e.id, label: def.key === "shops" ? shopLabel(e) : def.label, sub: def.group, left: e.left, top: e.top, pick: () => { enable(def.key); setSel({ type: "entity", e }); focus(e.left, e.top, 5); } });
+      for (const e of list) out.push({ id: e.id, label: def.key === "shops" ? shopLabel(e) : t(`ent_${def.key}`), sub: t(`grp_${def.group}`), left: e.left, top: e.top, pick: () => { enable(def.key); setSel({ type: "entity", e }); focus(e.left, e.top, 5); } });
     }
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -224,7 +232,7 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
     if (overMarker.current || dragging || !on("heat") || !heat.length) return;
     const p = toMap(e.clientX, e.clientY);
     const c = p.left >= 0 && p.left < 1 && p.top >= 0 && p.top < 1 ? heatByCell.get(Math.floor(p.top * grid) * grid + Math.floor(p.left * grid)) : undefined;
-    if (c) showTip(e, `${fmtNum(c.deaths)} muertes · ${fmtNum(c.kills)} kills`, "Zona del heatmap");
+    if (c) showTip(e, t("heatTip", { deaths: fmtNum(c.deaths), kills: fmtNum(c.kills) }), t("heatZone"));
     else setTip(null);
   };
 
@@ -253,18 +261,18 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
 
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_21rem]">
         <div className="space-y-3">
-          <div className="flex flex-wrap items-center gap-2" role="toolbar" aria-label="Controles del mapa">
-            <button type="button" className={btn} onClick={() => zoomBy(1.4)} aria-label="Acercar" title="Acercar (+)"><Icon d="M12 5v14M5 12h14" /></button>
-            <button type="button" className={btn} onClick={() => zoomBy(1 / 1.4)} aria-label="Alejar" title="Alejar (−)"><Icon d="M5 12h14" /></button>
-            <button type="button" className={btn} onClick={reset} aria-label="Restablecer la vista" title="Restablecer la vista (0)"><Icon d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5" /></button>
-            <button type="button" className={btn} onClick={toggleFullscreen} aria-pressed={fullscreen} aria-label="Pantalla completa" title="Pantalla completa"><Icon d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></button>
+          <div className="flex flex-wrap items-center gap-2" role="toolbar" aria-label={t("toolbar")}>
+            <button type="button" className={btn} onClick={() => zoomBy(1.4)} aria-label={t("zoomIn")} title={t("zoomInTitle")}><Icon d="M12 5v14M5 12h14" /></button>
+            <button type="button" className={btn} onClick={() => zoomBy(1 / 1.4)} aria-label={t("zoomOut")} title={t("zoomOutTitle")}><Icon d="M5 12h14" /></button>
+            <button type="button" className={btn} onClick={reset} aria-label={t("resetView")} title={t("resetViewTitle")}><Icon d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5" /></button>
+            <button type="button" className={btn} onClick={toggleFullscreen} aria-pressed={fullscreen} aria-label={t("fullscreen")} title={t("fullscreen")}><Icon d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></button>
             <span className="ml-1 text-xs tabular-nums text-ink-muted" aria-live="polite">×{k.toFixed(1)}</span>
             {on("heat") && (
-              <div role="group" aria-label="Qué mostrar en el heatmap" className="ml-auto flex gap-1 text-sm">
+              <div role="group" aria-label={t("heatWhat")} className="ml-auto flex gap-1 text-sm">
                 {(["deaths", "kills"] as const).map((m) => (
                   <button key={m} type="button" aria-pressed={mode === m} onClick={() => setMode(m)}
                     className={`rounded-sm px-3 py-1.5 font-semibold ${mode === m ? "bg-accent text-on-accent" : "text-ink-muted hover:bg-brass/10"}`}>
-                    {m === "deaths" ? "Muertes" : "Kills"}
+                    {m === "deaths" ? t("deaths") : t("kills")}
                   </button>
                 ))}
               </div>
@@ -278,7 +286,7 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
                 viewBox={`0 0 ${S} ${S}`}
                 role="application"
                 tabIndex={0}
-                aria-label="Mapa de Deadlock. Usa + y − para el zoom, 0 para restablecer. Los objetivos se pueden recorrer con el tabulador."
+                aria-label={t("mapAria")}
                 className={`block w-full touch-none select-none outline-none focus-visible:ring-2 focus-visible:ring-brass ${mapCursor}`}
                 onPointerDown={onPointerDown}
                 onPointerMove={onSvgMove}
@@ -321,16 +329,16 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
 
                   {ENTITY_KINDS.map((def) => on(def.key) && (byKind.get(def.key) ?? []).map((e) => {
                     const team = e.team === 0 || e.team === 1 ? TEAM_COLOR[e.team] : undefined;
-                    const title = def.key === "shops" ? shopLabel(e) : def.label;
+                    const title = def.key === "shops" ? shopLabel(e) : t(`ent_${def.key}`);
                     return (
-                      <g key={e.id} className="cursor-pointer" {...markerProps(title, def.group, () => setSel({ type: "entity", e }))}>
+                      <g key={e.id} className="cursor-pointer" {...markerProps(title, t(`grp_${def.group}`), () => setSel({ type: "entity", e }))}>
                         <Mark shape={def.shape} x={e.left * S} y={e.top * S} s={px(def.key === "crates" || def.key === "steam_vents" || def.key === "cosmic_veils" ? 7 : 11)} fill={team ?? def.color} sw={sw(1.6)} />
                       </g>
                     );
                   }))}
 
                   {on("camps") && scene.camps.map((c) => (
-                    <g key={c.name} className="cursor-pointer" {...markerProps(CAMP_LABEL[c.kind] ?? c.kind, c.name.replaceAll("_", " "), () => setSel({ type: "camp", c }))}>
+                    <g key={c.name} className="cursor-pointer" {...markerProps(campLabel(c.kind), c.name.replaceAll("_", " "), () => setSel({ type: "camp", c }))}>
                       <Mark shape="dot" x={c.left * S} y={c.top * S} s={px(c.kind === "vault" ? 15 : c.kind === "strong" ? 13 : c.kind === "medium" ? 11 : 9)} fill={c.kind === "vault" ? "var(--brass)" : "var(--apricot)"} sw={sw(2)} />
                     </g>
                   ))}
@@ -339,7 +347,7 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
                     const big = o.kind === "core" || o.kind === "titan";
                     const size = px(big ? 24 : o.kind === "tier2" ? 19 : 15);
                     return (
-                      <g key={o.key} className="cursor-pointer outline-none focus-visible:[&>*]:stroke-brass" {...markerProps(`${OBJECTIVE_LABEL[o.kind]} · ${teamName(o.team)}`, o.lane ? `Carril ${o.lane}` : undefined, () => setSel({ type: "objective", o }), true)}>
+                      <g key={o.key} className="cursor-pointer outline-none focus-visible:[&>*]:stroke-brass" {...markerProps(`${objLabel(o.kind)} · ${teamName(o.team)}`, o.lane ? t("laneCap", { n: o.lane }) : undefined, () => setSel({ type: "objective", o }), true)}>
                         <Mark shape={big ? "star" : "diamond"} x={o.left * S} y={o.top * S} s={size} fill={TEAM_COLOR[o.team]} sw={sw(2.5)} />
                       </g>
                     );
@@ -347,13 +355,13 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
 
                   {on("objectives") && scene.objectives.filter((o) => o.kind === "core").map((o) => (
                     <text key={`t-${o.key}`} aria-hidden x={o.left * S + (o.team === 0 ? px(20) : -px(20))} y={o.top * S + (o.top > 0.5 ? -px(14) : px(26))} textAnchor={o.team === 0 ? "start" : "end"} fontSize={px(15)} fontWeight={800} fill={TEAM_COLOR[o.team]} stroke="var(--night)" strokeWidth={sw(4)} paintOrder="stroke" className="font-display">
-                      BASE {o.team === 0 ? "A" : "B"}
+                      {t("baseLabel", { team: o.team === 0 ? "A" : "B" })}
                     </text>
                   ))}
 
                   {/* Con zoom se escriben los nombres de lo más importante junto a su símbolo. */}
                   {showLabels && on("camps") && scene.camps.map((c) => label(c.left * S, c.top * S + px(20), c.name.replaceAll("_", " "), `lc-${c.name}`, "var(--apricot)"))}
-                  {showLabels && on("objectives") && scene.objectives.filter((o) => o.kind !== "core").map((o) => label(o.left * S, o.top * S + px(24), `${OBJECTIVE_LABEL[o.kind]}${o.lane ? ` ${o.lane}` : ""}`, `lo-${o.key}`, TEAM_COLOR[o.team]))}
+                  {showLabels && on("objectives") && scene.objectives.filter((o) => o.kind !== "core").map((o) => label(o.left * S, o.top * S + px(24), `${objLabel(o.kind)}${o.lane ? ` ${o.lane}` : ""}`, `lo-${o.key}`, TEAM_COLOR[o.team]))}
                   {showLabels && on("shops") && (byKind.get("shops") ?? []).map((e) => label(e.left * S, e.top * S + px(20), shopLabel(e), `ls-${e.id}`, "var(--brass)"))}
 
                   {selected && <circle aria-hidden cx={selected.left * S} cy={selected.top * S} r={px(20)} fill="none" stroke="var(--brass)" strokeWidth={sw(2.5)} strokeDasharray={`${sw(5)} ${sw(4)}`} />}
@@ -366,17 +374,17 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
               {on("heat") && loading && !failed && (
                 <div role="status" className="pointer-events-none absolute left-3 top-3 z-10 flex items-center gap-2 rounded-sm border border-brass/60 bg-surface/95 px-3 py-1.5 text-xs shadow-card">
                   <span aria-hidden className="size-2.5 animate-ping rounded-full bg-accent" />
-                  {res ? "Actualizando el heatmap…" : "Cargando el heatmap…"}
+                  {res ? t("heatUpdating") : t("heatLoading")}
                 </div>
               )}
               {on("heat") && failed && (
                 <div role="alert" className="absolute left-3 top-3 z-10 flex max-w-[85%] flex-wrap items-center gap-2 rounded-sm border border-rose bg-surface/95 px-3 py-2 text-xs shadow-card">
-                  <span>La API tardó demasiado en calcular este filtro{res?.kind === "error" && res.status ? ` (error ${res.status})` : ""}. Prueba un periodo más corto o reintenta.</span>
-                  <button type="button" onClick={() => setRetry((n) => n + 1)} className="rounded-sm border border-brass px-2 py-1 font-semibold hover:bg-brass/15">Reintentar</button>
+                  <span>{t("heatTooSlow", { status: res?.kind === "error" && res.status ? t("errorStatus", { status: res.status }) : "" })}</span>
+                  <button type="button" onClick={() => setRetry((n) => n + 1)} className="rounded-sm border border-brass px-2 py-1 font-semibold hover:bg-brass/15">{t("retry")}</button>
                 </div>
               )}
               {on("heat") && empty && (
-                <div role="status" className="absolute left-3 top-3 z-10 rounded-sm border border-brass/60 bg-surface/95 px-3 py-1.5 text-xs shadow-card">Sin datos para estos filtros: prueba a ampliarlos.</div>
+                <div role="status" className="absolute left-3 top-3 z-10 rounded-sm border border-brass/60 bg-surface/95 px-3 py-1.5 text-xs shadow-card">{t("heatEmpty")}</div>
               )}
 
               {tip && (
@@ -390,80 +398,80 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
 
           {on("heat") && heat.length > 0 && (
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-ink-muted">
-              <div className="flex items-center gap-2" aria-label={`Leyenda del heatmap de ${mode === "deaths" ? "muertes" : "kills"}`}>
+              <div className="flex items-center gap-2" aria-label={t("legendAria", { what: mode === "deaths" ? t("legendDeaths") : t("legendKills") })}>
                 <span className="tabular-nums">{fmtNum(range.lo)}</span>
                 <span aria-hidden className="h-2.5 w-32 rounded-full border border-brass/30" style={{ background: `linear-gradient(to right, transparent, ${mode === "deaths" ? "var(--rose)" : "var(--sage)"})` }} />
-                <span className="tabular-nums">{fmtNum(range.hi)}+ por zona</span>
+                <span className="tabular-nums">{t("perZone", { n: fmtNum(range.hi) })}</span>
               </div>
-              <span className="tabular-nums">{fmtNum(totals.deaths)} muertes · {fmtNum(totals.kills)} kills en total</span>
+              <span className="tabular-nums">{t("heatTotals", { deaths: fmtNum(totals.deaths), kills: fmtNum(totals.kills) })}</span>
               <label className="ml-auto flex items-center gap-2">
-                Intensidad
+                {t("intensity")}
                 <input type="range" min={0.2} max={1} step={0.05} value={heatOpacity} onChange={(e) => setHeatOpacity(Number(e.target.value))} className="w-28 accent-[var(--brass)]" />
               </label>
             </div>
           )}
-          <p className="hidden text-xs text-ink-muted sm:block">Rueda o pellizco para el zoom · arrastra para moverte · con zoom aparece una minivista y los nombres de los lugares.</p>
+          <p className="hidden text-xs text-ink-muted sm:block">{t("hint")}</p>
         </div>
 
         <aside className="space-y-4">
           <MapSearch items={searchItems} />
 
           <section aria-live="polite" className="rounded-md border border-brass/30 bg-surface p-4 shadow-card">
-            {!sel && <p className="text-sm text-ink-muted">Pulsa un objetivo, un campamento o cualquier símbolo del mapa para ver su ficha.</p>}
+            {!sel && <p className="text-sm text-ink-muted">{t("pickHint")}</p>}
             {sel?.type === "objective" && (
               <div className="space-y-2">
                 <Chip tone={sel.o.team === 0 ? "sage" : "rose"}>{teamName(sel.o.team)}</Chip>
-                <h3 className="font-display text-xl font-black uppercase">{sel.o.npcName ?? OBJECTIVE_LABEL[sel.o.kind]}</h3>
-                <p className="text-sm text-ink-muted">{OBJECTIVE_LABEL[sel.o.kind]}{sel.o.lane ? ` · carril ${sel.o.lane}` : ""}</p>
-                {sel.o.maxHealth !== undefined && <p className="text-sm">Vida máxima: <span className="font-semibold tabular-nums">{fmtNum(sel.o.maxHealth)}</span></p>}
+                <h3 className="font-display text-xl font-black uppercase">{sel.o.npcName ?? objLabel(sel.o.kind)}</h3>
+                <p className="text-sm text-ink-muted">{objLabel(sel.o.kind)}{sel.o.lane ? ` · ${t("lane", { n: sel.o.lane })}` : ""}</p>
+                {sel.o.maxHealth !== undefined && <p className="text-sm">{t.rich("maxHealth", { value: fmtNum(sel.o.maxHealth), b: (c) => <span className="font-semibold tabular-nums">{c}</span> })}</p>}
               </div>
             )}
             {sel?.type === "camp" && (
               <div className="space-y-2">
-                <Chip tone="apricot">{CAMP_LABEL[sel.c.kind] ?? sel.c.kind}</Chip>
+                <Chip tone="apricot">{campLabel(sel.c.kind)}</Chip>
                 <h3 className="font-display text-xl font-black uppercase">{sel.c.name.replaceAll("_", " ")}</h3>
-                <p className="text-sm text-ink-muted">Campamento neutral: derrotarlo da almas, y las cámaras dan un botín mayor.</p>
-                <p className="text-xs tabular-nums text-ink-muted">Posición: {sel.c.world[0]}, {sel.c.world[1]}</p>
+                <p className="text-sm text-ink-muted">{t("campText")}</p>
+                <p className="text-xs tabular-nums text-ink-muted">{t("position", { x: sel.c.world[0], y: sel.c.world[1] })}</p>
               </div>
             )}
             {sel?.type === "entity" && (() => {
               const def = KIND.get(sel.e.kind)!;
               return (
                 <div className="space-y-2">
-                  <Chip tone="neutral">{def.group}</Chip>
-                  <h3 className="font-display text-xl font-black uppercase">{def.label}{sel.e.team !== undefined ? ` · ${teamName(sel.e.team)}` : ""}</h3>
-                  <p className="text-sm text-ink-muted">{def.text}</p>
-                  <p className="text-xs tabular-nums text-ink-muted">Posición: {sel.e.world[0]}, {sel.e.world[1]}</p>
+                  <Chip tone="neutral">{t(`grp_${def.group}`)}</Chip>
+                  <h3 className="font-display text-xl font-black uppercase">{t(`ent_${def.key}`)}{sel.e.team !== undefined ? ` · ${teamName(sel.e.team)}` : ""}</h3>
+                  <p className="text-sm text-ink-muted">{t(`entText_${def.key}`)}</p>
+                  <p className="text-xs tabular-nums text-ink-muted">{t("position", { x: sel.e.world[0], y: sel.e.world[1] })}</p>
                 </div>
               );
             })()}
             {sel && (
               <div className="mt-3 flex gap-2">
-                <button type="button" className="rounded-sm border border-brass/50 px-3 py-1.5 text-sm font-semibold hover:bg-brass/15" onClick={() => selected && focus(selected.left, selected.top, 5)}>Centrar</button>
-                <button type="button" className="rounded-sm px-3 py-1.5 text-sm text-ink-muted hover:bg-brass/10" onClick={() => setSel(null)}>Cerrar</button>
+                <button type="button" className="rounded-sm border border-brass/50 px-3 py-1.5 text-sm font-semibold hover:bg-brass/15" onClick={() => selected && focus(selected.left, selected.top, 5)}>{t("center")}</button>
+                <button type="button" className="rounded-sm px-3 py-1.5 text-sm text-ink-muted hover:bg-brass/10" onClick={() => setSel(null)}>{t("close")}</button>
               </div>
             )}
           </section>
 
-          <section className="rounded-md border border-brass/30 bg-surface p-4 shadow-card" aria-label="Capas">
+          <section className="rounded-md border border-brass/30 bg-surface p-4 shadow-card" aria-label={t("layers")}>
             <div className="mb-3 flex flex-wrap items-center gap-2">
-              <h3 className="font-display text-base font-black uppercase">Capas</h3>
+              <h3 className="font-display text-base font-black uppercase">{t("layers")}</h3>
               <div className="ml-auto flex gap-1 text-xs">
-                <button type="button" className="rounded-sm px-2 py-1 text-ink-muted hover:bg-brass/10" onClick={() => setMany(DEFAULT_LAYERS)}>Por defecto</button>
-                <button type="button" className="rounded-sm px-2 py-1 text-ink-muted hover:bg-brass/10" onClick={() => setMany([...BASE_LAYERS.map((l) => l.id), ...ENTITY_KINDS.map((e) => e.key)])}>Todas</button>
-                <button type="button" className="rounded-sm px-2 py-1 text-ink-muted hover:bg-brass/10" onClick={() => setMany([])}>Ninguna</button>
+                <button type="button" className="rounded-sm px-2 py-1 text-ink-muted hover:bg-brass/10" onClick={() => setMany(DEFAULT_LAYERS)}>{t("layersDefault")}</button>
+                <button type="button" className="rounded-sm px-2 py-1 text-ink-muted hover:bg-brass/10" onClick={() => setMany([...BASE_LAYERS.map((l) => l.id), ...ENTITY_KINDS.map((e) => e.key)])}>{t("layersAll")}</button>
+                <button type="button" className="rounded-sm px-2 py-1 text-ink-muted hover:bg-brass/10" onClick={() => setMany([])}>{t("layersNone")}</button>
               </div>
             </div>
             <ul className="space-y-1 text-sm">
               {BASE_LAYERS.filter((l) => (l.id !== "tunnels" && l.id !== "rats") || scene.images.tunnels).map((l) => (
-                <li key={l.id}><label className="flex cursor-pointer items-center gap-2 py-0.5"><input type="checkbox" checked={on(l.id)} onChange={() => toggle(l.id)} className="accent-[var(--brass)]" />{l.label}</label></li>
+                <li key={l.id}><label className="flex cursor-pointer items-center gap-2 py-0.5"><input type="checkbox" checked={on(l.id)} onChange={() => toggle(l.id)} className="accent-[var(--brass)]" />{t(`layer_${l.id}`)}</label></li>
               ))}
             </ul>
             {(["Estructuras", "Movilidad", "Botín"] as const).map((g) => (
               <details key={g} open={g === "Estructuras"} className="group/layers mt-3 border-t border-brass/20 pt-2">
                 <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-semibold text-ink-muted hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass">
                   <span aria-hidden className="text-xs transition-transform group-open/layers:rotate-90">▶</span>
-                  {g}
+                  {t(`grp_${g}`)}
                   <span className="ml-auto text-xs font-normal tabular-nums">{ENTITY_KINDS.filter((e) => e.group === g && on(e.key)).length}/{ENTITY_KINDS.filter((e) => e.group === g && (byKind.get(e.key)?.length ?? 0) > 0).length}</span>
                 </summary>
                 <ul className="mt-1.5 space-y-1 text-sm">
@@ -472,7 +480,7 @@ export function MapView({ scene, heroes, ranks, patches, initialLayers, initialF
                       <label className="flex cursor-pointer items-center gap-2 py-0.5">
                         <input type="checkbox" checked={on(e.key)} onChange={() => toggle(e.key)} className="accent-[var(--brass)]" />
                         <svg aria-hidden viewBox="-9 -9 18 18" width="14" height="14" className="shrink-0"><Mark shape={e.shape} x={0} y={0} s={13} fill={e.color} sw={1.2} /></svg>
-                        <span className="flex-1">{e.label}</span>
+                        <span className="flex-1">{t(`ent_${e.key}`)}</span>
                         <span className="text-xs tabular-nums text-ink-muted">{byKind.get(e.key)!.length}</span>
                       </label>
                     </li>

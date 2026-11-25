@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { themeInitScript } from "@/components/layout/theme-toggle";
 import { getLanguage } from "@/lib/language";
 import { htmlLang } from "@/lib/languages";
@@ -15,11 +15,14 @@ import "./globals.css";
 const serif = Playfair_Display({ subsets: ["latin", "latin-ext", "cyrillic", "vietnamese"], variable: "--f-serif", style: ["normal", "italic"] });
 const sans = Inter({ subsets: ["latin", "latin-ext", "cyrillic", "greek", "vietnamese"], variable: "--f-sans" });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://deadlockhub.vercel.app"),
-  title: { default: "Deadlock Hub", template: "%s · Deadlock Hub" },
-  description: "Web fan no oficial sobre Deadlock: wiki, estadísticas y tracker de jugadores.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("site");
+  return {
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://deadlockhub.vercel.app"),
+    title: { default: "Deadlock Hub", template: "%s · Deadlock Hub" },
+    description: t("description"),
+  };
+}
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const [messages, language] = await Promise.all([getMessages(), getLanguage()]);

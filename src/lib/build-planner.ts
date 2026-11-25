@@ -197,11 +197,12 @@ export const EFFECT_LABEL: Record<EffectKey, { label: string; unit: string }> = 
 };
 
 /** "+125 vida · +8 % daño de arma": los `max` efectos más grandes de un objeto, para la lista del selector. */
-export function describeEffects(fx: Effects, max = 3): string {
+/** `label`: traduce la clave del efecto (por defecto, el texto en español de `EFFECT_LABEL`). */
+export function describeEffects(fx: Effects, max = 3, label: (k: EffectKey) => string = (k) => EFFECT_LABEL[k].label): string {
   return (Object.entries(fx) as [EffectKey, number][])
     .filter(([, v]) => v !== 0)
     .sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))
     .slice(0, max)
-    .map(([k, v]) => `${v > 0 ? "+" : "−"}${Math.abs(Math.round(v * 100) / 100)}${EFFECT_LABEL[k].unit} ${EFFECT_LABEL[k].label}`)
+    .map(([k, v]) => `${v > 0 ? "+" : "−"}${Math.abs(Math.round(v * 100) / 100)}${EFFECT_LABEL[k].unit} ${label(k)}`)
     .join(" · ");
 }

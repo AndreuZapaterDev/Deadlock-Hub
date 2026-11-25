@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Card } from "@/components/ui/card";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { SortableTable } from "@/components/ui/sortable-table";
 import { getNpcs } from "@/lib/lookup";
 
-export const metadata: Metadata = { title: "NPCs", description: "Guardianes, walkers, tropas y criaturas neutrales de Deadlock con sus estadísticas." };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("npcs");
+  return { title: t("title"), description: t("metaDesc") };
+}
 export const revalidate = 43200;
 
 export default async function NpcsPage() {
-  const all = await getNpcs();
+  const [all, t] = await Promise.all([getNpcs(), getTranslations("npcs")]);
   const named = all.filter((n) => n.name);
   const rows = named.map((n) => ({
     id: n.id,
@@ -21,20 +25,19 @@ export default async function NpcsPage() {
 
   return (
     <div className="space-y-8">
-      <PosterHeader title="NPCs" subtitle="Guardianes, walkers, tropas y criaturas del mapa" />
+      <PosterHeader title={t("title")} subtitle={t("subtitle")} />
       <Card>
         <p className="max-w-prose text-sm text-ink-muted">
-          {named.length} unidades con nombre (de {all.length} entradas en los datos; el resto son plantillas internas). Los valores vienen tal cual de la API:
-          ordena por cualquier columna. Un 0 significa que la unidad no tiene ese dato.
+          {t("intro", { named: named.length, all: all.length })}
         </p>
       </Card>
       <SortableTable
         columns={[
-          { key: "name", label: "Unidad" },
-          { key: "health", label: "Vida", numeric: true },
-          { key: "walk", label: "Velocidad de marcha", numeric: true },
-          { key: "melee", label: "Daño cuerpo a cuerpo", numeric: true },
-          { key: "dps", label: "Daño de arma por s", numeric: true },
+          { key: "name", label: t("colUnit") },
+          { key: "health", label: t("colHealth"), numeric: true },
+          { key: "walk", label: t("colWalk"), numeric: true },
+          { key: "melee", label: t("colMelee"), numeric: true },
+          { key: "dps", label: t("colDps"), numeric: true },
         ]}
         rows={rows}
         initialSort={{ key: "health", dir: "desc" }}

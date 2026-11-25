@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { FilterBar } from "@/components/filters/filter-bar";
 import { catVar, ItemTile, TierPips } from "@/components/item/item-tile";
-import { CATEGORY, Chip } from "@/components/ui/chip";
+import { CATEGORIES, CATEGORY, Chip } from "@/components/ui/chip";
 import { EmptyState } from "@/components/ui/feedback";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { fmtNum, fmtPct } from "@/lib/format";
@@ -13,15 +14,17 @@ import { getItems } from "@/lib/lookup";
 import { loadItemStats } from "@/lib/meta-data";
 import type { Category, Item } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Objetos", description: "La tienda de Deadlock: todos los objetos por categoría y tier." };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("itemsPage");
+  return { title: t("title"), description: t("metaDesc") };
+}
 
 type Params = { q?: string; cat?: string; tier?: string; kind?: string; comp?: string; sort?: string };
-const CATS: Category[] = ["weapon", "vitality", "spirit"];
 
 export default async function ItemsPage({ searchParams }: { searchParams: Promise<Params> }) {
   const { q = "", cat = "", tier = "", kind = "", comp = "", sort = "" } = await searchParams;
   const term = q.toLowerCase();
-  const lang = await getLanguage();
+  const [lang, t, tc, tt] = await Promise.all([getLanguage(), getTranslations("itemsPage"), getTranslations("common"), getTranslations("heroes")]);
   const [allItems, statsRes] = await Promise.all([getItems(), loadItemStats({})]);
   const usage = statsRes.ok ? usageMap(statsRes.data) : new Map<number, { winRate: number; matches: number }>();
   const order = (a: Item, b: Item) => {
@@ -43,69 +46,69 @@ export default async function ItemsPage({ searchParams }: { searchParams: Promis
     const next = new URLSearchParams(Object.entries({ q, tier, kind, comp, sort, cat: c }).filter(([, v]) => v));
     return next.size ? `/items?${next}` : "/items";
   };
-  const visibleCats = CATS.filter((c) => !cat || c === cat);
+  const visibleCats = CATEGORIES.filter((c) => !cat || c === cat);
 
   return (
     <div className="space-y-8">
-      <PosterHeader title="Objetos" subtitle={`${shop.length} objetos en la tienda, en tres categorías`} />
+      <PosterHeader title={t("title")} subtitle={t("subtitle", { count: shop.length })} />
       <Suspense fallback={null}>
         <FilterBar
           fields={[
-            { name: "q", label: "Buscar", type: "search", placeholder: "Nombre del objeto" },
-            { name: "cat", label: "Categoría", type: "select", options: CATS.map((c) => ({ value: c, label: CATEGORY[c].label })) },
-            { name: "tier", label: "Tier", type: "select", options: [1, 2, 3, 4].map((t) => ({ value: String(t), label: `Tier ${t}` })) },
-            { name: "kind", label: "Tipo", type: "select", options: [{ value: "active", label: "Activa" }, { value: "passive", label: "Pasivo" }] },
-            { name: "comp", label: "Componentes", type: "select", options: [{ value: "yes", label: "Con componentes" }, { value: "no", label: "Sin componentes" }] },
-            ...(usage.size ? [{ name: "sort", label: "Ordenar por", type: "select" as const, allLabel: "Nombre (A–Z)", options: [{ value: "winrate", label: "Win rate" }, { value: "matches", label: "Más usados" }] }] : []),
+            { name: "q", label: t("search"), type: "search", placeholder: t("searchPlaceholder") },
+            { name: "cat", label: t("category"), type: "select", options: CATEGORIES.map((c) => ({ value: c, label: tc(c) })) },
+            { name: "tier", label: t("tier"), type: "select", options: [1, 2, 3, 4].map((n) => ({ value: String(n), label: tt("tierN", { tier: n }) })) },
+            { name: "kind", label: t("kind"), type: "select", options: [{ value: "active", label: t("active") }, { value: "passive", label: t("passive") }] },
+            { name: "comp", label: t("components"), type: "select", options: [{ value: "yes", label: t("withComp") }, { value: "no", label: t("noComp") }] },
+            ...(usage.size ? [{ name: "sort", label: t("sortBy"), type: "select" as const, allLabel: t("sortName"), options: [{ value: "winrate", label: t("sortWin") }, { value: "matches", label: t("sortUsed") }] }] : []),
           ]}
         />
       </Suspense>
-      <nav aria-label="Categoría" className="flex flex-wrap gap-2">
-        {[{ value: "", label: "Todas", n: matches.length }, ...CATS.map((c) => ({ value: c as string, label: CATEGORY[c].label, n: matches.filter((i) => i.item_slot_type === c).length }))].map((t) => {
-          const on = cat === t.value;
+      <nav aria-label={t("category")} className="flex flex-wrap gap-2">
+        {[{ value: "", label: t("all"), n: matches.length }, ...CATEGORIES.map((c) => ({ value: c as string, label: tc(c), n: matches.filter((i) => i.item_slot_type === c).length }))].map((tab) => {
+          const on = cat === tab.value;
           return (
             <Link
-              key={t.value}
-              href={tabHref(t.value)}
+              key={tab.value}
+              href={tabHref(tab.value)}
               replace
               scroll={false}
               aria-current={on ? "page" : undefined}
-              style={catVar((t.value || undefined) as Category | undefined)}
+              style={catVar((tab.value || undefined) as Category | undefined)}
               className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass ${on ? "border-(--c) bg-(--c) text-night" : "border-(--c)/50 hover:bg-(--c)/15"}`}
             >
-              {t.value && <span aria-hidden className={`size-2 rotate-45 ${on ? "bg-night" : "bg-(--c)"}`} />}
-              {t.label}
-              <span className={`text-xs tabular-nums ${on ? "text-night/80" : "text-ink-muted"}`}>{t.n}</span>
+              {tab.value && <span aria-hidden className={`size-2 rotate-45 ${on ? "bg-night" : "bg-(--c)"}`} />}
+              {tab.label}
+              <span className={`text-xs tabular-nums ${on ? "text-night/80" : "text-ink-muted"}`}>{tab.n}</span>
             </Link>
           );
         })}
       </nav>
-      <p className="text-sm text-ink-muted" aria-live="polite"><strong className="text-ink">{items.length}</strong> {items.length === 1 ? "objeto" : "objetos"}{items.length !== shop.length && ` de ${shop.length}`}</p>
+      <p className="text-sm text-ink-muted" aria-live="polite">{t.rich(items.length === shop.length ? "count" : "countOf", { count: items.length, total: shop.length, b: (c) => <strong className="text-ink">{c}</strong> })}</p>
 
       {items.length === 0 ? (
-        <EmptyState title="Ningún objeto coincide" hint="Prueba con otra búsqueda o quita algún filtro." />
+        <EmptyState title={t("noMatch")} hint={t("noMatchHint")} />
       ) : (
         <div className={`grid gap-6 ${visibleCats.length === 1 ? "" : "lg:grid-cols-3"}`}>
           {visibleCats.map((c) => {
             const list = items.filter((i) => i.item_slot_type === c);
             const avg = groupWinRate(usage, list.map((i) => i.id));
             return (
-              <section key={c} aria-label={CATEGORY[c].label} style={catVar(c)} className="space-y-5 rounded-xl border border-(--c)/30 border-t-4 border-t-(--c) bg-panel/60 p-3 pt-4 sm:p-4">
+              <section key={c} aria-label={tc(c)} style={catVar(c)} className="space-y-5 rounded-xl border border-(--c)/30 border-t-4 border-t-(--c) bg-panel/60 p-3 pt-4 sm:p-4">
                 <h2 className="flex flex-wrap items-center gap-x-3 gap-y-1">
                   <span aria-hidden className="size-3 rotate-45 bg-(--c)" />
-                  <span className="font-display text-2xl font-black">{CATEGORY[c].label}</span>
+                  <span className="font-display text-2xl font-black">{tc(c)}</span>
                   <Chip tone={CATEGORY[c].tone}>{list.length}</Chip>
-                  {avg !== null && <span className="ml-auto text-xs text-ink-muted">Win rate medio <strong className="text-ink tabular-nums">{fmtPct(avg)}</strong></span>}
+                  {avg !== null && <span className="ml-auto text-xs text-ink-muted">{t.rich("avgWin", { value: fmtPct(avg), b: (c) => <strong className="text-ink tabular-nums">{c}</strong> })}</span>}
                 </h2>
-                {[1, 2, 3, 4].map((t) => {
-                  const group = list.filter((i) => i.item_tier === t).sort(order);
+                {[1, 2, 3, 4].map((n) => {
+                  const group = list.filter((i) => i.item_tier === n).sort(order);
                   if (!group.length) return null;
                   return (
-                    <div key={t} className="space-y-2">
+                    <div key={n} className="space-y-2">
                       <h3 className="flex items-center gap-2 border-b border-(--c)/30 pb-1.5 text-sm font-bold">
-                        <TierPips tier={t} />
-                        <span>Tier {t}</span>
-                        <span className="ml-auto font-normal tabular-nums text-ink-muted"><span aria-hidden className="text-(--c)">◆</span> {fmtNum(group[0].cost ?? 0)} almas</span>
+                        <TierPips tier={n} />
+                        <span>{tt("tierN", { tier: n })}</span>
+                        <span className="ml-auto font-normal tabular-nums text-ink-muted"><span aria-hidden className="text-(--c)">◆</span> {t("soulsEach", { count: fmtNum(group[0].cost ?? 0) })}</span>
                       </h3>
                       <div className={`grid grid-cols-[minmax(0,1fr)] gap-2 ${visibleCats.length === 1 ? "sm:grid-cols-2 lg:grid-cols-3" : ""}`}>
                         {group.map((i) => <ItemTile key={i.id} item={i} lang={lang} usage={usage.get(i.id)} />)}

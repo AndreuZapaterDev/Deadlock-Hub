@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { FilterBar } from "@/components/filters/filter-bar";
 import { HeroPortrait } from "@/components/hero/hero-card";
@@ -12,17 +13,21 @@ import { loadBigDays } from "@/lib/meta-data";
 import { loadPatches } from "@/lib/patch-data";
 import { effectiveDate, excerpt, groupByMonth, isBigDay, mentionedNames, readingMinutes } from "@/lib/patches";
 
-export const metadata: Metadata = { title: "Parches", description: "Notas de parche de Deadlock: changelog del foro y noticias de Steam, con los grandes días marcados." };
 export const revalidate = 3600;
 
-const longDate = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
-const dayOnly = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("es-ES", { day: "numeric", month: "short" });
-const monthTitle = (m: string) => new Date(`${m}-15T12:00:00Z`).toLocaleDateString("es-ES", { month: "long", year: "numeric" });
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("patches");
+  return { title: t("title"), description: t("metaDesc") };
+}
 const MAX_FACES = 6;
 
 type Sp = { source?: string; big?: string; q?: string };
 
 export default async function PatchesPage({ searchParams }: { searchParams: Promise<Sp> }) {
+  const [t, locale] = await Promise.all([getTranslations("patches"), getLocale()]);
+  const longDate = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
+  const dayOnly = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString(locale, { day: "numeric", month: "short" });
+  const monthTitle = (m: string) => new Date(`${m}-15T12:00:00Z`).toLocaleDateString(locale, { month: "long", year: "numeric" });
   const sp = await searchParams;
   const [res, bigDays, heroes] = await Promise.all([loadPatches(), loadBigDays(), getHeroes()]);
   const q = (sp.q ?? "").trim().toLowerCase();
@@ -43,45 +48,45 @@ export default async function PatchesPage({ searchParams }: { searchParams: Prom
 
   return (
     <div className="space-y-8">
-      <PosterHeader compact title="Parches" subtitle="Changelog del foro y noticias de Steam" />
+      <PosterHeader compact title={t("title")} subtitle={t("subtitle")} />
       <div className="flex flex-wrap items-end gap-3">
         <Suspense>
           <FilterBar
             fields={[
-              { name: "q", label: "Buscar", type: "search", placeholder: "Héroe, objeto, palabra…" },
-              { name: "source", label: "Fuente", type: "select", allLabel: "Todas", options: [{ value: "forum", label: "Foro (changelog)" }, { value: "steam", label: "Noticias de Steam" }] },
-              { name: "big", label: "Importancia", type: "select", allLabel: "Todos", options: [{ value: "1", label: "Solo grandes actualizaciones" }] },
+              { name: "q", label: t("search"), type: "search", placeholder: t("searchPlaceholder") },
+              { name: "source", label: t("source"), type: "select", allLabel: t("all"), options: [{ value: "forum", label: t("sourceForum") }, { value: "steam", label: t("sourceSteam") }] },
+              { name: "big", label: t("importance"), type: "select", allLabel: t("allM"), options: [{ value: "1", label: t("onlyBig") }] },
             ]}
           />
         </Suspense>
-        <Button href="/patches/diff" variant="secondary">Ver los cambios de números</Button>
+        <Button href="/patches/diff" variant="secondary">{t("seeNumbers")}</Button>
       </div>
 
       {res.ok && (
         <>
           {/* Accesos rápidos a los filtros más usados, con cuántos parches hay en cada uno. */}
-          <nav aria-label="Atajos de filtro" className="flex flex-wrap gap-2">
+          <nav aria-label={t("filterShortcuts")} className="flex flex-wrap gap-2">
             {[
-              { label: "Todos", n: all.length, on: !sp.source && sp.big !== "1", href: tab({ source: undefined, big: undefined }) },
-              { label: "Grandes actualizaciones", n: bigCount, on: sp.big === "1", href: tab({ source: undefined, big: "1" }) },
-              { label: "Foro", n: enriched.filter((e) => e.p.source === "forum").length, on: sp.source === "forum" && sp.big !== "1", href: tab({ source: "forum", big: undefined }) },
-              { label: "Steam", n: enriched.filter((e) => e.p.source === "steam").length, on: sp.source === "steam" && sp.big !== "1", href: tab({ source: "steam", big: undefined }) },
-            ].map((t) => (
-              <Link key={t.label} href={t.href} replace scroll={false} aria-current={t.on ? "page" : undefined} className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass ${t.on ? "border-brass bg-ink text-bg" : "border-brass/50 hover:bg-brass/15"}`}>
-                {t.label}<span className={`text-xs tabular-nums ${t.on ? "text-bg/80" : "text-ink-muted"}`}>{t.n}</span>
+              { label: t("tabAll"), n: all.length, on: !sp.source && sp.big !== "1", href: tab({ source: undefined, big: undefined }) },
+              { label: t("tabBig"), n: bigCount, on: sp.big === "1", href: tab({ source: undefined, big: "1" }) },
+              { label: t("tabForum"), n: enriched.filter((e) => e.p.source === "forum").length, on: sp.source === "forum" && sp.big !== "1", href: tab({ source: "forum", big: undefined }) },
+              { label: t("tabSteam"), n: enriched.filter((e) => e.p.source === "steam").length, on: sp.source === "steam" && sp.big !== "1", href: tab({ source: "steam", big: undefined }) },
+            ].map((s) => (
+              <Link key={s.label} href={s.href} replace scroll={false} aria-current={s.on ? "page" : undefined} className={`inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass ${s.on ? "border-brass bg-ink text-bg" : "border-brass/50 hover:bg-brass/15"}`}>
+                {s.label}<span className={`text-xs tabular-nums ${s.on ? "text-bg/80" : "text-ink-muted"}`}>{s.n}</span>
               </Link>
             ))}
           </nav>
           <p className="text-sm text-ink-muted" aria-live="polite">
-            <strong className="text-ink">{shown.length}</strong> de {all.length} parches{latest && <> · el último, el {longDate(latest.day)}</>}
+            {t.rich("countLine", { shown: shown.length, total: all.length, b: (c) => <strong className="text-ink">{c}</strong> })}{latest && t("latest", { date: longDate(latest.day) })}
           </p>
         </>
       )}
 
       {!res.ok ? (
-        <ErrorState title="No se han podido cargar los parches" hint="La API no responde ahora mismo. Vuelve a intentarlo en un momento." />
+        <ErrorState title={t("loadError")} hint={t("loadErrorHint")} />
       ) : shown.length === 0 ? (
-        <EmptyState title="No hay parches con esos filtros" hint="Prueba con otra búsqueda o quita algún filtro." />
+        <EmptyState title={t("none")} hint={t("noneHint")} />
       ) : (
         <div className="space-y-10">
           {groups.map((g) => (
@@ -99,9 +104,9 @@ export default async function PatchesPage({ searchParams }: { searchParams: Prom
                       <span aria-hidden className={`absolute -left-[1.62rem] top-5 size-3 rounded-full border-2 ${big ? "border-accent bg-accent" : "border-brass bg-bg"}`} />
                       <Link href={`/patches/${p.id}`} className={`block space-y-2 rounded-md border bg-surface p-4 shadow-card transition duration-150 hover:-translate-y-0.5 hover:shadow-pop focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brass ${big ? "border-accent/60" : "border-brass/30 hover:border-brass"}`}>
                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                          <h3 className="min-w-0 flex-1 font-display text-lg font-black leading-tight">{p.title || "Sin título"}</h3>
-                          {big && <Chip tone="apricot">Gran actualización</Chip>}
-                          <Chip tone={p.source === "forum" ? "teal" : "neutral"}>{p.source === "forum" ? "Foro" : "Steam"}</Chip>
+                          <h3 className="min-w-0 flex-1 font-display text-lg font-black leading-tight">{p.title || t("untitled")}</h3>
+                          {big && <Chip tone="apricot">{t("bigUpdate")}</Chip>}
+                          <Chip tone={p.source === "forum" ? "teal" : "neutral"}>{p.source === "forum" ? t("forum") : t("steam")}</Chip>
                           <time dateTime={p.date} className="text-sm tabular-nums text-ink-muted">{dayOnly(day)}</time>
                         </div>
                         {text && <p className="line-clamp-2 text-sm text-ink-muted">{excerpt(p.html, 220)}</p>}
@@ -111,10 +116,10 @@ export default async function PatchesPage({ searchParams }: { searchParams: Prom
                               <span className="flex -space-x-2">
                                 {faces.slice(0, MAX_FACES).map((h) => <HeroPortrait key={h.id} hero={h} small className="size-7 ring-2 ring-surface" />)}
                               </span>
-                              <span>{faces.length === 1 ? faces[0].name : `${faces.length} héroes mencionados`}</span>
+                              <span>{faces.length === 1 ? faces[0].name : t("heroesMentioned", { count: faces.length })}</span>
                             </span>
                           )}
-                          <span>{readingMinutes(text)} min de lectura</span>
+                          <span>{t("readingMin", { count: readingMinutes(text) })}</span>
                         </div>
                       </Link>
                     </li>

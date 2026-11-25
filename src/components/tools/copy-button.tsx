@@ -1,9 +1,11 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 
 /** Copia un texto al portapapeles. `text` puede ser una función (se evalúa al pulsar, p. ej. para leer la URL actual). */
-export function CopyButton({ text, label = "Copiar", variant = "secondary" }: { text: string | (() => string); label?: string; variant?: "primary" | "secondary" | "ghost" }) {
+export function CopyButton({ text, label, variant = "secondary" }: { text: string | (() => string); label?: string; variant?: "primary" | "secondary" | "ghost" }) {
+  const t = useTranslations("common");
   const [state, setState] = useState<"idle" | "ok" | "error">("idle");
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -36,7 +38,7 @@ export function CopyButton({ text, label = "Copiar", variant = "secondary" }: { 
 
   return (
     <Button variant={variant} onClick={copy} aria-live="polite">
-      {state === "ok" ? "Copiado ✓" : state === "error" ? "No se pudo copiar" : label}
+      {state === "ok" ? t("copied") : state === "error" ? t("copyFailed") : label ?? t("copy")}
     </Button>
   );
 }

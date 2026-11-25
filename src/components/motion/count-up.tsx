@@ -1,12 +1,9 @@
 "use client";
 import { animate, useInView, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { fmtDuration, fmtNum } from "@/lib/format";
 
-const nf = new Intl.NumberFormat("es-ES");
-const fmt = {
-  num: (n: number) => nf.format(Math.round(n)),
-  duration: (n: number) => `${Math.floor(n / 60)}:${String(Math.floor(n % 60)).padStart(2, "0")}`,
-};
+const fmt = { num: (n: number) => fmtNum(Math.round(n)), duration: fmtDuration };
 
 /**
  * Número que sube desde 0 al entrar en pantalla. El HTML del servidor ya trae el valor final

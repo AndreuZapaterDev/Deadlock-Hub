@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import { pillClass } from "@/components/ui/pill";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
 import { BarChartBase, LineChartBase } from "@/components/charts/lazy-charts";
 import { HeroPortrait } from "@/components/hero/hero-card";
 import { MatchRow } from "@/components/match/match-row";
@@ -25,6 +27,7 @@ import { loadNames, loadPlayer } from "@/lib/player-data";
 import { cumulativeWinRate, filterHistory, matchesPerDay, matchModeLabel, rankSeries, recentForm, streaks, type ResultFilter } from "@/lib/player-stats";
 import { parseAccountId } from "@/lib/steam-id";
 import type { Relation } from "@/lib/types";
+import { Stat } from "@/components/ui/stat";
 
 const PAGE_SIZE = 20;
 
@@ -32,30 +35,22 @@ export async function generateMetadata({ params }: { params: Promise<{ accountId
   const id = parseAccountId((await params).accountId);
   if (id === null) return {};
   const data = await loadPlayer(id);
-  return { title: data.state === "ok" ? data.profile?.personaname ?? `Jugador #${id}` : "Jugador" };
-}
-
-function Stat({ value, label, hint }: { value: string; label: string; hint?: string }) {
-  return (
-    <div className="rounded-md border border-brass/30 bg-surface p-4 text-center shadow-card">
-      <p className="font-display text-3xl font-black">{value}</p>
-      <p className="mt-1 text-sm text-ink-muted">{label}</p>
-      {hint && <p className="text-xs text-ink-muted">{hint}</p>}
-    </div>
-  );
+  const t = await getTranslations("playerPage");
+  return { title: data.state === "ok" ? data.profile?.personaname ?? t("fallbackName", { id }) : (await getTranslations("players"))("title") };
 }
 
 export default async function PlayerPage({ params, searchParams }: { params: Promise<{ accountId: string }>; searchParams: Promise<{ page?: string; res?: string; hero?: string }> }) {
+  const [t, tm, locale] = await Promise.all([getTranslations("playerPage"), getTranslations("modes"), getLocale()]);
   const sp = await searchParams;
   const id = parseAccountId((await params).accountId);
   if (id === null) notFound();
 
   const data = await loadPlayer(id);
-  if (data.state !== "ok") return <ProfileProblem state={data.state} subject={`Cuenta #${id}`} />;
+  if (data.state !== "ok") return <ProfileProblem state={data.state} subject={t("accountN", { id })} />;
 
   const { profile, rank, region, history, summary, heroes, mates, enemies, builds } = data;
   const [heroNames, ranks] = await Promise.all([getHeroNames(), getRanks()]);
-  const name = profile?.personaname ?? `Jugador #${id}`;
+  const name = profile?.personaname ?? t("fallbackName", { id });
   const tier = rank ? ranks.find((r) => r.tier === rank.rank) : undefined;
 
   // Compañeros y rivales: los más frecuentes y los de mejor récord (mínimo 20 partidas, para que un 1/1 no sea "100 %")
@@ -76,7 +71,7 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
     const q = new URLSearchParams(Object.entries({ res: sp.res, hero: sp.hero, ...extra }).filter((e): e is [string, string] => !!e[1] && e[1] !== "all"));
     return `/players/${id}${q.size ? `?${q}` : ""}#history`;
   };
-  const chip = (active: boolean) => `rounded-full border px-3 py-1 text-sm font-semibold transition-colors ${active ? "border-brass bg-ink text-bg" : "border-brass/50 hover:bg-brass/15"}`;
+  const chip = (active: boolean) => pillClass(active, "sm");
   const form = recentForm(history, 20);
   const run = streaks(history);
 
@@ -90,7 +85,7 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
   const favorites = [...heroes].sort((a, b) => b.matches_played - a.matches_played).slice(0, 3);
   const heroRows = heroes.map((h) => ({
     id: h.hero_id,
-    hero: heroNames.get(h.hero_id) ?? `Héroe #${h.hero_id}`,
+    hero: heroNames.get(h.hero_id) ?? t("heroFallback", { id: h.hero_id }),
     matches: h.matches_played,
     winrate: h.matches_played ? h.wins / h.matches_played : 0,
     kda: (h.kills + h.assists) / Math.max(h.deaths, 1),
@@ -101,40 +96,43 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
   return (
     <div className="space-y-12">
 
-      <PosterHeader title={name} subtitle={`Cuenta #${id}${region ? ` · ${region}` : ""}`}>
+      <PosterHeader title={name} subtitle={region ? t("accountLine", { id, region }) : t("accountN", { id })}>
         <div className="flex flex-wrap items-start justify-center gap-3">
           <FollowButton id={id} name={name} />
           <RefreshButton accountId={id} />
-          <Button href={`/players/compare?a=${id}`} variant="secondary">Comparar con…</Button>
-          {profile?.profileurl && <a href={profile.profileurl} target="_blank" rel="noopener noreferrer" className="link-brass self-center text-sm font-semibold text-cream">Ver en Steam ↗</a>}
+          <Button href={`/players/compare?a=${id}`} variant="secondary">{t("compareWith")}</Button>
+          {profile?.profileurl && <a href={profile.profileurl} target="_blank" rel="noopener noreferrer" className="link-brass self-center text-sm font-semibold text-cream">{t("viewOnSteam")}</a>}
         </div>
       </PosterHeader>
 
+      <Tabs syncHash sticky label={t("tabsLabel")} tabs={[
+        { id: "summary", label: t("tabSummary"), content: (
+          <div className="space-y-12">
       <section aria-labelledby="summary" className="space-y-5">
-        <SectionTitle id="summary">Resumen</SectionTitle>
+        <SectionTitle id="summary">{t("tabSummary")}</SectionTitle>
         <div className="grid gap-5 lg:grid-cols-[18rem_1fr]">
           <Card className="space-y-3">
-            <p className="text-sm text-ink-muted">Rango actual</p>
-            {rank && tier ? <RankBadge tier={tier.tier} sub={rank.subrank} name={tier.name} color={tier.color} size="lg" /> : <p className="font-semibold">Sin rango</p>}
-            {rank?.last_match && <p className="text-xs text-ink-muted">Última partida {timeAgo(rank.last_match.start_time)}</p>}
+            <p className="text-sm text-ink-muted">{t("currentRank")}</p>
+            {rank && tier ? <RankBadge tier={tier.tier} sub={rank.subrank} name={tier.name} color={tier.color} size="lg" /> : <p className="font-semibold">{t("noRank")}</p>}
+            {rank?.last_match && <p className="text-xs text-ink-muted">{t("lastMatch", { when: timeAgo(rank.last_match.start_time, locale) })}</p>}
           </Card>
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            <Stat value={fmtNum(summary.matches)} label="Partidas" />
-            <Stat value={fmtPct(summary.winRate)} label="Win rate" hint={`${fmtNum(summary.wins)} victorias`} />
-            <Stat value={fmtDec(summary.kda)} label="KDA medio" hint="(K + A) / D" />
-            <Stat value={fmtNum(Math.round(summary.soulsPerMin))} label="Almas por minuto" />
+            <Stat value={fmtNum(summary.matches)} label={t("statMatches")} />
+            <Stat value={fmtPct(summary.winRate)} label={t("statWin")} hint={t("statWins", { count: fmtNum(summary.wins) })} />
+            <Stat value={fmtDec(summary.kda)} label={t("statKda")} hint="(K + A) / D" />
+            <Stat value={fmtNum(Math.round(summary.soulsPerMin))} label={t("statSouls")} />
           </div>
         </div>
         {history.length > 0 && (
           <Card className="space-y-3">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <h3 className="font-semibold">Forma reciente <span className="text-sm font-normal text-ink-muted">(últimas {form.length}, la más reciente a la izquierda)</span></h3>
+              <h3 className="font-semibold">{t("recentForm")} <span className="text-sm font-normal text-ink-muted">{t("recentFormNote", { count: form.length })}</span></h3>
               <p className="text-sm text-ink-muted">
-                Racha actual: <strong className={run.current > 0 ? "text-sage-ink" : "text-rose-ink"}>{run.current > 0 ? `${run.current} victoria${run.current === 1 ? "" : "s"}` : `${-run.current} derrota${run.current === -1 ? "" : "s"}`}</strong> · mejor racha de victorias: <strong className="text-ink">{run.bestWin}</strong> · duración media: <strong className="text-ink">{fmtDuration(summary.avgDuration)}</strong>
+                {t.rich("streakLine", { current: run.current > 0 ? t("winsStreak", { count: run.current }) : t("lossStreak", { count: -run.current }), best: run.bestWin, duration: fmtDuration(summary.avgDuration), b: (c) => <strong className={run.current > 0 ? "text-sage-ink" : "text-rose-ink"}>{c}</strong>, em: (c) => <strong className="text-ink">{c}</strong> })}
               </p>
             </div>
-            <ol aria-label="Resultados recientes" className="flex flex-wrap gap-1">
-              {form.map((w, i) => <li key={i} title={w ? "Victoria" : "Derrota"} className={`grid size-6 place-items-center rounded-sm text-[11px] font-black text-bg ${w ? "bg-sage" : "bg-rose"}`}>{w ? "V" : "D"}</li>)}
+            <ol aria-label={t("recentResults")} className="flex flex-wrap gap-1">
+              {form.map((w, i) => <li key={i} title={w ? t("win") : t("loss")} className={`grid size-6 place-items-center rounded-sm text-[11px] font-black text-bg ${w ? "bg-sage" : "bg-rose"}`}>{w ? t("winShort") : t("lossShort")}</li>)}
             </ol>
           </Card>
         )}
@@ -146,8 +144,8 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
                 <Link key={f.hero_id} href={`/heroes?q=${encodeURIComponent(heroNames.get(f.hero_id) ?? "")}`} className="flex items-center gap-3 rounded-md border border-brass/30 bg-surface p-2 pr-4 shadow-card transition-colors hover:bg-brass/10">
                   <HeroPortrait hero={{ id: f.hero_id, name: heroNames.get(f.hero_id) ?? "?" }} small className="h-14 w-14 shrink-0" />
                   <span className="min-w-0 flex-1 space-y-1">
-                    <span className="block truncate font-semibold">{heroNames.get(f.hero_id) ?? `Héroe #${f.hero_id}`}</span>
-                    <span className="block text-xs text-ink-muted">{fmtNum(f.matches_played)} partidas · {fmtPct(rate, 0)} victorias</span>
+                    <span className="block truncate font-semibold">{heroNames.get(f.hero_id) ?? t("heroFallback", { id: f.hero_id })}</span>
+                    <span className="block text-xs text-ink-muted">{t("favLine", { matches: fmtNum(f.matches_played), rate: fmtPct(rate, 0) })}</span>
                     <RateMeter rate={rate} />
                   </span>
                 </Link>
@@ -155,43 +153,46 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
             })}
           </div>
         )}
-        <p className="text-xs text-ink-muted">Calculado con las {fmtNum(history.length)} partidas que devuelve la API. El historial puede no incluir todas las partidas del jugador.</p>
+        <p className="text-xs text-ink-muted">{t("calcNote", { count: fmtNum(history.length) })}</p>
       </section>
 
       {history.length > 0 && (
         <section aria-labelledby="charts" className="space-y-5">
-          <SectionTitle id="charts">Evolución</SectionTitle>
+          <SectionTitle id="charts">{t("evolution")}</SectionTitle>
           <div className="grid gap-6 lg:grid-cols-2">
             <Card>
-              <h3 className="mb-2 font-semibold">Win rate acumulado</h3>
-              <LineChartBase data={winCurve} xKey="label" series={[{ key: "value", label: "Win rate acumulado" }]} yDomain={["dataMin - 2", "dataMax + 2"]} suffix=" %" />
+              <h3 className="mb-2 font-semibold">{t("cumulativeWin")}</h3>
+              <LineChartBase data={winCurve} xKey="label" series={[{ key: "value", label: t("cumulativeWin") }]} yDomain={["dataMin - 2", "dataMax + 2"]} suffix=" %" />
             </Card>
             <Card>
-              <h3 className="mb-2 font-semibold">Partidas por día (últimos 30 días)</h3>
+              <h3 className="mb-2 font-semibold">{t("perDay")}</h3>
               <BarChartBase data={perDay} />
             </Card>
           </div>
           {rankCurve.length >= 5 && (
             <Card>
-              <h3 className="mb-2 font-semibold">Rango en partidas ranked</h3>
-              <LineChartBase data={rankCurve} xKey="label" series={[{ key: "value", label: "Rango" }]} yLabels={rankNames} yDomain={[Math.floor(Math.min(...rankCurve.map((p) => p.value))), Math.ceil(Math.max(...rankCurve.map((p) => p.value)))]} />
-              <p className="mt-2 text-xs text-ink-muted">Solo con las {rankCurve.length} partidas ranked del historial que incluyen el rango; no se guarda la evolución completa.</p>
+              <h3 className="mb-2 font-semibold">{t("rankedRank")}</h3>
+              <LineChartBase data={rankCurve} xKey="label" series={[{ key: "value", label: t("rankSeriesName") }]} yLabels={rankNames} yDomain={[Math.floor(Math.min(...rankCurve.map((p) => p.value))), Math.ceil(Math.max(...rankCurve.map((p) => p.value)))]} />
+              <p className="mt-2 text-xs text-ink-muted">{t("rankNote", { count: rankCurve.length })}</p>
             </Card>
           )}
         </section>
       )}
 
+          </div>
+        ) },
+        { id: "history", label: t("tabMatches"), content: (
       <section aria-labelledby="history" className="space-y-4">
-        <SectionTitle id="history">Historial de partidas</SectionTitle>
+        <SectionTitle id="history">{t("history")}</SectionTitle>
         {history.length > 0 && (
           <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar por resultado">
-              {([["all", "Todas"], ["win", "Victorias"], ["loss", "Derrotas"]] as const).map(([v, label]) => (
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t("filterResult")}>
+              {([["all", t("all")], ["win", t("wins")], ["loss", t("losses")]] as const).map(([v, label]) => (
                 <Link key={v} href={histHref({ res: v, page: undefined })} aria-current={result === v ? "true" : undefined} className={chip(result === v)}>{label}</Link>
               ))}
             </div>
-            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar por héroe">
-              <Link href={histHref({ hero: undefined, page: undefined })} aria-current={heroFilter === undefined ? "true" : undefined} className={chip(heroFilter === undefined)}>Todos los héroes</Link>
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label={t("filterHero")}>
+              <Link href={histHref({ hero: undefined, page: undefined })} aria-current={heroFilter === undefined ? "true" : undefined} className={chip(heroFilter === undefined)}>{t("allHeroes")}</Link>
               {mostPlayed.map((h) => (
                 <Link key={h.hero_id} href={histHref({ hero: String(h.hero_id), page: undefined })} aria-current={heroFilter === h.hero_id ? "true" : undefined} className={chip(heroFilter === h.hero_id)}>{heroNames.get(h.hero_id) ?? `#${h.hero_id}`}</Link>
               ))}
@@ -199,77 +200,81 @@ export default async function PlayerPage({ params, searchParams }: { params: Pro
           </div>
         )}
         {history.length === 0 ? (
-          <EmptyState title="Este jugador no tiene partidas" hint="Aún no hay partidas suyas en los datos." />
+          <EmptyState title={t("noMatches")} hint={t("noMatchesHint")} />
         ) : filtered.length === 0 ? (
-          <EmptyState title="Ninguna partida con ese filtro" hint="Prueba con otro resultado u otro héroe." />
+          <EmptyState title={t("noFilterMatch")} hint={t("noFilterMatchHint")} />
         ) : (
           <>
             <div className="space-y-2">
-              {slice.map((m) => <MatchRow key={m.match_id} match={m} hero={{ id: m.hero_id, name: heroNames.get(m.hero_id) ?? `Héroe #${m.hero_id}` }} modeLabel={matchModeLabel(m.match_mode)} />)}
+              {slice.map((m) => <MatchRow key={m.match_id} match={m} hero={{ id: m.hero_id, name: heroNames.get(m.hero_id) ?? t("heroFallback", { id: m.hero_id }) }} modeLabel={matchModeLabel(m.match_mode, tm)} />)}
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <p className="text-sm text-ink-muted">Partidas {fmtNum((page - 1) * PAGE_SIZE + 1)}–{fmtNum(Math.min(page * PAGE_SIZE, filtered.length))} de {fmtNum(filtered.length)}</p>
+              <p className="text-sm text-ink-muted">{t("matchesRange", { from: fmtNum((page - 1) * PAGE_SIZE + 1), to: fmtNum(Math.min(page * PAGE_SIZE, filtered.length)), total: fmtNum(filtered.length) })}</p>
               <Pagination page={page} pages={pages} href={(p) => histHref({ page: p > 1 ? String(p) : undefined })} />
             </div>
           </>
         )}
       </section>
-
-      {heroRows.length > 0 && (
+        ) },
+        ...(heroRows.length > 0 ? [{ id: "heroes", label: t("tabHeroes"), content: (
         <section aria-labelledby="heroes" className="space-y-4">
-          <SectionTitle id="heroes">Héroes</SectionTitle>
+          <SectionTitle id="heroes">{t("tabHeroes")}</SectionTitle>
           <SortableTable
             columns={[
-              { key: "hero", label: "Héroe" },
-              { key: "matches", label: "Partidas", numeric: true },
-              { key: "winrate", label: "Win rate", numeric: true },
-              { key: "kda", label: "KDA", numeric: true },
-              { key: "souls", label: "Almas/min", numeric: true },
-              { key: "last", label: "Última vez", numeric: true },
+              { key: "hero", label: t("colHero") },
+              { key: "matches", label: t("colMatches"), numeric: true },
+              { key: "winrate", label: t("colWin"), numeric: true },
+              { key: "kda", label: t("colKda"), numeric: true },
+              { key: "souls", label: t("colSouls"), numeric: true },
+              { key: "last", label: t("colLast"), numeric: true },
             ]}
             rows={heroRows}
             initialSort={{ key: "matches", dir: "desc" }}
             format={{ matches: "num", winrate: "pct", kda: "dec", souls: "num", last: "ago" }}
           />
         </section>
-      )}
-
+        ) }] : []),
+        { id: "people", label: t("tabPeople"), content: (
       <section aria-labelledby="people" className="space-y-4">
-        <SectionTitle id="people">Compañeros y rivales</SectionTitle>
+        <SectionTitle id="people">{t("tabPeople")}</SectionTitle>
         <div className="grid gap-8 lg:grid-cols-2">
           <div>
-            <h3 className="mb-2 font-display text-lg font-black">Compañeros</h3>
+            <h3 className="mb-2 font-display text-lg font-black">{t("mates")}</h3>
             <Tabs tabs={[
-              { id: "mate-top", label: "Más partidas", content: <PlayerList rows={lists.mateTop} names={names} empty="Sin compañeros habituales." /> },
-              { id: "mate-best", label: "Mejor win rate", content: <PlayerList rows={lists.mateBest} names={names} empty="Ningún compañero con 20 partidas o más." /> },
+              { id: "mate-top", label: t("mostMatches"), content: <PlayerList rows={lists.mateTop} names={names} empty={t("noMates")} /> },
+              { id: "mate-best", label: t("bestWin"), content: <PlayerList rows={lists.mateBest} names={names} empty={t("noMatesBest")} /> },
             ]} />
           </div>
           <div>
-            <h3 className="mb-2 font-display text-lg font-black">Rivales</h3>
+            <h3 className="mb-2 font-display text-lg font-black">{t("enemies")}</h3>
             <Tabs tabs={[
-              { id: "enemy-top", label: "Más partidas", content: <PlayerList rows={lists.enemyTop} names={names} empty="Sin rivales habituales." /> },
-              { id: "enemy-worst", label: "Peor récord", content: <PlayerList rows={lists.enemyWorst} names={names} empty="Ningún rival con 20 partidas o más." /> },
+              { id: "enemy-top", label: t("mostMatches"), content: <PlayerList rows={lists.enemyTop} names={names} empty={t("noEnemies")} /> },
+              { id: "enemy-worst", label: t("worstRecord"), content: <PlayerList rows={lists.enemyWorst} names={names} empty={t("noEnemiesWorst")} /> },
             ]} />
           </div>
         </div>
-        <p className="text-xs text-ink-muted">Los nombres se piden a Steam; si un jugador no tiene perfil conocido se muestra solo su ID.</p>
+        <p className="text-xs text-ink-muted">{t("namesNote")}</p>
       </section>
 
+        ) },
+        { id: "builds", label: t("tabBuilds"), content: (
       <section aria-labelledby="builds" className="space-y-4">
-        <SectionTitle id="builds">Builds publicadas</SectionTitle>
+        <SectionTitle id="builds">{t("publishedBuilds")}</SectionTitle>
         {builds.length === 0 ? (
-          <EmptyState title="Sin builds publicadas" hint="Este jugador aún no ha compartido ninguna build." />
+          <EmptyState title={t("noBuilds")} hint={t("noBuildsHint")} />
         ) : (
           <ul className="grid gap-3 sm:grid-cols-2">
             {builds.map((b) => (
               <li key={b.hero_build.hero_build_id} className="flex items-center justify-between gap-3 rounded-md border border-brass/30 bg-surface p-3 shadow-card">
                 <Link href={`/builds/${b.hero_build.hero_id}/${b.hero_build.hero_build_id}`} className="link-brass min-w-0 truncate font-semibold">{b.hero_build.name}</Link>
-                <Chip>{heroNames.get(b.hero_build.hero_id) ?? `Héroe #${b.hero_build.hero_id}`}</Chip>
+                <Chip>{heroNames.get(b.hero_build.hero_id) ?? t("heroFallback", { id: b.hero_build.hero_id })}</Chip>
               </li>
             ))}
           </ul>
         )}
       </section>
+        ) },
+      ]} />
     </div>
   );
 }

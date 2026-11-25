@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { BarChartBase, SankeyChart } from "@/components/charts/lazy-charts";
 import { HeroChip } from "@/components/hero/hero-chip";
 import { Card } from "@/components/ui/card";
@@ -12,21 +13,19 @@ import { loadCounters, loadFlow, loadHeroDeep, loadHeroMeta, loadLeaderboard, lo
 import { buildFlowSankey } from "@/lib/sankey";
 import { slugify } from "@/lib/slug";
 import type { Hero, Item } from "@/lib/types";
+import { Panel } from "@/components/ui/panel";
+import { Rank } from "@/components/ui/rank";
+import { Stat } from "@/components/ui/stat";
 
 const ABILITY_COLOR = ["bg-apricot", "bg-lilac", "bg-sage", "bg-teal"];
 
-function Stat({ value, label, children }: { value: string; label: string; children?: React.ReactNode }) {
-  return (
-    <div className="rounded-md border border-brass/30 bg-surface p-4 text-center shadow-card">
-      <p className="font-display text-3xl font-black">{value}</p>
-      <p className="mt-1 text-sm text-ink-muted">{label}</p>
-      {children}
-    </div>
-  );
-}
-
 /** Estadísticas de meta de una ficha de héroe: win/pick/ban, orden de habilidades, builds, flujo de objetos, counters, sinergias y leaderboard. */
-export async function HeroMeta({ hero, abilities }: { hero: Hero; abilities: Item[] }) {
+export type MetaPart = "meta" | "order" | "builds" | "flow" | "matchups" | "board";
+
+/** `parts`: qué bloques pinta (la ficha los reparte en varias pestañas; los datos van en caché, así que repetir la llamada no repite las peticiones). */
+export async function HeroMeta({ hero, abilities, parts }: { hero: Hero; abilities: Item[]; parts: MetaPart[] }) {
+  const show = (p: MetaPart) => parts.includes(p);
+  const [t, th, tp] = await Promise.all([getTranslations("heroMeta"), getTranslations("heroPage"), getTranslations("tierList")]);
   const [meta, counters, synergy, deep, flow, board, heroes, items] = await Promise.all([
     loadHeroMeta({}),
     loadCounters({}),
@@ -57,35 +56,38 @@ export async function HeroMeta({ hero, abilities }: { hero: Hero; abilities: Ite
 
   return (
     <>
+      {show("meta") && (
       <section aria-labelledby="meta" className="space-y-4">
-        <SectionTitle id="meta">Estadísticas del meta</SectionTitle>
+        <SectionTitle id="meta">{th("metaStats")}</SectionTitle>
         {mine ? (
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-            <Stat value={fmtPct(mine.winRate)} label="Win rate">
-              <div className="mt-2 flex items-center justify-center gap-2 text-xs text-ink-muted"><TierBadge tier={mine.tier} size="sm" /> Puesto {mine.rank} de {ranked.length}</div>
+            <Stat value={fmtPct(mine.winRate)} label={tp("colWin")}>
+              <div className="mt-2 flex items-center justify-center gap-2 text-xs text-ink-muted"><TierBadge tier={mine.tier} size="sm" /> {t("rankOf", { rank: mine.rank, total: ranked.length })}</div>
             </Stat>
-            <Stat value={fmtPct(mine.pickRate)} label="Pick rate" />
-            <Stat value={mine.banRate === null ? "—" : fmtPct(mine.banRate)} label="Ban rate" />
-            <Stat value={fmtDec(mine.kda)} label="KDA medio" />
+            <Stat value={fmtPct(mine.pickRate)} label={tp("colPick")} />
+            <Stat value={mine.banRate === null ? "—" : fmtPct(mine.banRate)} label={tp("colBan")} />
+            <Stat value={fmtDec(mine.kda)} label={t("kdaAvg")} />
           </div>
         ) : (
-          <ErrorState title="No se han podido cargar las estadísticas de este héroe" />
+          <ErrorState title={t("statsError")} />
         )}
-        <p className="text-xs text-ink-muted">Ver todos los héroes en la <Link href="/tier-list" className="link-brass font-semibold">tier list</Link>.</p>
+        <p className="text-xs text-ink-muted">{t.rich("seeAllIn", { link: (c) => <Link href="/tier-list" className="link-brass font-semibold">{c}</Link> })}</p>
       </section>
+      )}
 
+      {show("order") && (
       <section aria-labelledby="order" className="space-y-4">
-        <SectionTitle id="order">Orden de habilidades</SectionTitle>
+        <SectionTitle id="order">{th("abilityOrder")}</SectionTitle>
         {order.length && orderIsThisHero ? (
           <div className="grid gap-4 lg:grid-cols-2">
             <div className="space-y-3">
               {order.map((o, i) => (
                 <Card key={i} className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-semibold">Orden {i + 1}</span>
-                    <span className="text-ink-muted">{fmtPct(winRate(o.wins, o.matches))} · {fmtNum(o.matches)} partidas</span>
+                    <span className="font-semibold">{t("orderN", { n: i + 1 })}</span>
+                    <span className="text-ink-muted">{t("orderMatches", { rate: fmtPct(winRate(o.wins, o.matches)), matches: fmtNum(o.matches) })}</span>
                   </div>
-                  <ol className="flex flex-wrap gap-1" aria-label={`Orden de subida: ${o.abilities.map((a) => abilityIndex.get(a) ?? "?").join(", ")}`}>
+                  <ol className="flex flex-wrap gap-1" aria-label={t("orderAria", { list: o.abilities.map((a) => abilityIndex.get(a) ?? "?").join(", ") })}>
                     {o.abilities.map((a, n) => {
                       const k = abilityIndex.get(a);
                       return <li key={n} className={`grid size-7 place-items-center rounded-sm text-sm font-black text-night ${k ? ABILITY_COLOR[k - 1] : "bg-brass/30"}`}>{k ?? "?"}</li>;
@@ -99,26 +101,28 @@ export async function HeroMeta({ hero, abilities }: { hero: Hero; abilities: Ite
             </div>
             {maxFirst.length > 0 && (
               <Card>
-                <h3 className="mb-2 font-semibold">Win rate según la habilidad que se maximiza primero</h3>
+                <h3 className="mb-2 font-semibold">{t("maxFirstTitle")}</h3>
                 <BarChartBase data={maxFirst} percent height={240} />
               </Card>
             )}
           </div>
         ) : (
-          <EmptyState title="Sin datos de orden de habilidades" hint="No hay partidas suficientes con estos filtros." />
+          <EmptyState title={t("noOrder")} hint={t("noOrderHint")} />
         )}
       </section>
+      )}
 
+      {show("builds") && (
       <section aria-labelledby="builds" className="space-y-4">
-        <SectionTitle id="builds">Builds populares</SectionTitle>
+        <SectionTitle id="builds">{t("popularBuilds")}</SectionTitle>
         {builds.length ? (
           <div className="overflow-x-auto rounded-md border border-brass/30">
             <table className="w-full min-w-lg border-collapse text-sm">
-              <thead className="bg-brass/10 text-left"><tr><th scope="col" className="px-3 py-2 font-semibold">Build</th><th scope="col" className="px-3 py-2 text-right font-semibold">Partidas</th><th scope="col" className="px-3 py-2 text-right font-semibold">Win rate</th><th scope="col" className="px-3 py-2 text-right font-semibold">Jugadores</th></tr></thead>
+              <thead className="bg-brass/10 text-left"><tr><th scope="col" className="px-3 py-2 font-semibold">{t("colBuild")}</th><th scope="col" className="px-3 py-2 text-right font-semibold">{t("colMatches")}</th><th scope="col" className="px-3 py-2 text-right font-semibold">{t("colWin")}</th><th scope="col" className="px-3 py-2 text-right font-semibold">{t("colPlayers")}</th></tr></thead>
               <tbody>
                 {builds.map((b) => (
                   <tr key={b.hero_build_id} className="border-t border-brass/20">
-                    <td className="px-3 py-2 font-semibold"><Link href={`/builds/${hero.id}/${b.hero_build_id}`} className="link-brass">{deep?.buildNames.get(b.hero_build_id) ?? `Build #${b.hero_build_id}`}</Link></td>
+                    <td className="px-3 py-2 font-semibold"><Link href={`/builds/${hero.id}/${b.hero_build_id}`} className="link-brass">{deep?.buildNames.get(b.hero_build_id) ?? t("buildFallback", { id: b.hero_build_id })}</Link></td>
                     <td className="px-3 py-2 text-right tabular-nums">{fmtNum(b.matches)}</td>
                     <td className="px-3 py-2 text-right tabular-nums">{fmtPct(winRate(b.wins, b.matches))}</td>
                     <td className="px-3 py-2 text-right tabular-nums">{fmtNum(b.players)}</td>
@@ -128,63 +132,69 @@ export async function HeroMeta({ hero, abilities }: { hero: Hero; abilities: Ite
             </table>
           </div>
         ) : (
-          <EmptyState title="Sin builds con datos" />
+          <EmptyState title={t("noBuilds")} />
         )}
-        <p className="text-xs text-ink-muted">Solo las builds publicadas tienen nombre; el resto se identifica por su número. Busca más en el <Link href={`/builds?hero=${hero.id}`} className="link-brass font-semibold">buscador de builds</Link> o pruébalas en el <Link href={`/build-planner?h=${slugify(hero.name)}`} className="link-brass font-semibold">planner</Link>.</p>
+        <p className="text-xs text-ink-muted">{t.rich("buildsNote", { search: (c) => <Link href={`/builds?hero=${hero.id}`} className="link-brass font-semibold">{c}</Link>, planner: (c) => <Link href={`/build-planner?h=${slugify(hero.name)}`} className="link-brass font-semibold">{c}</Link> })}</p>
       </section>
+      )}
 
+      {show("flow") && (
       <section aria-labelledby="flow" className="space-y-4">
-        <SectionTitle id="flow">Objetos por fase</SectionTitle>
+        <SectionTitle id="flow">{t("itemsByPhase")}</SectionTitle>
         {sankey && sankey.nodes.length ? (
           <Card>
-            <p className="mb-2 text-xs text-ink-muted">Los 4 objetos más comprados en cada fase de la partida (de izquierda a derecha) y cómo se pasa de uno a otro.</p>
+            <p className="mb-2 text-xs text-ink-muted">{t("flowNote")}</p>
             <SankeyChart data={sankey} />
           </Card>
         ) : (
-          <ErrorState title="No se ha podido cargar el flujo de objetos" />
+          <ErrorState title={t("flowError")} />
         )}
       </section>
+      )}
 
+      {show("matchups") && (
       <section aria-labelledby="matchups" className="space-y-4">
-        <SectionTitle id="matchups">Counters y sinergias</SectionTitle>
+        <SectionTitle id="matchups">{t("matchups")}</SectionTitle>
         {!counters.ok || !synergy.ok ? (
-          <ErrorState title="No se han podido cargar los enfrentamientos" />
+          <ErrorState title={t("matchupsError")} />
         ) : (
           <div className="grid gap-6 lg:grid-cols-3">
-            {([["Fuerte contra", strong, "good"], ["Débil contra", weak, "bad"], ["Mejores compañeros", partners, "good"]] as const).map(([title, rows, tone]) => (
-              <div key={title} className="space-y-2">
-                <h3 className="font-display text-lg font-black">{title}</h3>
+            {([[t("strongAgainst"), strong, "good"], [t("weakAgainst"), weak, "bad"], [t("bestPartners"), partners, "good"]] as const).map(([title, rows, tone]) => (
+              <Panel key={title} title={title}>
                 <ul className="space-y-2">
-                  {rows.map((r) => <li key={r.id}><HeroChip id={r.id} name={name.get(r.id) ?? `#${r.id}`} note={`${fmtPct(r.rate)} · ${fmtNum(r.matches)} partidas`} tone={tone} /></li>)}
+                  {rows.map((r, i) => <li key={r.id} className="flex items-center gap-2"><Rank n={i + 1} /><div className="min-w-0 flex-1"><HeroChip id={r.id} name={name.get(r.id) ?? `#${r.id}`} note={t("chipNote", { rate: fmtPct(r.rate), matches: fmtNum(r.matches) })} tone={tone} /></div></li>)}
                 </ul>
-              </div>
+              </Panel>
             ))}
           </div>
         )}
-        <p className="text-xs text-ink-muted">Solo se cuentan enfrentamientos con 1.000 partidas o más. Matriz completa en <Link href={`/counters?a=${slugify(hero.name)}`} className="link-brass font-semibold">counters</Link>.</p>
+        <p className="text-xs text-ink-muted">{t.rich("matchupsNote", { link: (c) => <Link href={`/counters?a=${slugify(hero.name)}`} className="link-brass font-semibold">{c}</Link> })}</p>
       </section>
+      )}
 
+      {show("board") && (
       <section aria-labelledby="board" className="space-y-4">
-        <SectionTitle id="board">Leaderboard de {hero.name}</SectionTitle>
+        <SectionTitle id="board">{t("boardOf", { name: hero.name })}</SectionTitle>
         {!board.ok ? (
-          <ErrorState title="No se ha podido cargar el leaderboard" />
+          <ErrorState title={t("boardError")} />
         ) : top10.length ? (
           <>
             <ol className="divide-y divide-brass/20 rounded-md border border-brass/30 bg-surface">
               {top10.map((e) => (
                 <li key={e.rank} className="flex items-center gap-4 px-3 py-2">
-                  <span className="w-8 text-right font-display text-lg font-black tabular-nums">{e.rank}</span>
+                  <Rank n={e.rank} />
                   {e.possible_account_ids[0] ? <Link href={`/players/${e.possible_account_ids[0]}`} className="link-brass font-semibold">{e.account_name}</Link> : <span className="font-semibold">{e.account_name}</span>}
-                  {e.possible_account_ids.length > 1 && <span className="text-xs text-ink-muted">+{e.possible_account_ids.length - 1} cuentas posibles</span>}
+                  {e.possible_account_ids.length > 1 && <span className="text-xs text-ink-muted">{t("possibleAccounts", { count: e.possible_account_ids.length - 1 })}</span>}
                 </li>
               ))}
             </ol>
-            <p className="text-xs"><Link href={`/leaderboard?hero=${slugify(hero.name)}`} className="link-brass font-semibold">Ver el leaderboard completo</Link> · región: Europa</p>
+            <p className="text-xs"><Link href={`/leaderboard?hero=${slugify(hero.name)}`} className="link-brass font-semibold">{t("fullBoard")}</Link> · {t("region")}</p>
           </>
         ) : (
-          <EmptyState title="Aún no hay clasificación de este héroe" />
+          <EmptyState title={t("noBoard")} />
         )}
       </section>
+      )}
     </>
   );
 }

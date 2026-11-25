@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { BuildPlanner } from "@/components/tools/build-planner";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { decodeBuild, itemEffects, type BaseStats, type PlannerHero, type PlannerItem } from "@/lib/build-planner";
 import { getHeroes, getItemIndex, getItems } from "@/lib/lookup";
 import { slugify } from "@/lib/slug";
 
-export const metadata: Metadata = { title: "Build planner", description: "Monta una build de objetos para un héroe y mira cómo cambian sus estadísticas y el coste en almas." };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("planner");
+  return { title: t("title"), description: t("metaDesc") };
+}
 
 export default async function BuildPlannerPage({ searchParams }: { searchParams: Promise<{ h?: string; i?: string }> }) {
   const sp = await searchParams;
+  const t = await getTranslations("planner");
   const [heroes, all, { byClass }] = await Promise.all([getHeroes(), getItems(), getItemIndex()]);
 
   const plannerHeroes: PlannerHero[] = [...heroes]
@@ -36,7 +41,7 @@ export default async function BuildPlannerPage({ searchParams }: { searchParams:
 
   return (
     <div className="space-y-8">
-      <PosterHeader compact title="Build planner" subtitle="Monta tu build y mira qué te da" />
+      <PosterHeader compact title={t("title")} subtitle={t("subtitle")} />
       <BuildPlanner heroes={plannerHeroes} items={plannerItems} initial={initial} />
     </div>
   );

@@ -1,27 +1,30 @@
-// Textos de la interfaz en español. Los textos del propio juego (nombres, descripciones) se muestran tal cual vienen de la API.
+// Etiquetas de la interfaz: viven en los mensajes (namespace «labels»). Los textos del propio juego se muestran tal cual vienen de la API.
 
-export const HERO_TYPE: Record<string, string> = {
-  mystic: "Místico", marksman: "Tirador", brawler: "Luchador", healer: "Sanador", assassin: "Asesino",
-};
-export const heroTypeLabel = (t: string) => HERO_TYPE[t] ?? t;
+/** Traductor con el namespace «labels» ya aplicado (`getTranslations("labels")` o `useTranslations("labels")`). */
+export type Tr = (key: string, values?: Record<string, string | number>) => string;
 
-export const DIFFICULTY: Record<number, string> = { 1: "Fácil", 2: "Media", 3: "Difícil", 4: "Muy difícil" };
-export const difficultyLabel = (n: number) => DIFFICULTY[n] ?? String(n);
+const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-/** Estadísticas base de un héroe (claves de `starting_stats`) con su etiqueta, unidad y decimales. */
-export const HERO_STATS: { key: string; label: string; unit?: string; digits?: number }[] = [
-  { key: "max_health", label: "Vida" },
-  { key: "base_health_regen", label: "Regeneración de vida", unit: "/s", digits: 1 },
-  { key: "max_move_speed", label: "Velocidad de movimiento", unit: " m/s", digits: 1 },
-  { key: "sprint_speed", label: "Bonus de carrera", unit: " m/s", digits: 1 },
-  { key: "crouch_speed", label: "Velocidad agachado", unit: " m/s", digits: 1 },
-  { key: "stamina", label: "Resistencia (cargas)" },
-  { key: "stamina_regen_per_second", label: "Recarga de resistencia", unit: "/s", digits: 2 },
-  { key: "light_melee_damage", label: "Daño cuerpo a cuerpo ligero" },
-  { key: "heavy_melee_damage", label: "Daño cuerpo a cuerpo pesado" },
-  { key: "reload_speed", label: "Velocidad de recarga", unit: "×", digits: 2 },
-  { key: "ground_dash_distance_in_meters", label: "Impulso en suelo", unit: " m", digits: 0 },
-  { key: "air_dash_distance_in_meters", label: "Impulso en el aire", unit: " m", digits: 0 },
+export const HERO_TYPES = ["mystic", "marksman", "brawler", "healer", "assassin"] as const;
+export const heroTypeLabel = (t: Tr, type: string) => ((HERO_TYPES as readonly string[]).includes(type) ? t(`type${cap(type)}`) : type);
+
+export const DIFFICULTIES = [1, 2, 3, 4] as const;
+export const difficultyLabel = (t: Tr, n: number) => ((DIFFICULTIES as readonly number[]).includes(n) ? t(`diff${n}`) : String(n));
+
+/** Estadísticas base de un héroe (claves de `starting_stats`) con su unidad y decimales; la etiqueta es `labels.stat_<key>`. */
+export const HERO_STATS: { key: string; unit?: string; digits?: number }[] = [
+  { key: "max_health" },
+  { key: "base_health_regen", unit: "/s", digits: 1 },
+  { key: "max_move_speed", unit: " m/s", digits: 1 },
+  { key: "sprint_speed", unit: " m/s", digits: 1 },
+  { key: "crouch_speed", unit: " m/s", digits: 1 },
+  { key: "stamina" },
+  { key: "stamina_regen_per_second", unit: "/s", digits: 2 },
+  { key: "light_melee_damage" },
+  { key: "heavy_melee_damage" },
+  { key: "reload_speed", unit: "×", digits: 2 },
+  { key: "ground_dash_distance_in_meters", unit: " m", digits: 0 },
+  { key: "air_dash_distance_in_meters", unit: " m", digits: 0 },
 ];
 
 /** 1 m = 39,37 unidades del motor. Los alcances de armas vienen en unidades. */
@@ -30,4 +33,4 @@ export const unitsToMeters = (u: number) => u / 39.37;
 /** "AbilityCastRange" → "Ability Cast Range" (solo si la API no trae etiqueta). */
 export const humanize = (s: string) => s.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/_/g, " ");
 
-export const SECTION_LABEL: Record<string, string> = { innate: "Bonificaciones", active: "Activa", passive: "Pasiva" };
+export const sectionLabel = (t: Tr, key: string) => (["innate", "active", "passive"].includes(key) ? t(`section${cap(key)}`) : key);

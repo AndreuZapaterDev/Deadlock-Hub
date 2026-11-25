@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ function lastRefresh(id: number): number {
 
 /** "Actualizar historial": solo bajo petición expresa y con cooldown visible. Nunca se lanza solo. */
 export function RefreshButton({ accountId }: { accountId: number }) {
+  const t = useTranslations("players");
   const router = useRouter();
   const [left, setLeft] = useState(0); // ms de espera restantes
   const [busy, setBusy] = useState(false);
@@ -44,9 +46,9 @@ export function RefreshButton({ accountId }: { accountId: number }) {
   return (
     <div className="space-y-1">
       <Button variant="secondary" onClick={refresh} disabled={busy || left > 0}>
-        {busy ? "Actualizando…" : left > 0 ? `Disponible en ${mm}:${ss}` : "Actualizar historial"}
+        {busy ? t("refreshing") : left > 0 ? t("availableIn", { time: `${mm}:${ss}` }) : t("refreshHistory")}
       </Button>
-      {error && <p role="alert" className="text-xs text-rose-ink">No se pudo actualizar. Inténtalo más tarde.</p>}
+      {error && <p role="alert" className="text-xs text-rose-ink">{t("refreshError")}</p>}
     </div>
   );
 }

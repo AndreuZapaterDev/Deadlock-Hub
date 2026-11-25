@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Sunburst } from "@/components/deco";
 import { Chip, type Tone } from "@/components/ui/chip";
 import { FeaturedCard } from "@/components/ui/card";
@@ -12,6 +14,7 @@ import { heroTypeLabel } from "@/lib/labels";
 import { getHeroImages } from "@/lib/lookup";
 import { slugify } from "@/lib/slug";
 import type { Hero } from "@/lib/types";
+import { initials } from "@/lib/format";
 
 // Color de los rayos de cada héroe (sobre el panel verde petróleo del retrato).
 const ACCENTS: { tone: Tone; color: string }[] = [
@@ -31,7 +34,6 @@ const TYPE_ACCENT: Record<string, { tone: Tone; color: string }> = {
 };
 /** Color del héroe según su clase; si no se conoce la clase (listas con solo id y nombre), uno estable según el id. */
 export const heroPastel = (hero: { id: number; hero_type?: string }) => (hero.hero_type && TYPE_ACCENT[hero.hero_type]) || ACCENTS[hero.id % ACCENTS.length];
-const initials = (name: string) => name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
 
 // Siluetas provisionales mientras no haya retratos reales: busto + una pieza que cambia con el id
 // (cabeza, chistera, capucha, sombrero de ala ancha, cresta). Cada héroe mantiene siempre la suya.
@@ -57,11 +59,12 @@ function Silhouette({ id, color }: { id: number; color: string }) {
 
 /** Retrato: la imagen real si hay imágenes remotas (API real) y existe; si no, el placeholder con rayos, trama de puntos y silueta. `arch` = ventana en arco. */
 export async function HeroPortrait({ hero, className = "h-40", small, arch, priority }: { hero: Pick<Hero, "id" | "name"> & { hero_type?: string }; className?: string; small?: boolean; arch?: boolean; priority?: boolean }) {
+  const t = await getTranslations("heroUi");
   const p = heroPastel(hero);
   const imgs = (await getHeroImages()).get(hero.id);
   const src = small ? imgs?.small ?? imgs?.card : imgs?.card ?? imgs?.small;
   return (
-    <div role="img" aria-label={`Retrato de ${hero.name}`} className={`relative isolate flex items-end justify-center overflow-hidden bg-poster ${arch ? "arch" : "rounded-sm"} ${className}`}>
+    <div role="img" aria-label={t("portraitOf", { name: hero.name })} className={`relative isolate flex items-end justify-center overflow-hidden bg-poster ${arch ? "arch" : "rounded-sm"} ${className}`}>
       <Sunburst color={p.color} strength={arch ? 0.85 : 0.7} className={arch ? "rays-hover" : undefined} />
       <div aria-hidden className="halftone absolute inset-0 opacity-30 [mask-image:linear-gradient(to_top,black,transparent_70%)]" />
       {src ? (
@@ -84,6 +87,8 @@ export type HeroCardStat = { tier: Tier; winRate: number; pickRate: number };
  * objeto = tier, win rate y pick rate. `selectable` añade la casilla «Comparar».
  */
 export function HeroCard({ hero, href, stat, selectable, priority, compact }: { hero: Hero; href?: string; stat?: HeroCardStat | null; selectable?: boolean; priority?: boolean; compact?: boolean }) {
+  const t = useTranslations("heroUi");
+  const tl = useTranslations("labels");
   const p = heroPastel(hero);
   const big = compact ? "text-sm" : "text-base";
   const body = (
@@ -102,7 +107,7 @@ export function HeroCard({ hero, href, stat, selectable, priority, compact }: { 
             <>
               <div>
                 <p className="flex items-baseline gap-1 text-xs text-ink-muted">
-                  <strong className={`${big} text-ink`}>{fmtPct(stat.winRate)}</strong> victorias
+                  <strong className={`${big} text-ink`}>{fmtPct(stat.winRate)}</strong> {t("wins")}
                 </p>
                 {/* Barra de 40 % a 60 %: la diferencia entre héroes se ve de un vistazo. */}
                 <div aria-hidden className="mt-1 h-1.5 overflow-hidden rounded-full bg-brass/20">
@@ -111,7 +116,7 @@ export function HeroCard({ hero, href, stat, selectable, priority, compact }: { 
               </div>
               <p className="text-right text-xs leading-tight text-ink-muted">
                 <strong className={`block ${big} text-ink`}>{fmtPct(stat.pickRate)}</strong>
-                {compact ? "pick" : "en partidas"}
+                {compact ? t("pickShort") : t("inMatches")}
               </p>
             </>
           )}
@@ -119,7 +124,7 @@ export function HeroCard({ hero, href, stat, selectable, priority, compact }: { 
       )}
       {/* Altura fija: todas las tarjetas miden lo mismo. */}
       <div className={`flex flex-wrap content-start justify-center gap-1.5 pb-1 ${compact ? "mt-2 min-h-[3.25rem] px-1" : "mt-3 min-h-[3.25rem] px-3"}`}>
-        <Chip tone={p.tone} className={compact ? "px-2 text-[11px] font-semibold" : "font-semibold"}>{heroTypeLabel(hero.hero_type)}</Chip>
+        <Chip tone={p.tone} className={compact ? "px-2 text-[11px] font-semibold" : "font-semibold"}>{heroTypeLabel(tl, hero.hero_type)}</Chip>
         {hero.tags.slice(0, compact ? 1 : 2).map((t) => (
           <span key={t} className={`inline-flex items-center rounded-full border border-brass/50 py-0.5 font-medium capitalize text-ink-muted ${compact ? "px-2 text-[11px]" : "px-2.5 text-xs"}`}>{t.toLowerCase()}</span>
         ))}

@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useId, useMemo, useState } from "react";
 import { MAP_SIZE, type View } from "./use-pan-zoom";
 
@@ -8,6 +9,7 @@ const norm = (s: string) => s.normalize("NFD").replace(/\p{M}+/gu, "").toLowerCa
 
 /** Buscador de lugares del mapa (objetivos, campamentos, tiendas, teletransportadores…): al elegir uno, se centra y se abre su ficha. */
 export function MapSearch({ items }: { items: SearchItem[] }) {
+  const t = useTranslations("mapUi");
   const [q, setQ] = useState("");
   const listId = useId();
   const results = useMemo(() => {
@@ -22,8 +24,8 @@ export function MapSearch({ items }: { items: SearchItem[] }) {
         type="search"
         value={q}
         onChange={(e) => setQ(e.target.value)}
-        placeholder="Buscar en el mapa: guardián, tienda, dock…"
-        aria-label="Buscar en el mapa"
+        placeholder={t("searchPlaceholder")}
+        aria-label={t("searchLabel")}
         aria-controls={listId}
         autoComplete="off"
         className="w-full rounded-sm border border-brass/50 bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-muted focus-visible:border-brass"
@@ -31,7 +33,7 @@ export function MapSearch({ items }: { items: SearchItem[] }) {
       {q.trim().length >= 2 && (
         <ul id={listId} className="absolute inset-x-0 top-full z-20 mt-1 max-h-72 overflow-auto rounded-sm border border-brass/50 bg-surface shadow-card">
           {results.length === 0 ? (
-            <li className="px-3 py-2 text-sm text-ink-muted">Nada con «{q}».</li>
+            <li className="px-3 py-2 text-sm text-ink-muted">{t("searchNone", { q })}</li>
           ) : (
             results.map((r) => (
               <li key={r.id}>
@@ -53,6 +55,7 @@ export function MapSearch({ items }: { items: SearchItem[] }) {
  * `image` es el minimapa si hay imágenes remotas.
  */
 export function MiniMap({ view, image, onJump }: { view: View; image?: string; onJump: (left: number, top: number) => void }) {
+  const t = useTranslations("mapUi");
   const S = 100;
   const size = S / view.k;
   const left = (-view.x / (view.k * MAP_SIZE)) * S;
@@ -66,7 +69,7 @@ export function MiniMap({ view, image, onJump }: { view: View; image?: string; o
     <svg
       viewBox={`0 0 ${S} ${S}`}
       role="img"
-      aria-label="Minivista: pulsa para moverte por el mapa"
+      aria-label={t("miniMap")}
       className="absolute bottom-3 right-3 z-10 size-28 cursor-pointer touch-none rounded-sm border border-brass/70 bg-night/90 shadow-card sm:size-32"
       onPointerDown={(e) => { e.stopPropagation(); jump(e); }}
       onPointerMove={(e) => { e.stopPropagation(); jump(e); }}

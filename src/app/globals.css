@@ -225,11 +225,18 @@ body::before {
 .group:hover .rays-hover { transform: rotate(4deg) scale(1.12); }
 
 /* Cambio Día/Noche: círculo que se expande desde el botón (View Transitions API) */
+@property --vt-r { syntax: "<length>"; inherits: false; initial-value: 0px; }
 ::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
-::view-transition-new(root) { animation: theme-reveal 650ms cubic-bezier(0.22, 0.61, 0.36, 1); }
+/* El tema nuevo entra con un borde difuminado (máscara radial) que llega justo a la esquina más lejana (--vt-max, calculado en JS) */
+::view-transition-new(root) {
+  --vt-feather: 55vmax;
+  -webkit-mask-image: radial-gradient(circle at var(--vt-x, 50%) var(--vt-y, 0), #000 calc(var(--vt-r) - var(--vt-feather)), rgb(0 0 0 / 0.55) calc(var(--vt-r) - var(--vt-feather) * 0.45), transparent var(--vt-r));
+  mask-image: radial-gradient(circle at var(--vt-x, 50%) var(--vt-y, 0), #000 calc(var(--vt-r) - var(--vt-feather)), rgb(0 0 0 / 0.55) calc(var(--vt-r) - var(--vt-feather) * 0.45), transparent var(--vt-r));
+  animation: theme-reveal 1100ms cubic-bezier(0.45, 0.05, 0.25, 1) both;
+}
 @keyframes theme-reveal {
-  from { clip-path: circle(0 at var(--vt-x, 50%) var(--vt-y, 0)); }
-  to { clip-path: circle(150vmax at var(--vt-x, 50%) var(--vt-y, 0)); }
+  from { --vt-r: 0px; }
+  to { --vt-r: calc(var(--vt-max, 150vmax) + var(--vt-feather, 55vmax)); }
 }
 
 /* ---------- Arte del juego: cintas, trama de puntos y luz de farola ---------- */
@@ -398,3 +405,14 @@ html:not([data-theme="dark"]) .poster-surface .bulbs::after { background-image: 
   html:not([data-theme="dark"]) .poster-surface .halo,
   html:not([data-theme="dark"]) .poster-surface .halo .\!text-cream { color: #f3e8d0 !important; }
 }
+
+/* ---------- Pantalla de carga ---------- */
+@keyframes load-ray { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+@keyframes load-spin { to { transform: rotate(360deg); } }
+@keyframes load-pulse { 0%, 100% { transform: scale(0.92); } 50% { transform: scale(1.05); } }
+@keyframes load-sweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(260%); } }
+.load-ray { transform-origin: 100px 100px; opacity: 0.2; animation: load-ray 1.8s calc(var(--i) * 150ms) ease-in-out infinite; }
+.load-ring { transform-origin: 100px 100px; animation: load-spin 14s linear infinite; }
+.load-core { transform-origin: 100px 100px; animation: load-pulse 1.8s ease-in-out infinite; }
+.load-bar > span { animation: load-sweep 1.5s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+@media (prefers-reduced-motion: reduce) { .load-ray { opacity: 0.8; } }

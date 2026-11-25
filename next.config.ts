@@ -8,7 +8,8 @@ const nextConfig: NextConfig = {
     return [{ source: "/sw.js", headers: [{ key: "Cache-Control", value: "no-cache" }, { key: "Service-Worker-Allowed", value: "/" }] }];
   },
   // Con la API real, 19 workers prerenderizando a la vez saturan el rate limit (429) y cortan descargas: se limitan.
-  ...(process.env.NODE_ENV === "production" ? { experimental: { cpus: 3 } } : {}),
+  // `optimizePackageImports`: importa solo los módulos usados de Motion y Recharts (menos JavaScript en el cliente).
+  experimental: { optimizePackageImports: ["motion", "recharts"], ...(process.env.NODE_ENV === "production" ? { cpus: 3 } : {}) },
   // Dominios de las imágenes de la API (héroes, objetos, minimapa) y de los avatares de Steam.
   images: {
     remotePatterns: [

@@ -1,12 +1,16 @@
 import type { MetadataRoute } from "next";
+import { getTranslations } from "next-intl/server";
+import { getLanguage } from "@/lib/language";
+import { htmlLang } from "@/lib/languages";
 import { BRAND } from "@/lib/site";
 
-export default function manifest(): MetadataRoute.Manifest {
+export default async function manifest(): Promise<MetadataRoute.Manifest> {
+  const [t, language] = await Promise.all([getTranslations("site"), getLanguage()]);
   return {
     name: "Deadlock Hub",
     short_name: "Deadlock Hub",
-    description: "Web fan no oficial sobre Deadlock: wiki, estadísticas y tracker de jugadores.",
-    lang: "es",
+    description: t("description"),
+    lang: htmlLang(language),
     start_url: "/",
     scope: "/",
     display: "standalone",
@@ -19,9 +23,9 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     // Atajos al mantener pulsado el icono (Android): lo que más se consulta mientras se juega.
     shortcuts: [
-      { name: "Buscar jugador", url: "/players" },
-      { name: "En directo", url: "/live" },
-      { name: "Tier list", url: "/tier-list" },
+      { name: t("shortcutPlayers"), url: "/players" },
+      { name: t("shortcutLive"), url: "/live" },
+      { name: t("shortcutTier"), url: "/tier-list" },
     ],
   };
 }

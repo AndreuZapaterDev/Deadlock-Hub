@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { DelegatedLinks } from "@/components/charts/heatmap-links";
 import { fmtPct } from "@/lib/format";
 
@@ -11,7 +12,7 @@ import { fmtPct } from "@/lib/format";
  * `<a>` normal en vez de `<Link>` (que se hidrata uno a uno) y la navegación sin recarga en un único manejador (`DelegatedLinks`).
  * No hay `title`: el nombre accesible va en `aria-label`.
  */
-export function Heatmap({ rows, cols, values, cellHref, selected, label = "Heatmap de win rate" }: {
+export function Heatmap({ rows, cols, values, cellHref, selected, label }: {
   rows: string[];
   cols: string[];
   values: (number | null)[][];
@@ -19,11 +20,12 @@ export function Heatmap({ rows, cols, values, cellHref, selected, label = "Heatm
   selected?: [number, number] | null;
   label?: string;
 }) {
+  const t = useTranslations("counters");
   const level = (v: number) => Math.round((Math.min(Math.abs(v - 0.5) / 0.1, 1) * 70) / 5); // 0..14: satura a ±10 puntos
   return (
     <div className="overflow-x-auto">
       <DelegatedLinks>
-        <div role="grid" aria-label={label} className="hm-grid text-xs" style={{ "--cols": cols.length } as React.CSSProperties}>
+        <div role="grid" aria-label={label ?? t("heatmapLabel")} className="hm-grid text-xs" style={{ "--cols": cols.length } as React.CSSProperties}>
           <div role="row" className="contents">
             <div role="presentation" />
             {cols.map((c) => <div key={c} role="columnheader" className="px-1 pb-1 font-medium text-ink-muted [writing-mode:vertical-rl] rotate-180">{c}</div>)}
@@ -34,7 +36,7 @@ export function Heatmap({ rows, cols, values, cellHref, selected, label = "Heatm
               {values[i].map((v, j) => {
                 if (v === null) return <div key={j} role="gridcell" className="hm-empty">·</div>;
                 const cls = `hm-cell ${v >= 0.5 ? "hm-pos" : "hm-neg"} hm-t${level(v)}${selected?.[0] === i && selected?.[1] === j ? " hm-sel" : ""}`;
-                const aria = `${r} contra ${cols[j]}: ${fmtPct(v)}`;
+                const aria = t("cellAria", { row: r, col: cols[j], rate: fmtPct(v) });
                 const text = Math.round(v * 100);
                 return cellHref ? (
                   <a key={j} role="gridcell" data-nav href={cellHref(i, j)} className={cls} aria-label={aria}>{text}</a>

@@ -22,6 +22,9 @@ export function ThemeToggle({ dayLabel, nightLabel }: { dayLabel: string; nightL
       const r = e.currentTarget.getBoundingClientRect();
       root.setProperty("--vt-x", `${r.left + r.width / 2}px`);
       root.setProperty("--vt-y", `${r.top + r.height / 2}px`);
+      // radio exacto hasta la esquina más lejana: la animación termina cuando el borde sale de la pantalla
+      const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+      root.setProperty("--vt-max", `${Math.hypot(Math.max(cx, innerWidth - cx), Math.max(cy, innerHeight - cy))}px`);
       vt.call(document, apply);
     } else apply();
     setTheme(next);

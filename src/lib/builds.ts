@@ -27,6 +27,9 @@ export const BUILD_LANGUAGES = [
   "Portugués (Portugal)", "Polaco", "Checo", "Turco", "Portugués (Brasil)", "Ucraniano", "Español (Latinoamérica)", "Vietnamita",
 ];
 
+/** Etiquetas BCP 47 de los idiomas anteriores (mismo orden): con `Intl.DisplayNames` salen traducidos al idioma de la interfaz. */
+export const BUILD_LANGUAGE_TAGS = ["en", "de", "fr", "it", "ko", "es-ES", "zh-Hans", "ru", "th", "ja", "pt-PT", "pl", "cs", "tr", "pt-BR", "uk", "es-419", "vi"];
+
 export type BuildSort = "favorites" | "weekly" | "updated";
 export type BuildQuery = { q?: string; hero?: number; tag?: number; lang?: number; author?: number; sort: BuildSort; page: number };
 

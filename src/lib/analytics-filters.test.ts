@@ -44,7 +44,8 @@ describe("toApiQuery (nombres de parámetro del OpenAPI)", () => {
 
 describe("describeFilters", () => {
   it("resume los filtros activos", () => {
-    const out = describeFilters({ rankMin: 5, since: "2026-09-29", dur: "long" }, (t) => `T${t}`);
+    const tr = (k: string, v?: Record<string, string | number>) => (k === "any" ? "cualquiera" : k === "fRank" ? `Rango: ${v!.from} → ${v!.to}` : k === "fSince" ? `Desde el ${v!.date}` : k === "durLong" ? "Largas (más de 40 min)" : k);
+    const out = describeFilters({ rankMin: 5, since: "2026-09-29", dur: "long" }, (t) => `T${t}`, tr);
     expect(out).toEqual(["Rango: T5 → cualquiera", "Desde el 2026-09-29", "Largas (más de 40 min)"]);
   });
 });

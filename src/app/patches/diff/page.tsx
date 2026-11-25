@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { FilterBar } from "@/components/filters/filter-bar";
+import { useTranslations } from "next-intl";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { EmptyState, ErrorState } from "@/components/ui/feedback";
@@ -12,30 +14,35 @@ import { loadPatchDiff, loadVersions } from "@/lib/patch-data";
 import type { AssetDiff, Direction, EntityChange, FieldChange, Scalar } from "@/lib/patch-diff";
 import { slugify } from "@/lib/slug";
 
-export const metadata: Metadata = { title: "Cambios entre parches", description: "Qué números han cambiado entre dos versiones de Deadlock, calculado automáticamente sobre héroes y objetos." };
 export const revalidate = 3600;
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("patchDiff");
+  return { title: t("title"), description: t("metaDesc") };
+}
 
 type SP = { from?: string; to?: string; kind?: string; dir?: string; q?: string };
 
 const DIR: Record<Direction, { tone: "sage" | "rose" | "neutral"; arrow: string; word: string }> = {
-  buff: { tone: "sage", arrow: "▲", word: "mejora" },
-  nerf: { tone: "rose", arrow: "▼", word: "nerf" },
-  neutral: { tone: "neutral", arrow: "◆", word: "cambio" },
+  buff: { tone: "sage", arrow: "▲", word: "wordBuff" },
+  nerf: { tone: "rose", arrow: "▼", word: "wordNerf" },
+  neutral: { tone: "neutral", arrow: "◆", word: "wordChange" },
 };
 
-const show = (v: Scalar | undefined) => (v === undefined ? "—" : typeof v === "boolean" ? (v ? "sí" : "no") : typeof v === "number" ? String(Math.round(v * 100) / 100) : v);
+const show = (v: Scalar | undefined, yes: string, no: string) => (v === undefined ? "—" : typeof v === "boolean" ? (v ? yes : no) : typeof v === "number" ? String(Math.round(v * 100) / 100) : v);
 
 function Change({ c }: { c: FieldChange }) {
+  const t = useTranslations("patchDiff");
   const d = DIR[c.direction];
   const color = c.direction === "buff" ? "text-sage-ink" : c.direction === "nerf" ? "text-rose-ink" : "text-ink-muted";
   return (
     <tr className="border-t border-brass/15">
       <th scope="row" className="py-1.5 pr-3 text-left font-normal">{c.label}</th>
-      <td className="py-1.5 pr-3 text-right tabular-nums text-ink-muted">{show(c.old)}</td>
+      <td className="py-1.5 pr-3 text-right tabular-nums text-ink-muted">{show(c.old, t("yes"), t("no"))}</td>
       <td aria-hidden className="py-1.5 pr-3 text-center text-ink-muted">→</td>
-      <td className="py-1.5 pr-3 text-right font-semibold tabular-nums">{show(c.new)}</td>
+      <td className="py-1.5 pr-3 text-right font-semibold tabular-nums">{show(c.new, t("yes"), t("no"))}</td>
       <td className={`py-1.5 text-right tabular-nums ${color}`}>
-        <span aria-label={d.word}>{d.arrow}</span>
+        <span aria-label={t(d.word)}>{d.arrow}</span>
         {c.pct !== undefined && ` ${c.pct > 0 ? "+" : ""}${c.pct}%`}
       </td>
     </tr>
@@ -43,16 +50,17 @@ function Change({ c }: { c: FieldChange }) {
 }
 
 function EntityCard({ e, href }: { e: EntityChange; href?: string }) {
+  const t = useTranslations("patchDiff");
   const d = DIR[e.direction];
   return (
     <Card className="space-y-2">
       <div className="flex items-center gap-2">
         <h3 className="min-w-0 flex-1 font-display text-lg font-black leading-tight">{href ? <Link href={href} className="hover:text-brass">{e.name}</Link> : e.name}</h3>
-        <Chip tone={d.tone}>{d.arrow} {e.direction === "neutral" ? "Mixto" : d.word}</Chip>
+        <Chip tone={d.tone}>{d.arrow} {e.direction === "neutral" ? t("mixed") : t(d.word)}</Chip>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <caption className="sr-only">Cambios de {e.name}</caption>
+          <caption className="sr-only">{t("changesOf", { name: e.name })}</caption>
           <tbody>{e.changes.map((c) => <Change key={c.path} c={c} />)}</tbody>
         </table>
       </div>
@@ -65,16 +73,17 @@ function names(list: { name: string }[]) {
 }
 
 function Section({ title, diff, hrefs, filter }: { title: string; diff: AssetDiff; hrefs: Map<number | string, string>; filter: (e: EntityChange) => boolean }) {
+  const t = useTranslations("patchDiff");
   const changed = diff.changed.filter(filter);
   return (
     <section className="space-y-4" aria-label={title}>
       <SectionTitle>{title}</SectionTitle>
       {changed.length === 0 && diff.added.length === 0 && diff.removed.length === 0 ? (
-        <EmptyState title="Sin cambios con estos filtros" />
+        <EmptyState title={t("noChanges")} />
       ) : (
         <>
-          {diff.added.length > 0 && <p className="text-sm"><Chip tone="sage">Nuevos</Chip> <span className="ml-1">{names(diff.added)}</span></p>}
-          {diff.removed.length > 0 && <p className="text-sm"><Chip tone="rose">Eliminados</Chip> <span className="ml-1">{names(diff.removed)}</span></p>}
+          {diff.added.length > 0 && <p className="text-sm"><Chip tone="sage">{t("added")}</Chip> <span className="ml-1">{names(diff.added)}</span></p>}
+          {diff.removed.length > 0 && <p className="text-sm"><Chip tone="rose">{t("removed")}</Chip> <span className="ml-1">{names(diff.removed)}</span></p>}
           <div className="grid gap-4 lg:grid-cols-2">{changed.map((e) => <EntityCard key={e.id} e={e} href={hrefs.get(e.id)} />)}</div>
         </>
       )}
@@ -83,6 +92,7 @@ function Section({ title, diff, hrefs, filter }: { title: string; diff: AssetDif
 }
 
 export default async function PatchDiffPage({ searchParams }: { searchParams: Promise<SP> }) {
+  const t = await getTranslations("patchDiff");
   const sp = await searchParams;
   const [versions, heroes, items] = await Promise.all([loadVersions(), getHeroes(), getItems()]);
   const from = Number(sp.from) || undefined;
@@ -99,30 +109,30 @@ export default async function PatchDiffPage({ searchParams }: { searchParams: Pr
 
   return (
     <div className="space-y-8">
-      <PosterHeader compact title="Cambios entre parches" subtitle="Qué números han cambiado, sin depender de las notas oficiales" />
+      <PosterHeader compact title={t("title")} subtitle={t("subtitle")} />
       <Suspense>
         <FilterBar
           fields={[
-            { name: "from", label: "Desde la versión", type: "select", allLabel: "Anterior", options: opts },
-            { name: "to", label: "Hasta la versión", type: "select", allLabel: "Última", options: opts },
-            { name: "kind", label: "Mostrar", type: "select", allLabel: "Héroes y objetos", options: [{ value: "heroes", label: "Solo héroes" }, { value: "items", label: "Solo objetos" }] },
-            { name: "dir", label: "Tipo de cambio", type: "select", allLabel: "Todos", options: [{ value: "buff", label: "Solo mejoras" }, { value: "nerf", label: "Solo nerfs" }] },
-            { name: "q", label: "Buscar", type: "search", placeholder: "Héroe u objeto…" },
+            { name: "from", label: t("from"), type: "select", allLabel: t("previous"), options: opts },
+            { name: "to", label: t("to"), type: "select", allLabel: t("latest"), options: opts },
+            { name: "kind", label: t("show"), type: "select", allLabel: t("heroesAndItems"), options: [{ value: "heroes", label: t("onlyHeroes") }, { value: "items", label: t("onlyItems") }] },
+            { name: "dir", label: t("changeType"), type: "select", allLabel: t("all"), options: [{ value: "buff", label: t("onlyBuffs") }, { value: "nerf", label: t("onlyNerfs") }] },
+            { name: "q", label: t("search"), type: "search", placeholder: t("searchPlaceholder") },
           ]}
         />
       </Suspense>
       {!res.ok ? (
-        <ErrorState title="No se han podido comparar las versiones" hint="Puede que la API no tenga los datos de esa versión o que esté ocupada." />
+        <ErrorState title={t("compareError")} hint={t("compareErrorHint")} />
       ) : (
         <>
           <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {[
-              ["Héroes con cambios", res.data.heroes.changed.length],
-              ["Objetos con cambios", res.data.items.changed.length],
-              ["Objetos nuevos", res.data.items.added.length],
-              ["Objetos eliminados", res.data.items.removed.length],
-              ["Mejoras (buffs)", [...res.data.heroes.changed, ...res.data.items.changed].filter((e) => e.direction === "buff").length],
-              ["Nerfs", [...res.data.heroes.changed, ...res.data.items.changed].filter((e) => e.direction === "nerf").length],
+              [t("heroesChanged"), res.data.heroes.changed.length],
+              [t("itemsChanged"), res.data.items.changed.length],
+              [t("itemsNew"), res.data.items.added.length],
+              [t("itemsRemoved"), res.data.items.removed.length],
+              [t("buffs"), [...res.data.heroes.changed, ...res.data.items.changed].filter((e) => e.direction === "buff").length],
+              [t("nerfs"), [...res.data.heroes.changed, ...res.data.items.changed].filter((e) => e.direction === "nerf").length],
             ].map(([label, n]) => (
               <Card key={label as string}>
                 <dd className="font-display text-3xl font-black tabular-nums">{n}</dd>
@@ -130,9 +140,9 @@ export default async function PatchDiffPage({ searchParams }: { searchParams: Pr
               </Card>
             ))}
           </dl>
-          {res.data.from && res.data.to && <p className="text-sm text-ink-muted">Versión {res.data.from} → {res.data.to}{res.data.widened && " · la versión anterior no cambiaba nada, así que se compara con la previa al último gran día"}</p>}
-          {sp.kind !== "items" && <Section title="Héroes" diff={res.data.heroes} hrefs={heroHref} filter={filter} />}
-          {sp.kind !== "heroes" && <Section title="Objetos" diff={res.data.items} hrefs={itemHref} filter={filter} />}
+          {res.data.from && res.data.to && <p className="text-sm text-ink-muted">{t("versionLine", { from: res.data.from, to: res.data.to })}{res.data.widened && t("widened")}</p>}
+          {sp.kind !== "items" && <Section title={t("heroes")} diff={res.data.heroes} hrefs={heroHref} filter={filter} />}
+          {sp.kind !== "heroes" && <Section title={t("items")} diff={res.data.items} hrefs={itemHref} filter={filter} />}
         </>
       )}
     </div>

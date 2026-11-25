@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
 import { Card } from "@/components/ui/card";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { SectionTitle } from "@/components/ui/section-title";
+import { Tabs } from "@/components/ui/tabs";
 import { SortableTable } from "@/components/ui/sortable-table";
 import { getSource } from "@/lib/api";
 import { fmtDuration, fmtNum } from "@/lib/format";
 import { humanize } from "@/lib/labels";
 import { getNpcs } from "@/lib/lookup";
+import { Stat } from "@/components/ui/stat";
 
-export const metadata: Metadata = { title: "Mecánicas", description: "Almas, objetivos, campamentos neutrales, power-ups y el Rejuvenador, explicados con los datos del juego." };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("mechanics");
+  return { title: t("title"), description: t("metaDesc") };
+}
 export const revalidate = 43200;
 
 type Generic = {
@@ -20,19 +26,9 @@ type Misc = { class_name: string; initial_spawn_time?: number; spawn_interval?: 
 type Buff = { buff_type: string; is_permanent: boolean; pickups: number; avg_first_pickup_time_s: number };
 type MapData = { neutral_camps: { kind: string }[] };
 
-const KIND: Record<string, string> = { vault: "Bóveda", strong: "Fuertes", medium: "Medios", weak: "Débiles" };
-const SECTIONS = [["souls", "Almas"], ["objectives", "Objetivos"], ["camps", "Campamentos neutrales"], ["powerups", "Power-ups"], ["rejuv", "Rejuvenador"]] as const;
-
-function Stat({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="rounded-md border border-brass/30 bg-surface p-4 text-center shadow-card">
-      <p className="font-display text-3xl font-black">{value}</p>
-      <p className="mt-1 text-sm text-ink-muted">{label}</p>
-    </div>
-  );
-}
-
+const KIND: Record<string, string> = { vault: "kindVault", strong: "kindStrong", medium: "kindMedium", weak: "kindWeak" };
 export default async function MechanicsPage() {
+  const [t, th] = await Promise.all([getTranslations("mechanics"), getTranslations("heroes")]);
   const api = getSource();
   const [generic, misc, buffs, map, npcs] = await Promise.all([
     api.get<Generic>("/v1/assets/generic-data").then((r) => r.data),
@@ -46,76 +42,79 @@ export default async function MechanicsPage() {
   const prices = generic.item_price_per_tier.slice(1, 5);
   const o = generic.objective_params;
   const objectives = [
-    [npcName("npc_boss_tier1", "Guardián"), o.tier1_gold_kill],
-    [npcName("npc_boss_tier2", "Walker"), o.tier2_gold_kill],
-    ["Guardianes de base", o.base_guardians_gold_kill],
-    ["Santuarios", o.shrines_gold_kill],
+    [npcName("npc_boss_tier1", t("guardian")), o.tier1_gold_kill],
+    [npcName("npc_boss_tier2", t("walker")), o.tier2_gold_kill],
+    [t("baseGuardians"), o.base_guardians_gold_kill],
+    [t("shrines"), o.shrines_gold_kill],
   ] as const;
 
   const camps = map.neutral_camps.reduce<Record<string, number>>((a, c) => ((a[c.kind] = (a[c.kind] ?? 0) + 1), a), {});
   const spawner = misc.find((m) => m.class_name === "citadel_item_powerup_spawner");
   const rj = generic.rejuv_params;
   const rejuv = [
-    ["Duración del efecto", `${rj.rejuvinator_buff_duration} s`],
-    ["Aviso antes de que termine", `${rj.rejuvinator_expiration_warning_timing} s`],
+    [t("rejuvDuration"), `${rj.rejuvinator_buff_duration} s`],
+    [t("rejuvWarning"), `${rj.rejuvinator_expiration_warning_timing} s`],
   ];
-  const buffRows = buffs.map((b) => ({ id: b.buff_type, type: humanize(b.buff_type), permanent: b.is_permanent ? "Permanente" : "Temporal", pickups: b.pickups, first: Math.round(b.avg_first_pickup_time_s) }));
+  const buffRows = buffs.map((b) => ({ id: b.buff_type, type: humanize(b.buff_type), permanent: b.is_permanent ? t("permanent") : t("temporary"), pickups: b.pickups, first: Math.round(b.avg_first_pickup_time_s) }));
 
   return (
     <div className="space-y-12">
-      <PosterHeader title="Mecánicas" subtitle="Cómo funcionan las almas, los objetivos y los power-ups" />
+      <PosterHeader title={t("title")} subtitle={t("subtitle")} />
 
-      <nav aria-label="Secciones" className="flex flex-wrap justify-center gap-2">
-        {SECTIONS.map(([id, label]) => <a key={id} href={`#${id}`} className="rounded-full border border-brass/50 px-4 py-1.5 text-sm font-semibold transition-colors hover:bg-ink hover:text-bg">{label}</a>)}
-      </nav>
-
+      <Tabs syncHash sticky label={t("tabsLabel")} tabs={[
+        { id: "souls", label: t("tabSouls"), content: (
       <section id="souls" aria-labelledby="souls-t" className="scroll-mt-24 space-y-4">
-        <SectionTitle id="souls-t">Almas</SectionTitle>
+        <SectionTitle id="souls-t">{t("tabSouls")}</SectionTitle>
         <p className="max-w-prose text-ink-muted">
-          Las almas son la moneda de la partida: con ellas se compran los objetos de la tienda. Según los datos del juego, el precio depende solo del tier del objeto.
+          {t("soulsIntro")}
         </p>
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {prices.map((p, i) => <Stat key={i} value={fmtNum(p)} label={`Tier ${i + 1}`} />)}
+          {prices.map((p, i) => <Stat key={i} value={fmtNum(p)} label={th("tierN", { tier: i + 1 })} />)}
         </div>
       </section>
 
+        ) },
+        { id: "objectives", label: t("tabObjectives"), content: (
       <section id="objectives" aria-labelledby="obj-t" className="scroll-mt-24 space-y-4">
-        <SectionTitle id="obj-t">Objetivos</SectionTitle>
+        <SectionTitle id="obj-t">{t("tabObjectives")}</SectionTitle>
         <p className="max-w-prose text-ink-muted">
-          Destruir las estructuras del mapa da almas. Estas son las cantidades que figuran en los datos del juego al destruir cada una:
+          {t("objectivesIntro")}
         </p>
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {objectives.map(([name, souls]) => <Stat key={name} value={fmtNum(souls)} label={name} />)}
         </div>
       </section>
 
+        ) },
+        { id: "camps", label: t("tabCamps"), content: (
       <section id="camps" aria-labelledby="camps-t" className="scroll-mt-24 space-y-4">
-        <SectionTitle id="camps-t">Campamentos neutrales</SectionTitle>
+        <SectionTitle id="camps-t">{t("tabCamps")}</SectionTitle>
         <p className="max-w-prose text-ink-muted">
-          El mapa tiene {Object.values(camps).reduce((a, b) => a + b, 0)} campamentos de criaturas neutrales repartidos en cuatro categorías.
+          {t("campsIntro", { count: Object.values(camps).reduce((a, b) => a + b, 0) })}
         </p>
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {Object.entries(camps).map(([k, n]) => <Stat key={k} value={String(n)} label={KIND[k] ?? k} />)}
+          {Object.entries(camps).map(([k, n]) => <Stat key={k} value={String(n)} label={KIND[k] ? t(KIND[k]) : k} />)}
         </div>
       </section>
 
+        ) },
+        { id: "powerups", label: t("tabPowerups"), content: (
       <section id="powerups" aria-labelledby="pu-t" className="scroll-mt-24 space-y-4">
-        <SectionTitle id="pu-t">Power-ups</SectionTitle>
+        <SectionTitle id="pu-t">{t("tabPowerups")}</SectionTitle>
         {spawner?.initial_spawn_time !== undefined && (
           <Card>
             <p className="max-w-prose text-sm">
-              Los power-ups aparecen por primera vez a los <strong>{fmtDuration(spawner.initial_spawn_time)}</strong> de partida y se repiten cada <strong>{fmtDuration(spawner.spawn_interval ?? 0)}</strong>.
-              Tipos que pueden salir: {Object.keys(spawner.pickup_chances ?? {}).map((k) => humanize(k.replace(/_pickup$/, ""))).join(", ")}.
+              {t.rich("powerupsIntro", { first: fmtDuration(spawner.initial_spawn_time), every: fmtDuration(spawner.spawn_interval ?? 0), types: Object.keys(spawner.pickup_chances ?? {}).map((k) => humanize(k.replace(/_pickup$/, ""))).join(", "), b: (c) => <strong>{c}</strong> })}
             </p>
           </Card>
         )}
-        <h3 className="font-display text-lg font-black">Mejoras y power-ups recogidos</h3>
+        <h3 className="font-display text-lg font-black">{t("pickedUp")}</h3>
         <SortableTable
           columns={[
-            { key: "type", label: "Tipo (id de la API)" },
-            { key: "permanent", label: "Efecto" },
-            { key: "pickups", label: "Recogidos", numeric: true },
-            { key: "first", label: "1.ª recogida media (s)", numeric: true },
+            { key: "type", label: t("colType") },
+            { key: "permanent", label: t("colEffect") },
+            { key: "pickups", label: t("colPickups"), numeric: true },
+            { key: "first", label: t("colFirst"), numeric: true },
           ]}
           rows={buffRows}
           initialSort={{ key: "pickups", dir: "desc" }}
@@ -123,14 +122,18 @@ export default async function MechanicsPage() {
         />
       </section>
 
+        ) },
+        { id: "rejuv", label: t("tabRejuv"), content: (
       <section id="rejuv" aria-labelledby="rj-t" className="scroll-mt-24 space-y-4">
-        <SectionTitle id="rj-t">Rejuvenador</SectionTitle>
-        <p className="max-w-prose text-ink-muted">Valores del efecto del Rejuvenador tal como los entrega el juego:</p>
+        <SectionTitle id="rj-t">{t("tabRejuv")}</SectionTitle>
+        <p className="max-w-prose text-ink-muted">{t("rejuvIntro")}</p>
         <div className="grid gap-4 sm:grid-cols-2">
           {rejuv.map(([k, v]) => <Stat key={k} value={v} label={k} />)}
         </div>
-        <p className="text-xs text-ink-muted">Los textos de esta página están escritos para la web a partir de los datos; las cifras se actualizan con cada parche.</p>
+        <p className="text-xs text-ink-muted">{t("rejuvNote")}</p>
       </section>
+        ) },
+      ]} />
     </div>
   );
 }

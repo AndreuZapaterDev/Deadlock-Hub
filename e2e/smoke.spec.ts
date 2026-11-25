@@ -53,7 +53,7 @@ test("el navegador nunca llama directamente a la API externa (todo pasa por la p
 });
 
 test("una partida enlazada desde el historial de un jugador carga", async ({ page }) => {
-  await page.goto("/players/483770846");
+  await page.goto("/players/483770846#history");
   const link = page.locator("a[href^='/matches/']").first();
   await expect(link).toBeVisible();
   await link.click();
@@ -205,12 +205,14 @@ test("la ficha de héroe: menú fijo, historia sin etiquetas, calculadora de niv
   await page.goto("/heroes/infernus");
   // el lore se parte en párrafos: nunca salen etiquetas <br> sueltas
   await expect(page.locator("main")).not.toContainText("<br");
-  // menú de secciones: lleva a la sección y la marca como actual
-  const nav = page.getByRole("navigation", { name: "Secciones de la ficha" });
-  await nav.getByRole("link", { name: "Habilidades" }).click();
-  await expect(nav.getByRole("link", { name: "Habilidades" })).toHaveAttribute("aria-current", "location");
-  await expect(page.locator("#abilities-t")).toBeInViewport();
+  // pestañas: solo se ve una a la vez; al abrir una se muestra su contenido y queda marcada
+  const tabs = page.getByRole("tablist", { name: "Secciones de la ficha" });
+  await expect(page.locator("#abilities-t")).toBeHidden();
+  await tabs.getByRole("tab", { name: "Habilidades" }).click();
+  await expect(tabs.getByRole("tab", { name: "Habilidades" })).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator("#abilities-t")).toBeVisible();
   // calculadora: subir de nivel aumenta la vida
+  await tabs.getByRole("tab", { name: "Estadísticas" }).click();
   const vida = page.locator("dl[aria-live=polite] div", { hasText: /^Vida/ }).locator("dd").first();
   const v1 = Number((await vida.innerText()).replace(/\D/g, ""));
   await page.getByRole("slider").fill("20");
@@ -251,7 +253,7 @@ test("héroes: vista por tier, héroe aleatorio y sección de rendimiento en la 
   await expect(page).toHaveURL(/\/heroes\/[^/]+$/);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   // el rendimiento por rango y semana viene de la API real; si hay muestra se pinta la sección
-  await page.goto("/heroes/infernus");
+  await page.goto("/heroes/infernus#meta");
   await expect(page.getByRole("heading", { name: "Rendimiento" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Win rate por rango" })).toBeVisible();
 });

@@ -1,21 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Suspense } from "react";
 import { FilterBar } from "@/components/filters/filter-bar";
 import { Chip } from "@/components/ui/chip";
 import { EmptyState, ErrorState } from "@/components/ui/feedback";
+import { apiErrorHint } from "@/lib/api-error-hint";
 import { Pagination } from "@/components/ui/pagination";
+import { pillClass } from "@/components/ui/pill";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { fmtNum } from "@/lib/format";
 import { getHeroes } from "@/lib/lookup";
 import { isRegion, loadLeaderboard, REGIONS } from "@/lib/meta-data";
 import { slugify } from "@/lib/slug";
 
-export const metadata: Metadata = { title: "Leaderboard", description: "Los mejores jugadores de cada región de Deadlock, en global y por héroe." };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("leaderboard");
+  return { title: t("title"), description: t("metaDesc") };
+}
 
 const PAGE_SIZE = 50;
 
 export default async function LeaderboardPage({ searchParams }: { searchParams: Promise<{ region?: string; hero?: string; page?: string }> }) {
+  const t = await getTranslations("leaderboard");
   const sp = await searchParams;
   const region = isRegion(sp.region) ? sp.region : "Europe";
   const heroes = (await getHeroes()).sort((a, b) => a.name.localeCompare(b.name));
@@ -38,21 +45,21 @@ export default async function LeaderboardPage({ searchParams }: { searchParams: 
 
   return (
     <div className="space-y-8">
-      <PosterHeader compact title="Leaderboard" subtitle={hero ? `Los mejores ${hero.name}` : "Los mejores jugadores de cada región"} />
+      <PosterHeader compact title={t("title")} subtitle={hero ? t("subtitleHero", { name: hero.name }) : t("subtitle")} />
 
-      <nav aria-label="Región" className="flex flex-wrap gap-2">
-        {REGIONS.map(([r, label]) => (
-          <Link key={r} href={link(r)} aria-current={region === r ? "page" : undefined} className={`rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${region === r ? "border-brass bg-ink text-bg" : "border-brass/50 hover:bg-brass/15"}`}>{label}</Link>
+      <nav aria-label={t("region")} className="flex flex-wrap gap-2">
+        {REGIONS.map(([r]) => (
+          <Link key={r} href={link(r)} aria-current={region === r ? "page" : undefined} className={pillClass(region === r)}>{t(`region${r}`)}</Link>
         ))}
       </nav>
       <Suspense fallback={null}>
-        <FilterBar fields={[{ name: "hero", label: "Héroe", type: "select", options: heroes.map((h) => ({ value: slugify(h.name), label: h.name })), allLabel: "Global (todos los héroes)" }]} />
+        <FilterBar fields={[{ name: "hero", label: t("hero"), type: "select", options: heroes.map((h) => ({ value: slugify(h.name), label: h.name })), allLabel: t("globalAll") }]} />
       </Suspense>
 
       {!lb.ok ? (
-        <ErrorState title="No se ha podido cargar el leaderboard" hint={lb.status === 503 || lb.status === 429 ? "La API está ocupada. Inténtalo en unos segundos." : "Inténtalo de nuevo en unos minutos."} />
+        <ErrorState title={t("loadError")} hint={await apiErrorHint(lb.status)} />
       ) : entries.length === 0 ? (
-        <EmptyState title="Todavía no hay nadie en esta clasificación" hint="Prueba con otra región o con otro héroe." />
+        <EmptyState title={t("empty")} hint={t("emptyHint")} />
       ) : (
         <>
           <div className="overflow-x-auto rounded-md border border-brass/30">
@@ -60,8 +67,8 @@ export default async function LeaderboardPage({ searchParams }: { searchParams: 
               <thead className="bg-brass/10 text-left">
                 <tr>
                   <th scope="col" className="w-16 px-3 py-2 text-right font-semibold">#</th>
-                  <th scope="col" className="px-3 py-2 font-semibold">Jugador</th>
-                  {!hero && <th scope="col" className="px-3 py-2 font-semibold">Héroes más jugados</th>}
+                  <th scope="col" className="px-3 py-2 font-semibold">{t("colPlayer")}</th>
+                  {!hero && <th scope="col" className="px-3 py-2 font-semibold">{t("colTopHeroes")}</th>}
                 </tr>
               </thead>
               <tbody>
@@ -72,7 +79,7 @@ export default async function LeaderboardPage({ searchParams }: { searchParams: 
                       <td className="px-3 py-2 text-right font-display text-lg font-black tabular-nums">{fmtNum(e.rank)}</td>
                       <td className="px-3 py-2">
                         {main ? <Link href={`/players/${main}`} className="link-brass font-semibold">{e.account_name}</Link> : <span className="font-semibold">{e.account_name}</span>}
-                        {others.length > 0 && <span className="ml-2 text-xs text-ink-muted" title={`Otras cuentas posibles: ${others.join(", ")}`}>+{others.length} cuentas posibles</span>}
+                        {others.length > 0 && <span className="ml-2 text-xs text-ink-muted" title={t("otherAccounts", { ids: others.join(", ") })}>{t("possibleAccounts", { count: others.length })}</span>}
                       </td>
                       {!hero && (
                         <td className="px-3 py-2">
@@ -86,10 +93,10 @@ export default async function LeaderboardPage({ searchParams }: { searchParams: 
             </table>
           </div>
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm text-ink-muted">Puestos {fmtNum((page - 1) * PAGE_SIZE + 1)}–{fmtNum(Math.min(page * PAGE_SIZE, entries.length))} de {fmtNum(entries.length)}</p>
+            <p className="text-sm text-ink-muted">{t("positions", { from: fmtNum((page - 1) * PAGE_SIZE + 1), to: fmtNum(Math.min(page * PAGE_SIZE, entries.length)), total: fmtNum(entries.length) })}</p>
             <Pagination page={page} pages={pages} href={(p) => link(region, p)} />
           </div>
-          <p className="text-xs text-ink-muted">Una fila puede corresponder a varias cuentas con el mismo nombre: se enlaza la primera y se avisa de las demás.</p>
+          <p className="text-xs text-ink-muted">{t("note")}</p>
         </>
       )}
     </div>

@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { CategoryChip } from "@/components/ui/chip";
 import { RichTooltip } from "@/components/ui/tooltip";
 import { propText } from "@/lib/item-sections";
@@ -40,16 +41,19 @@ export function tooltipData(item: Item): TooltipData {
 
 /** Contenido del tooltip. Sin estado ni imports de servidor: lo usan tanto los Server Components como el tooltip que se carga bajo demanda. */
 export function ItemTooltipView({ data }: { data: TooltipData }) {
+  const t = useTranslations("itemPage");
+  const th = useTranslations("heroes");
+  const tc = useTranslations("common");
   return (
     <div className="space-y-2">
       <div className="flex items-start justify-between gap-2">
         <p className="font-serif text-base font-semibold leading-tight">{data.name}</p>
-        {data.cost !== undefined && <span className="whitespace-nowrap text-sm font-semibold text-apricot-ink">{fmtNum(data.cost)} almas</span>}
+        {data.cost !== undefined && <span className="whitespace-nowrap text-sm font-semibold text-apricot-ink">{t("souls", { count: fmtNum(data.cost) })}</span>}
       </div>
       <div className="flex items-center gap-2 text-xs text-ink-muted">
         {data.category && <CategoryChip category={data.category} />}
-        {data.tier && <span>Tier {data.tier}</span>}
-        <span>{data.active ? "Activa" : "Pasivo"}</span>
+        {data.tier && <span>{th("tierN", { tier: data.tier })}</span>}
+        <span>{data.active ? t("active") : t("passive")}</span>
       </div>
       {data.desc && <p className="text-xs leading-relaxed">{data.desc}</p>}
       {data.stats.length > 0 && (
@@ -57,7 +61,7 @@ export function ItemTooltipView({ data }: { data: TooltipData }) {
           {data.stats.map((s) => <li key={s}>{s}</li>)}
         </ul>
       )}
-      {data.components > 0 && <p className="text-xs text-ink-muted">Se construye con: {data.components} componente(s)</p>}
+      {data.components > 0 && <p className="text-xs text-ink-muted">{tc("tooltipBuilt", { count: data.components })}</p>}
     </div>
   );
 }

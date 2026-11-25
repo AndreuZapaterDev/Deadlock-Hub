@@ -91,7 +91,7 @@ async function request(path: string, url: URL, headers: Record<string, string>):
         }
         const c = e instanceof Error ? (e.cause as { code?: string; message?: string } | undefined) : undefined;
         const cause = c ? ` (${c.code ?? c.message})` : "";
-        const why = timedOut ? "tiempo de espera agotado" : "sin conexión con la API";
+        const why = timedOut ? "timed out" : "no connection";
         console.error(`[deadlock-api] ${path}: ${why}${cause}`);
         throw new ApiError(504, `Deadlock API: ${why}`);
       }
@@ -125,7 +125,7 @@ async function request(path: string, url: URL, headers: Record<string, string>):
           continue;
         }
         console.error(`[deadlock-api] ${path}: respuesta incompleta`);
-        throw new ApiError(502, "Deadlock API: respuesta incompleta");
+        throw new ApiError(502, "Deadlock API: incomplete response");
       }
       return Object.assign({ status: res.status, contentType, data }, { bytes });
     }

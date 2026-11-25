@@ -1,4 +1,5 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { ItemTooltipView, type TooltipData } from "@/components/item/item-tooltip";
 import { cn } from "@/lib/cn";
@@ -27,6 +28,7 @@ function load(cls: string, lang: string): Promise<TooltipData> {
  * Misma apariencia y mismo comportamiento CSS que `RichTooltip`, pero sin llevar los 156 tooltips en el HTML.
  */
 export function LazyItemTooltip({ id, cls, lang, children, fill }: { id: string; cls: string; lang: string; children: React.ReactNode; fill?: boolean }) {
+  const t = useTranslations("common");
   const [data, setData] = useState<TooltipData | null>(() => cache.get(`${lang}:${cls}`) ?? null);
   const [failed, setFailed] = useState(false);
 
@@ -43,7 +45,7 @@ export function LazyItemTooltip({ id, cls, lang, children, fill }: { id: string;
         role="tooltip"
         className="pointer-events-none invisible absolute left-1/2 top-full z-30 mt-2 w-72 -translate-x-1/2 translate-y-1 rounded-md border border-brass bg-surface p-3 text-left opacity-0 shadow-pop transition duration-150 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100"
       >
-        {data ? <ItemTooltipView data={data} /> : <span className="text-xs text-ink-muted">{failed ? "No se ha podido cargar." : "Cargando…"}</span>}
+        {data ? <ItemTooltipView data={data} /> : <span className="text-xs text-ink-muted">{failed ? t("tooltipFailed") : t("tooltipLoading")}</span>}
       </span>
     </span>
   );

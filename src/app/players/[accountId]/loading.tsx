@@ -1,9 +1,11 @@
+import { getTranslations } from "next-intl/server";
 import { Skeleton } from "@/components/ui/feedback";
 
 // Esqueleto mientras se cargan el historial (varios MB en el servidor) y el resto de datos del perfil.
-export default function Loading() {
+export default async function Loading() {
+  const t = await getTranslations("playerPage");
   return (
-    <div className="space-y-10" role="status" aria-label="Cargando perfil">
+    <div className="space-y-10" role="status" aria-label={t("loadingLabel")}>
       <Skeleton className="h-72 w-full" />
       <div className="grid gap-5 lg:grid-cols-[18rem_1fr]">
         <Skeleton className="h-36" />

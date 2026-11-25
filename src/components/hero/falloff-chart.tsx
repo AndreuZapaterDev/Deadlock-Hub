@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import type { FalloffPoint } from "@/lib/hero-stats";
 
 const W = 400;
@@ -9,6 +10,7 @@ const PAD = { l: 34, r: 10, t: 10, b: 26 };
  * Es una aproximación lineal (ver `falloffCurve`).
  */
 export function FalloffChart({ points, maxMeters = 40 }: { points: FalloffPoint[]; maxMeters?: number }) {
+  const t = useTranslations("heroUi");
   const x = (m: number) => PAD.l + (m / maxMeters) * (W - PAD.l - PAD.r);
   const y = (s: number) => PAD.t + (1 - s) * (H - PAD.t - PAD.b);
   const line = points.map((p) => `${x(p.m)},${y(p.scale)}`).join(" ");
@@ -19,7 +21,7 @@ export function FalloffChart({ points, maxMeters = 40 }: { points: FalloffPoint[
 
   return (
     <figure>
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Daño del arma según la distancia: ${Math.round(min * 100)} % como mínimo a partir de ${Math.round(end.m)} metros`} className="w-full">
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={t("falloffAria", { min: Math.round(min * 100), meters: Math.round(end.m) })} className="w-full">
         {[0, 0.5, 1].map((s) => (
           <g key={s}>
             <line x1={PAD.l} x2={W - PAD.r} y1={y(s)} y2={y(s)} stroke="var(--brass)" strokeOpacity={0.25} />

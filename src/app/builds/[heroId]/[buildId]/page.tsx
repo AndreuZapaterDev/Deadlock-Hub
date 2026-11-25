@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
 import { BuildCard } from "@/components/builds/build-card";
 import { CAT_COLOR, catVar, ItemIcon, TierPips } from "@/components/item/item-tile";
 import { CopyButton } from "@/components/tools/copy-button";
@@ -8,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
 import { ErrorState } from "@/components/ui/feedback";
+import { apiErrorHint } from "@/lib/api-error-hint";
 import { PosterHeader } from "@/components/ui/poster-header";
 import { RateMeter } from "@/components/ui/rate-meter";
 import { SectionTitle } from "@/components/ui/section-title";
@@ -28,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ heroId: s
   const [h, b] = [int(heroId), int(buildId)];
   if (h === null || b === null) return {};
   const r = await loadBuild(h, b);
-  return r.ok ? { title: r.data.hero_build.name } : { title: "Build" };
+  return r.ok ? { title: r.data.hero_build.name } : { title: (await getTranslations("builds"))("buildFallback") };
 }
 
 export default async function BuildPage({ params }: { params: Promise<{ heroId: string; buildId: string }> }) {
@@ -36,10 +38,11 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
   const [hid, bid] = [int(heroId), int(buildId)];
   if (hid === null || bid === null) notFound();
 
+  const [t, tc, locale] = await Promise.all([getTranslations("builds"), getTranslations("common"), getLocale()]);
   const res = await loadBuild(hid, bid);
   if (!res.ok) {
     if (res.status === 404) notFound();
-    return <ErrorState title="No se ha podido cargar la build" hint={res.status === 503 || res.status === 429 ? "La API está ocupada. Inténtalo en unos segundos." : "Inténtalo de nuevo en unos minutos."} />;
+    return <ErrorState title={t("detailError")} hint={await apiErrorHint(res.status)} />;
   }
 
   const build = res.data;
@@ -48,7 +51,7 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
     getHeroNames(), getItems().then(byId), loadBuildTags(), loadNames([h.author_account_id]), loadItemStats({}, h.hero_id),
     loadBuildList({ hero: h.hero_id, sort: "favorites", page: 1 }),
   ]);
-  const heroName = heroNames.get(h.hero_id) ?? `Héroe #${h.hero_id}`;
+  const heroName = heroNames.get(h.hero_id) ?? t("heroFallback", { id: h.hero_id });
   const author = authors.get(h.author_account_id);
   const tagLabel = new Map(tags.map((t) => [t.id, t.label]));
   const categories = categoriesOf(build);
@@ -71,26 +74,26 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
   return (
     <div className="space-y-12">
 
-      <PosterHeader title={h.name} subtitle={`Build de ${heroName}`}>
+      <PosterHeader title={h.name} subtitle={t("buildOf", { hero: heroName })}>
         <div className="flex flex-wrap items-center justify-center gap-2">
           <Chip tone="lilac">{heroName}</Chip>
           <Chip>v{h.version}</Chip>
           <Chip>★ {fmtNum(build.num_favorites ?? 0)}</Chip>
-          <Chip>Actualizada {timeAgo(h.last_updated_timestamp)}</Chip>
+          <Chip>{t("updatedAgo", { when: timeAgo(h.last_updated_timestamp, locale) })}</Chip>
           {(h.tags ?? []).map((t) => tagLabel.get(t)).filter((t): t is string => !!t).map((t) => <Chip key={t}>{t}</Chip>)}
         </div>
         <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-          {shopItems.length > 0 && <Button href={plannerHref} variant="secondary">Abrir en el planner</Button>}
-          <Button href={`/heroes/${slugify(heroName)}`} variant="ghost"><span className="text-cream">Ver {heroName}</span></Button>
+          {shopItems.length > 0 && <Button href={plannerHref} variant="secondary">{t("openPlanner")}</Button>}
+          <Button href={`/heroes/${slugify(heroName)}`} variant="ghost"><span className="text-cream">{t("viewHero", { hero: heroName })}</span></Button>
         </div>
       </PosterHeader>
 
-      <ul aria-label="Resumen" className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <ul aria-label={t("summary")} className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {[
-          { v: String(shop.length), l: "objetos de tienda" },
-          { v: cost > 0 ? `◆ ${fmtNum(cost)}` : "—", l: "coste total en almas" },
-          { v: avgRate !== null ? fmtPct(avgRate) : "—", l: `win rate medio de sus objetos con ${heroName}` },
-          { v: fmtNum(build.num_weekly_favorites ?? 0), l: "favoritos esta semana" },
+          { v: String(shop.length), l: t("statItems") },
+          { v: cost > 0 ? `◆ ${fmtNum(cost)}` : "—", l: t("statCost") },
+          { v: avgRate !== null ? fmtPct(avgRate) : "—", l: t("statWin", { hero: heroName }) },
+          { v: fmtNum(build.num_weekly_favorites ?? 0), l: t("statWeekly") },
         ].map((x) => (
           <li key={x.l} className="rounded-md border border-brass/30 bg-surface p-3 text-center shadow-card">
             <p className="font-display text-2xl font-black tabular-nums">{x.v}</p>
@@ -99,47 +102,47 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
         ))}
         {mix.total > 0 && (
           <li className="col-span-2 space-y-1.5 rounded-md border border-brass/30 bg-surface p-3 shadow-card lg:col-span-4">
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">Reparto por categoría</p>
-            <span role="img" aria-label={`Arma ${mix.counts.weapon}, vitalidad ${mix.counts.vitality}, espíritu ${mix.counts.spirit}`} className="flex h-2.5 overflow-hidden rounded-full bg-ink-muted/20">
+            <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{t("mixLabel")}</p>
+            <span role="img" aria-label={t("mixAria", { weapon: mix.counts.weapon, vitality: mix.counts.vitality, spirit: mix.counts.spirit })} className="flex h-2.5 overflow-hidden rounded-full bg-ink-muted/20">
               <span className="bg-apricot" style={{ width: `${mix.share.weapon * 100}%` }} />
               <span className="bg-sage" style={{ width: `${mix.share.vitality * 100}%` }} />
               <span className="bg-lilac" style={{ width: `${mix.share.spirit * 100}%` }} />
             </span>
-            <p className="flex flex-wrap gap-x-4 text-xs"><span className="text-apricot-ink">Arma {mix.counts.weapon}</span><span className="text-sage-ink">Vitalidad {mix.counts.vitality}</span><span className="text-lilac-ink">Espíritu {mix.counts.spirit}</span></p>
+            <p className="flex flex-wrap gap-x-4 text-xs"><span className="text-apricot-ink">{t("catCount", { label: tc("weapon"), count: mix.counts.weapon })}</span><span className="text-sage-ink">{t("catCount", { label: tc("vitality"), count: mix.counts.vitality })}</span><span className="text-lilac-ink">{t("catCount", { label: tc("spirit"), count: mix.counts.spirit })}</span></p>
           </li>
         )}
       </ul>
 
       <section aria-labelledby="about" className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="space-y-3">
-          <h2 id="about" className="font-display text-xl font-black">Notas del autor</h2>
+          <h2 id="about" className="font-display text-xl font-black">{t("notes")}</h2>
           {desc ? (
             <p className="max-w-prose whitespace-pre-line text-sm [overflow-wrap:anywhere] leading-relaxed">
               {linkify(desc).map((p, i) => p.type === "link" ? <a key={i} href={p.href} target="_blank" rel="noopener noreferrer nofollow ugc" className="link-brass font-semibold">{p.value}</a> : p.value)}
             </p>
           ) : (
-            <p className="text-sm text-ink-muted">El autor no ha escrito ninguna nota.</p>
+            <p className="text-sm text-ink-muted">{t("noNotes")}</p>
           )}
         </div>
         <Card className="space-y-3">
-          <h2 className="font-display text-lg font-black">Importar en el juego</h2>
+          <h2 className="font-display text-lg font-black">{t("importTitle")}</h2>
           <dl className="space-y-1 text-sm">
-            <div className="flex justify-between gap-3"><dt className="text-ink-muted">ID de la build</dt><dd className="font-mono font-semibold">{h.hero_build_id}</dd></div>
-            <div className="flex justify-between gap-3"><dt className="text-ink-muted">Versión</dt><dd className="font-mono font-semibold">{h.version}</dd></div>
-            <div className="flex justify-between gap-3"><dt className="text-ink-muted">Autor</dt><dd><Link href={`/players/${h.author_account_id}`} className="link-brass font-semibold">{author ?? `#${h.author_account_id}`}</Link></dd></div>
+            <div className="flex justify-between gap-3"><dt className="text-ink-muted">{t("buildId")}</dt><dd className="font-mono font-semibold">{h.hero_build_id}</dd></div>
+            <div className="flex justify-between gap-3"><dt className="text-ink-muted">{t("version")}</dt><dd className="font-mono font-semibold">{h.version}</dd></div>
+            <div className="flex justify-between gap-3"><dt className="text-ink-muted">{t("author")}</dt><dd><Link href={`/players/${h.author_account_id}`} className="link-brass font-semibold">{author ?? `#${h.author_account_id}`}</Link></dd></div>
           </dl>
           <div className="flex flex-wrap gap-2">
-            <CopyButton text={String(h.hero_build_id)} label="Copiar ID" />
-            <Button href={`/builds?author=${h.author_account_id}`} variant="ghost">Más builds de este autor</Button>
+            <CopyButton text={String(h.hero_build_id)} label={t("copyId")} />
+            <Button href={`/builds?author=${h.author_account_id}`} variant="ghost">{t("moreByAuthor")}</Button>
           </div>
-          <p className="text-xs text-ink-muted">Usa el ID para encontrar la build en el navegador de builds del juego. Los pasos exactos de importación dependen del juego.</p>
+          <p className="text-xs text-ink-muted">{t("importHint")}</p>
         </Card>
       </section>
 
       <section aria-labelledby="items" className="space-y-4">
-        <SectionTitle id="items">Objetos por fase</SectionTitle>
+        <SectionTitle id="items">{t("itemsByPhase")}</SectionTitle>
         {categories.every((c) => c.mods.length === 0) ? (
-          <p className="text-sm text-ink-muted">Esta build no incluye objetos.</p>
+          <p className="text-sm text-ink-muted">{t("noItems")}</p>
         ) : (
           <div className="grid gap-4 md:grid-cols-2">
             {categories.filter((c) => c.mods.length > 0).map((c, i) => (
@@ -159,16 +162,16 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
                         <span className="w-5 shrink-0 text-center text-sm font-bold tabular-nums text-brass">{n + 1}</span>
                         {it && <ItemIcon item={it} size={40} />}
                         <span className="min-w-0 flex-1">
-                          {it?.type === "upgrade" ? <Link href={`/items/${it.class_name}`} className="link-brass block truncate text-sm font-bold">{it.name}</Link> : <span className="block truncate text-sm font-bold">{it?.name ?? `Objeto #${m.ability_id}`}</span>}
+                          {it?.type === "upgrade" ? <Link href={`/items/${it.class_name}`} className="link-brass block truncate text-sm font-bold">{it.name}</Link> : <span className="block truncate text-sm font-bold">{it?.name ?? t("itemFallback", { id: m.ability_id })}</span>}
                           <span className="flex items-center gap-2 text-xs text-ink-muted">
                             {it?.item_tier ? <TierPips tier={it.item_tier} /> : null}
                             {it?.cost ? <span className="tabular-nums">◆ {fmtNum(it.cost)}</span> : null}
-                            {cat && <span className={CAT_COLOR[cat].ink}>{cat === "weapon" ? "Arma" : cat === "vitality" ? "Vitalidad" : "Espíritu"}</span>}
+                            {cat && <span className={CAT_COLOR[cat].ink}>{tc(cat)}</span>}
                           </span>
                           {m.annotation && <span className="block text-xs italic text-ink-muted">«{m.annotation}»</span>}
                         </span>
                         {st && st.matches >= 200 && (
-                          <span className="w-14 shrink-0 text-right" title={`Win rate con ${heroName}: ${fmtNum(st.matches)} partidas`}>
+                          <span className="w-14 shrink-0 text-right" title={t("winTitle", { hero: heroName, matches: fmtNum(st.matches) })}>
                             <span className="block text-xs font-black tabular-nums">{fmtPct(st.rate)}</span>
                             <RateMeter rate={st.rate} className="mt-0.5" />
                           </span>
@@ -181,12 +184,12 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
             ))}
           </div>
         )}
-        <p className="text-xs text-ink-muted">Los textos y las notas son los del autor, tal como los publicó.</p>
+        <p className="text-xs text-ink-muted">{t("authorTexts")}</p>
       </section>
 
       {steps.length > 0 && (
         <section aria-labelledby="order" className="space-y-4">
-          <SectionTitle id="order">Orden de habilidades</SectionTitle>
+          <SectionTitle id="order">{t("skillOrder")}</SectionTitle>
           <Card>
             <ol className="grid gap-x-6 gap-y-1.5 sm:grid-cols-2 lg:grid-cols-3">
               {steps.map((s, i) => (
@@ -194,24 +197,24 @@ export default async function BuildPage({ params }: { params: Promise<{ heroId: 
                   <span className="w-6 text-right font-bold tabular-nums text-brass">{i + 1}</span>
                   {items.get(s.ability_id) && <ItemIcon item={items.get(s.ability_id)!} size={28} />}
                   <span className="font-semibold">{items.get(s.ability_id)?.name ?? `#${s.ability_id}`}</span>
-                  <span className="text-xs text-ink-muted">{s.currency_type === 2 ? "desbloquear" : "mejorar"}</span>
+                  <span className="text-xs text-ink-muted">{s.currency_type === 2 ? t("unlock") : t("upgradeStep")}</span>
                 </li>
               ))}
             </ol>
-            <p className="mt-3 text-xs text-ink-muted">«Desbloquear» y «mejorar» se deducen del tipo de punto que gasta cada paso (2 y 1 respectivamente en los datos).</p>
+            <p className="mt-3 text-xs text-ink-muted">{t("stepsNote")}</p>
           </Card>
         </section>
       )}
 
       {others.length > 0 && (
         <section aria-labelledby="similar" className="space-y-4">
-          <SectionTitle id="similar">Otras builds de {heroName}</SectionTitle>
+          <SectionTitle id="similar">{t("othersOf", { hero: heroName })}</SectionTitle>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {others.map((b) => (
               <BuildCard key={b.hero_build.hero_build_id} build={b} heroId={b.hero_build.hero_id} heroName={heroName} shop={shopItemsOf(b, items)} tags={(b.hero_build.tags ?? []).map((t) => tagLabel.get(t)).filter((t): t is string => !!t).slice(0, 3)} />
             ))}
           </div>
-          <Button href={`/builds?hero=${h.hero_id}`} variant="ghost">Ver todas las builds de {heroName}</Button>
+          <Button href={`/builds?hero=${h.hero_id}`} variant="ghost">{t("seeAllOf", { hero: heroName })}</Button>
         </section>
       )}
     </div>

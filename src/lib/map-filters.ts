@@ -80,16 +80,25 @@ export const FROM_MINUTES = Array.from({ length: 12 }, (_, i) => i * 5); // 0, 5
 export const TO_MINUTES = Array.from({ length: 12 }, (_, i) => (i + 1) * 5); // 5, 10, … 60
 
 /** Texto corto de los filtros activos (chips encima del mapa). */
-export function describeMapFilters(f: MapFilters, names: { hero?: string; tier: (t: number) => string }): string[] {
+type Tr = (key: string, values?: Record<string, string | number>) => string;
+
+/** `t` = traductor del namespace «mapUi» y `ta` = el de «analytics»; sin ellos, los textos en español de siempre. */
+export function describeMapFilters(f: MapFilters, names: { hero?: string; tier: (t: number) => string }, t?: Tr, ta?: Tr): string[] {
   const out: string[] = [];
-  if (f.hero !== undefined) out.push(names.hero ?? `Héroe #${f.hero}`);
-  if (f.fromMin || f.toMin !== undefined) out.push(`Minutos ${f.fromMin ?? 0}–${f.toMin ?? "fin"}`);
+  if (f.hero !== undefined) out.push(names.hero ?? (t ? t("chipHeroFallback", { id: f.hero }) : `Héroe #${f.hero}`));
+  if (f.fromMin || f.toMin !== undefined) out.push(t ? t("chipMinutes", { from: f.fromMin ?? 0, to: f.toMin ?? t("chipEnd") }) : `Minutos ${f.fromMin ?? 0}–${f.toMin ?? "fin"}`);
   if (f.rankMin !== undefined || f.rankMax !== undefined) {
-    out.push(f.rankMin !== undefined && f.rankMax !== undefined ? `${names.tier(f.rankMin)} → ${names.tier(f.rankMax)}` : f.rankMin !== undefined ? `Desde ${names.tier(f.rankMin)}` : `Hasta ${names.tier(f.rankMax!)}`);
+    out.push(
+      f.rankMin !== undefined && f.rankMax !== undefined
+        ? t ? t("chipRankRange", { from: names.tier(f.rankMin), to: names.tier(f.rankMax) }) : `${names.tier(f.rankMin)} → ${names.tier(f.rankMax)}`
+        : f.rankMin !== undefined
+          ? t ? t("chipRankFrom", { rank: names.tier(f.rankMin) }) : `Desde ${names.tier(f.rankMin)}`
+          : t ? t("chipRankTo", { rank: names.tier(f.rankMax!) }) : `Hasta ${names.tier(f.rankMax!)}`,
+    );
   }
-  if (f.since) out.push(`Desde el ${f.since}`);
-  if (f.dur) out.push(DURATIONS[f.dur].label);
-  if (f.mode) out.push(MATCH_MODES[f.mode]);
+  if (f.since) out.push(t ? t("chipSince", { date: f.since }) : `Desde el ${f.since}`);
+  if (f.dur) out.push(ta ? ta(DURATIONS[f.dur].key) : DURATIONS[f.dur].label);
+  if (f.mode) out.push(t ? t(f.mode === "ranked" ? "modeRanked" : "modeUnranked") : MATCH_MODES[f.mode]);
   return out;
 }
 

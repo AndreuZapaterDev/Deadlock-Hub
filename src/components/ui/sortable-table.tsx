@@ -2,6 +2,7 @@
 import { motion } from "motion/react";
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useLocale } from "next-intl";
 import { cn } from "@/lib/cn";
 import { timeAgo } from "@/lib/format";
 
@@ -23,11 +24,12 @@ export function SortableTable({ columns, rows, initialSort, format }: { columns:
     });
   }, [rows, sort]);
 
+  const locale = useLocale();
   const show = (key: string, v: string | number) =>
-    typeof v === "number" && format?.[key] === "pct" ? new Intl.NumberFormat("es-ES", { style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v)
-    : typeof v === "number" && format?.[key] === "dec" ? new Intl.NumberFormat("es-ES", { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v)
-    : typeof v === "number" && format?.[key] === "ago" ? timeAgo(v)
-    : typeof v === "number" ? new Intl.NumberFormat("es-ES").format(v) : v;
+    typeof v === "number" && format?.[key] === "pct" ? new Intl.NumberFormat(locale, { style: "percent", minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v)
+    : typeof v === "number" && format?.[key] === "dec" ? new Intl.NumberFormat(locale, { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v)
+    : typeof v === "number" && format?.[key] === "ago" ? timeAgo(v, locale)
+    : typeof v === "number" ? new Intl.NumberFormat(locale).format(v) : v;
 
   return (
     <div className="overflow-x-auto rounded-md border border-brass/30">

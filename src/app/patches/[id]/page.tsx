@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getLocale, getTranslations } from "next-intl/server";
 import { HeroChip } from "@/components/hero/hero-chip";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
@@ -17,21 +18,21 @@ type Params = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { id } = await params;
-  const res = await loadPatches();
+  const [res, t] = await Promise.all([loadPatches(), getTranslations("patches")]);
   const p = res.ok ? res.data.find((x) => x.id === id) : undefined;
-  return p ? { title: p.title, description: `Notas del parche «${p.title}» de Deadlock.` } : { title: "Parche" };
+  return p ? { title: p.title, description: t("patchDesc", { title: p.title }) } : { title: t("patchTitle") };
 }
-
-const date = (iso: string) => new Date(iso).toLocaleDateString("es-ES", { day: "numeric", month: "long", year: "numeric" });
 
 export default async function PatchPage({ params }: Params) {
   const { id } = await params;
+  const [t, locale] = await Promise.all([getTranslations("patches"), getLocale()]);
+  const date = (iso: string) => new Date(iso).toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
   const [res, bigDays, heroes] = await Promise.all([loadPatches(), loadBigDays(), getHeroes()]);
   if (!res.ok) {
     return (
       <div className="space-y-8">
-        <PosterHeader compact title="Parche" />
-        <ErrorState title="No se ha podido cargar el parche" hint="La API no responde ahora mismo." />
+        <PosterHeader compact title={t("patchTitle")} />
+        <ErrorState title={t("patchLoadError")} hint={t("patchLoadErrorHint")} />
       </div>
     );
   }
@@ -47,17 +48,17 @@ export default async function PatchPage({ params }: Params) {
 
   return (
     <div className="space-y-8">
-      <PosterHeader compact title={patch.title || "Parche"} subtitle={`${date(effectiveDate(patch))} · ${readingMinutes(text)} min de lectura`} />
+      <PosterHeader compact title={patch.title || t("patchTitle")} subtitle={t("dateReading", { date: date(effectiveDate(patch)), minutes: readingMinutes(text) })} />
       <div className="flex flex-wrap items-center gap-2">
-        <Button href="/patches" variant="ghost">← Todos los parches</Button>
-        <Button href="/patches/diff" variant="secondary">Ver los cambios de números</Button>
-        <Chip tone={patch.source === "forum" ? "teal" : "neutral"}>{patch.source === "forum" ? "Foro" : "Steam"}</Chip>
-        {isBigDay(patch, bigDays) && <Chip tone="apricot">Gran actualización</Chip>}
-        <a href={patch.link} target="_blank" rel="noopener noreferrer" className="ml-auto text-sm font-semibold text-teal-ink underline-offset-2 hover:underline">Ver el original ↗</a>
+        <Button href="/patches" variant="ghost">{t("allPatches")}</Button>
+        <Button href="/patches/diff" variant="secondary">{t("seeNumbers")}</Button>
+        <Chip tone={patch.source === "forum" ? "teal" : "neutral"}>{patch.source === "forum" ? t("forum") : t("steam")}</Chip>
+        {isBigDay(patch, bigDays) && <Chip tone="apricot">{t("bigUpdate")}</Chip>}
+        <a href={patch.link} target="_blank" rel="noopener noreferrer" className="ml-auto text-sm font-semibold text-teal-ink underline-offset-2 hover:underline">{t("seeOriginal")}</a>
       </div>
       {mentioned.length > 0 && (
         <section aria-labelledby="mentioned" className="space-y-2">
-          <h2 id="mentioned" className="text-xs font-semibold uppercase tracking-wide text-ink-muted">Héroes mencionados ({mentioned.length})</h2>
+          <h2 id="mentioned" className="text-xs font-semibold uppercase tracking-wide text-ink-muted">{t("mentioned", { count: mentioned.length })}</h2>
           <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
             {mentioned.map((h) => <li key={h.id}><HeroChip id={h.id} name={h.name} /></li>)}
           </ul>
@@ -69,17 +70,17 @@ export default async function PatchPage({ params }: Params) {
         dangerouslySetInnerHTML={{ __html: html }}
       />
 
-      <nav aria-label="Otros parches" className="grid max-w-prose gap-3 sm:grid-cols-2">
+      <nav aria-label={t("otherPatches")} className="grid max-w-prose gap-3 sm:grid-cols-2">
         {older ? (
           <Link href={`/patches/${older.id}`} className="rounded-md border border-brass/30 bg-surface p-3 shadow-card transition-colors hover:bg-brass/10">
-            <span className="block text-xs text-ink-muted">← Parche anterior</span>
-            <span className="block truncate font-semibold">{older.title || "Sin título"}</span>
+            <span className="block text-xs text-ink-muted">{t("prevPatch")}</span>
+            <span className="block truncate font-semibold">{older.title || t("untitled")}</span>
           </Link>
         ) : <span />}
         {newer ? (
           <Link href={`/patches/${newer.id}`} className="rounded-md border border-brass/30 bg-surface p-3 text-right shadow-card transition-colors hover:bg-brass/10">
-            <span className="block text-xs text-ink-muted">Parche siguiente →</span>
-            <span className="block truncate font-semibold">{newer.title || "Sin título"}</span>
+            <span className="block text-xs text-ink-muted">{t("nextPatch")}</span>
+            <span className="block truncate font-semibold">{newer.title || t("untitled")}</span>
           </Link>
         ) : <span />}
       </nav>

@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import Link from "next/link";
 import { LazyItemTooltip } from "@/components/item/lazy-tooltip";
@@ -31,8 +32,9 @@ export function ItemIcon({ item, size = 44, className }: { item: Item; size?: nu
 
 /** Marca del tier: cuatro rombos, tantos encendidos como el tier. */
 export function TierPips({ tier, className }: { tier: number; className?: string }) {
+  const t = useTranslations("heroes");
   return (
-    <span role="img" aria-label={`Tier ${tier}`} className={cn("inline-flex gap-1", className)}>
+    <span role="img" aria-label={t("tierN", { tier })} className={cn("inline-flex gap-1", className)}>
       {[1, 2, 3, 4].map((n) => <span key={n} aria-hidden className={cn("size-1.5 rotate-45", n <= tier ? "bg-(--c)" : "bg-ink-muted/30")} />)}
     </span>
   );
@@ -51,6 +53,7 @@ function RateBar({ rate }: { rate: number }) {
 
 /** Objeto de la tienda: icono, nombre, coste, win rate y tipo, con tooltip rico al pasar el ratón o con el teclado. */
 export function ItemTile({ item, lang, usage }: { item: Item; lang: string; usage?: { winRate: number } }) {
+  const th = useTranslations("heroUi");
   const cat = item.item_slot_type;
   return (
     <LazyItemTooltip id={`tip-${item.id}`} cls={item.class_name} lang={lang} fill>
@@ -68,7 +71,7 @@ export function ItemTile({ item, lang, usage }: { item: Item; lang: string; usag
           </span>
         </span>
         {usage && (
-          <span className="shrink-0 text-right" title="Win rate">
+          <span className="shrink-0 text-right" title={th("winRate")}>
             <span className="block text-sm font-black tabular-nums">{fmtPct(usage.winRate)}</span>
             <RateBar rate={usage.winRate} />
           </span>

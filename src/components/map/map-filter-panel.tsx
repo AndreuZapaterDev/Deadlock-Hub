@@ -1,6 +1,7 @@
 "use client";
+import { useTranslations } from "next-intl";
 import { DURATIONS } from "@/lib/analytics-filters";
-import { EMPTY_FILTERS, FROM_MINUTES, MATCH_MODES, TO_MINUTES, type FilterState } from "@/lib/map-filters";
+import { EMPTY_FILTERS, FROM_MINUTES, TO_MINUTES, type FilterState } from "@/lib/map-filters";
 import { Select } from "@/components/ui/select";
 
 export type HeroOption = { id: number; name: string; slug: string };
@@ -29,6 +30,8 @@ export function MapFilterPanel({ state, onChange, heroes, ranks, patches, chips,
   chips: string[];
   loading: boolean;
 }) {
+  const t = useTranslations("mapUi");
+  const ta = useTranslations("analytics");
   const set = (k: keyof FilterState) => (e: React.ChangeEvent<HTMLSelectElement>) => onChange({ ...state, [k]: e.target.value });
   const active = chips.length > 0;
 
@@ -36,65 +39,65 @@ export function MapFilterPanel({ state, onChange, heroes, ranks, patches, chips,
     <details open className="group rounded-md border border-brass/30 bg-panel shadow-card">
       <summary className="flex cursor-pointer list-none flex-wrap items-center gap-2 px-4 py-3 text-sm font-semibold marker:content-none">
         <span aria-hidden className="text-brass transition-transform group-open:rotate-90">▸</span>
-        <span className="font-display text-base font-black uppercase">Filtros del heatmap</span>
-        {loading && <span role="status" className="ml-1 inline-flex items-center gap-1.5 text-xs font-normal text-ink-muted"><span aria-hidden className="size-2 animate-ping rounded-full bg-accent" />Actualizando…</span>}
-        {!loading && active && <span className="ml-1 rounded-full bg-brass/20 px-2 py-0.5 text-xs">{chips.length} activo{chips.length === 1 ? "" : "s"}</span>}
+        <span className="font-display text-base font-black uppercase">{t("filtersTitle")}</span>
+        {loading && <span role="status" className="ml-1 inline-flex items-center gap-1.5 text-xs font-normal text-ink-muted"><span aria-hidden className="size-2 animate-ping rounded-full bg-accent" />{t("updating")}</span>}
+        {!loading && active && <span className="ml-1 rounded-full bg-brass/20 px-2 py-0.5 text-xs">{t("activeCount", { count: chips.length })}</span>}
       </summary>
       <div className="space-y-4 border-t border-brass/20 p-4">
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          <Field label="Héroe">
+          <Field label={t("fHero")}>
             <Select value={state.hero} onChange={set("hero")}>
-              <option value="">Todos los héroes</option>
+              <option value="">{t("fAllHeroes")}</option>
               {heroes.map((h) => <option key={h.id} value={h.slug}>{h.name}</option>)}
             </Select>
           </Field>
-          <Field label="Desde el minuto">
+          <Field label={t("fFromMin")}>
             <Select value={state.from} onChange={set("from")}>
-              <option value="">Inicio de la partida</option>
+              <option value="">{t("fStart")}</option>
               {FROM_MINUTES.filter((m) => m > 0).map((m) => <option key={m} value={m}>{m}</option>)}
             </Select>
           </Field>
-          <Field label="Hasta el minuto">
+          <Field label={t("fToMin")}>
             <Select value={state.to} onChange={set("to")}>
-              <option value="">Final de la partida</option>
+              <option value="">{t("fEnd")}</option>
               {TO_MINUTES.map((m) => <option key={m} value={m} disabled={state.from !== "" && m <= Number(state.from)}>{m}</option>)}
             </Select>
           </Field>
-          <Field label="Rango desde">
+          <Field label={t("fRankFrom")}>
             <Select value={state.rank_min} onChange={set("rank_min")}>
-              <option value="">Cualquiera</option>
+              <option value="">{t("fAny")}</option>
               {ranks.map((r) => <option key={r.tier} value={r.tier}>{r.name}</option>)}
             </Select>
           </Field>
-          <Field label="Rango hasta">
+          <Field label={t("fRankTo")}>
             <Select value={state.rank_max} onChange={set("rank_max")}>
-              <option value="">Cualquiera</option>
+              <option value="">{t("fAny")}</option>
               {ranks.map((r) => <option key={r.tier} value={r.tier} disabled={state.rank_min !== "" && r.tier < Number(state.rank_min)}>{r.name}</option>)}
             </Select>
           </Field>
-          <Field label="Parche">
+          <Field label={t("fPatch")}>
             <Select value={state.since} onChange={set("since")}>
-              <option value="">Últimos 30 días</option>
-              {patches.map((d) => <option key={d} value={d}>Desde el parche del {d}</option>)}
+              <option value="">{t("fLast30")}</option>
+              {patches.map((d) => <option key={d} value={d}>{t("fSincePatch", { date: d })}</option>)}
             </Select>
           </Field>
-          <Field label="Duración de la partida">
+          <Field label={t("fDuration")}>
             <Select value={state.dur} onChange={set("dur")}>
-              <option value="">Cualquiera</option>
-              {Object.entries(DURATIONS).map(([v, d]) => <option key={v} value={v}>{d.label}</option>)}
+              <option value="">{t("fAny")}</option>
+              {Object.entries(DURATIONS).map(([v, d]) => <option key={v} value={v}>{ta(d.key)}</option>)}
             </Select>
           </Field>
-          <Field label="Tipo de partida">
+          <Field label={t("fMode")}>
             <Select value={state.mode} onChange={set("mode")}>
-              <option value="">Todas</option>
-              {Object.entries(MATCH_MODES).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+              <option value="">{t("fAll")}</option>
+              {(["ranked", "unranked"] as const).map((v) => <option key={v} value={v}>{t(v === "ranked" ? "modeRanked" : "modeUnranked")}</option>)}
             </Select>
           </Field>
         </div>
 
         <div className="flex flex-wrap items-center gap-2 text-xs">
-          {active ? chips.map((c) => <span key={c} className="rounded-full border border-brass/40 bg-brass/10 px-2.5 py-1">{c}</span>) : <span className="text-ink-muted">Sin filtros: todas las partidas de los últimos 30 días.</span>}
-          {active && <button type="button" onClick={() => onChange(EMPTY_FILTERS)} className="ml-1 font-semibold text-teal-ink underline-offset-2 hover:underline">Quitar filtros</button>}
+          {active ? chips.map((c) => <span key={c} className="rounded-full border border-brass/40 bg-brass/10 px-2.5 py-1">{c}</span>) : <span className="text-ink-muted">{t("noFilters")}</span>}
+          {active && <button type="button" onClick={() => onChange(EMPTY_FILTERS)} className="ml-1 font-semibold text-teal-ink underline-offset-2 hover:underline">{t("clearFilters")}</button>}
         </div>
       </div>
     </details>

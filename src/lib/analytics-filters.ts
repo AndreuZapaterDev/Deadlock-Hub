@@ -9,10 +9,11 @@ export type AnalyticsFilters = {
   dur?: "short" | "mid" | "long";
 };
 
-export const DURATIONS: Record<NonNullable<AnalyticsFilters["dur"]>, { label: string; min?: number; max?: number }> = {
-  short: { label: "Cortas (menos de 20 min)", max: 1200 },
-  mid: { label: "Medias (20 a 40 min)", min: 1200, max: 2400 },
-  long: { label: "Largas (más de 40 min)", min: 2400 },
+/** `key` = texto en los mensajes («analytics.<key>»). `label` (español) lo usa todavía el mapa. */
+export const DURATIONS: Record<NonNullable<AnalyticsFilters["dur"]>, { key: string; label: string; min?: number; max?: number }> = {
+  short: { key: "durShort", label: "Cortas (menos de 20 min)", max: 1200 },
+  mid: { key: "durMid", label: "Medias (20 a 40 min)", min: 1200, max: 2400 },
+  long: { key: "durLong", label: "Largas (más de 40 min)", min: 2400 },
 };
 
 type Raw = Record<string, string | undefined>;
@@ -55,12 +56,13 @@ export function toApiQuery(f: AnalyticsFilters): Record<string, number> {
 export const hasFilters = (f: AnalyticsFilters) => Object.keys(f).length > 0;
 
 /** Texto corto de los filtros activos, para mostrarlos encima de los datos. */
-export function describeFilters(f: AnalyticsFilters, tierName: (t: number) => string): string[] {
+/** `t` = traductor del namespace «analytics». */
+export function describeFilters(f: AnalyticsFilters, tierName: (t: number) => string, t: (key: string, values?: Record<string, string | number>) => string): string[] {
   const out: string[] = [];
   if (f.rankMin !== undefined || f.rankMax !== undefined) {
-    out.push(`Rango: ${f.rankMin !== undefined ? tierName(f.rankMin) : "cualquiera"} → ${f.rankMax !== undefined ? tierName(f.rankMax) : "cualquiera"}`);
+    out.push(t("fRank", { from: f.rankMin !== undefined ? tierName(f.rankMin) : t("any").toLowerCase(), to: f.rankMax !== undefined ? tierName(f.rankMax) : t("any").toLowerCase() }));
   }
-  if (f.since) out.push(`Desde el ${f.since}`);
-  if (f.dur) out.push(DURATIONS[f.dur].label);
+  if (f.since) out.push(t("fSince", { date: f.since }));
+  if (f.dur) out.push(t(DURATIONS[f.dur].key));
   return out;
 }
